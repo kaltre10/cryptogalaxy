@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Navbar from './components/navbar'
 import Market from './routes/market'
 import Expeditions from './routes/expeditions'
+import Crafting from './routes/crafting'
 import Inventory from './routes/inventory'
 import Sidebar from './components/sidebar'
 import React, { useState } from 'react';
@@ -807,16 +808,13 @@ function App() {
 
         setntfImage(r)
     })
-
     async function getGlx(ownerAddress) {
         mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
             setGlxBalance(web3.utils.fromWei(r, 'ether'))
             setGemBalance(125)
             console.log(r)
         })
-
     }
-
     async function connect() {
         try {
             const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -850,6 +848,9 @@ function App() {
                         </Route>
                         <Route path="/inventory">
                             <Inventory />
+                        </Route>
+                        <Route path="/crafting">
+                            <Crafting />
                         </Route>
                         <Route path="/expeditions">
                             <Expeditions />

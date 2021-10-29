@@ -1,7 +1,7 @@
 import React from 'react'
-import nft2 from '../img/nft/scout.png'
-import nft3 from '../img/nft/thrasher.png'
-
+import nft2 from '../img/nft/explorer.svg'
+import nft3 from '../img/nft/thrasher.svg'
+import cat from '../img/nft/cat-miner.svg'
 function Inventory() {
     const nft = 'https://raw.githubusercontent.com/manuelperez0000/miningtown-node/master/public/img/catt1.png'
     return (
@@ -21,7 +21,7 @@ function Inventory() {
                                                 Gm 420/24
                                             </div>
                                             <div className="img">
-                                                <img className="nft-image w-100" src={nft} />
+                                                <img className="nft-image w-100" src={cat} />
                                             </div>
                                             <div className="row pt-1 gx-1">
                                                 <div className="col-12">
