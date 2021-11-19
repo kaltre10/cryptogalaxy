@@ -8,6 +8,7 @@ import Inventory from './routes/inventory'
 import Sidebar from './components/sidebar'
 import React, { useState } from 'react';
 import Web3 from 'web3'
+import Nosotros from './components/nosotros'
 
 const abi = [
     {
@@ -370,11 +371,6 @@ const abi = [
         "type": "event"
     }
 ]
-
-const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-const web3 = new Web3(provider)
-const addressContract = '0xA8928409d80D218E0B891D6FE9260D824990fd49'
-const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb'
 const abiNft = [
     {
         "inputs": [],
@@ -778,13 +774,16 @@ const abiNft = [
     }
 ]
 
+const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+const web3 = new Web3(provider)
+const addressContract = '0xA8928409d80D218E0B891D6FE9260D824990fd49'
+const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb'
+
 const myNftContract = new web3.eth.Contract(abiNft, nftCatMiner)
 
-console.log(myNftContract.methods.name().call().then((r) => {
+/* console.log(myNftContract.methods.name().call().then((r) => {
     console.log(r)
-
-
-}))
+})) */
 
 const mycontract = new web3.eth.Contract(abi, addressContract)
 //console.log(mycontract.methods)
@@ -793,37 +792,61 @@ const mycontract = new web3.eth.Contract(abi, addressContract)
 
 //const myAddress = '0x20a4DaBC7C80C1139Ffc84C291aF4d80397413Da'
 
-function App() {
-    connect()
+const App = ()=> {
 
-    //  const abi = abi
+    connect()
+    
     const [wallet, setWallet] = useState('')
     const [bnbBalance, setBnbBalance] = useState('0')
-    const [gemBalance, setGemBalance] = useState('0')
+    const [gemBalance, setGemBalance] = useState(0)
     const [glxBalance, setGlxBalance] = useState('0')
-    const [ntfImage, setntfImage] = useState('')
 
-    myNftContract.methods.tokenURI(0).call().then((r) => {
-        console.log(r)
-
-        setntfImage(r)
-    })
     async function getGlx(ownerAddress) {
         mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
             setGlxBalance(web3.utils.fromWei(r, 'ether'))
-            setGemBalance(125)
-            console.log(r)
         })
     }
+
+    function mas() {
+        for (let i = 0; i < 10; i++) {
+            setGemBalance(gemBalance + 1)
+            for (var j = 0; j < 20; j++) {
+                console.log(5 * 6565 + 55 + 5 + 546 + 546 * 5)
+            }
+        }
+    }
+
+    function menos() {
+        console.log("equipo")
+    }
+
     async function connect() {
         try {
             const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
             setWallet(accounts[0])
             getBnbBalance(accounts[0])
             getGlx(accounts[0])
+
         } catch (error) {
             console.log(error)
         }
+    }
+    function buy() {
+        window.ethereum
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: wallet,
+                        to: '0x0b18947426e74500dc0e96312A02E410d961a91E',
+                        value: web3.utils.toHex(web3.utils.toWei('0.03', 'ether')),
+                        gasPrice: web3.utils.toHex(web3.utils.toWei('5', 'gwei')),
+                        gas: web3.utils.toHex(web3.utils.toWei('21000', 'wei')),
+                    },
+                ],
+            })
+            .then((txHash) => console.log(txHash))
+            .catch((error) => console.error);
     }
 
     async function getBnbBalance(w) {
@@ -834,17 +857,33 @@ function App() {
 
     }
 
+    /* async function consulta() {
+       await fecth("http://localhost:3001/api/getUser/"+wallet)
+            .then((response) => {
+                return response.json();
+            })
+            .then((recurso) => {
+                alert(recurso);
+            });
+
+        alert("Process end")
+    } */
     return (
         <Router>
+           {/*      <Nosotros/> */}
+                
+
             <div className="bg-img-planet">
+                {/* <button onClick={enviareth}> enviar eth</button> */}
+
                 <Navbar connect={connect} wallet={wallet} />
                 <div className="w3-sidebar side">
-                    <Sidebar gemBalance={gemBalance} bnbBalance={bnbBalance} glxBalance={glxBalance} />
+                    <Sidebar mas={mas} menos={menos} gemBalance={gemBalance} bnbBalance={bnbBalance} glxBalance={glxBalance} />
                 </div>
                 <div className="w3-container">
                     <Switch>
                         <Route path="/market">
-                            <Market />
+                            <Market buy={buy} />
                         </Route>
                         <Route path="/inventory">
                             <Inventory />
