@@ -1,4 +1,4 @@
-[
+const glxAbi = [
 	{
 		"constant": true,
 		"inputs": [],
@@ -359,3 +359,6 @@
 		"type": "event"
 	}
 ]
+
+export default glxAbi
+
