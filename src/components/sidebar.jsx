@@ -9,11 +9,12 @@ import Modal from 'react-bootstrap/Modal';
 import { Accordion } from 'react-bootstrap';
 import axios from 'axios';
 import Loading from '../components/loading';
+import urlApi from '../urlApi';
 //import glxAbi from '../token/glxAbi';
 
 function Sidebar() {
 
-    const MainnetProvider = "https://bsc-dataseed.binance.org/";
+    //const MainnetProvider = "https://bsc-dataseed.binance.org/";
     const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
     const web3 = new Web3(provider)
     const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
@@ -76,7 +77,7 @@ function Sidebar() {
     async function getUser() {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const account = accounts[0].toLowerCase()
-        const user = await axios.get("http://localhost:4000/api/v1/user/" + account)
+        const user = await axios.get(urlApi+"/api/v1/user/" + account)
         //console.log("user: +"+user.data[0].wallet)
         setUser(user.data[0])
     }
@@ -110,7 +111,7 @@ function Sidebar() {
                 const hash = txHash
                 const account = accounts[0]
                 const wallet = account.toLowerCase()
-                const getGm = await axios.put("http://localhost:4000/api/v1/buygm", { wallet, amount, hash })
+                const getGm = await axios.put(urlApi+"/api/v1/buygm", { wallet, amount, hash })
                 console.log(getGm.data)
                 console.log("Transaction hash:" + hash)
                 getUser()
@@ -137,7 +138,7 @@ function Sidebar() {
             <Loading load={loading} />
             {errorToast ?
                 <div className="toast-fixed alert alert-warning alert-dismissible d-flex justify-content-between">
-                    <div>
+                    <div className="text-dark">
                         <strong>Error! </strong> {errorToasText}
                     </div>
                     <button onClick={closeAlert} className="btn btn-warning" data-dismiss="alert" aria-label="Close">
@@ -149,7 +150,7 @@ function Sidebar() {
             }
             {infoToast ?
                 <div className="toast-fixed alert alert-success alert-dismissible d-flex justify-content-between">
-                    <div className="px-3">
+                    <div className="px-3 text-success">
                         <strong>Success! </strong> {infoToasText}
                     </div>
                     <button onClick={closeInfo} className="btn btn-success" data-dismiss="alert" aria-label="Close">

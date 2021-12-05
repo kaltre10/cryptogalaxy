@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import logo from '../img/logo-planet.svg'
 import axios from 'axios'
+import urlApi from '../urlApi'
 
 function Navbar() {
 
@@ -20,7 +21,7 @@ function Navbar() {
         //console.log("Account: "+uper)
         const walletObj = { wallet:uper }
         //console.log(walletObj)
-        axios.post("http://localhost:4000/api/v1/auth", walletObj).then((res) => {
+        axios.post(urlApi+"/api/v1/auth", walletObj).then((res) => {
             //console.log("Res data: "+res.data.user.wallet)
         }).catch(err => alert(err.message))
 

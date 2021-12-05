@@ -5,6 +5,7 @@ import Inventory from './routes/inventory'
 import React from 'react';
 import Login from './routes/login'
 import Planet from './routes/planet'
+import urlApi from './urlApi';
 /* import Web3 from 'web3' */
 
 //abis glx & nft
