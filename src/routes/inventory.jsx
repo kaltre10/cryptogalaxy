@@ -56,7 +56,7 @@ function Inventory() {
                                 {ships.length == 0 ?
                                     <p className="text-white">No ships 
                                     
-                                    <div class="spinner-border" role="status"></div> </p>  
+                                    {/* <div class="spinner-border" role="status"></div> */} </p>  
                                     
                                     : <></>}
                                 <div className="row">

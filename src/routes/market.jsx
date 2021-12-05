@@ -135,7 +135,7 @@ const Market = () => {
             .catch((error) => {
                 setLoading(false)
                 getErrorToast(true, error.message)
-                alert("Error: " + error.message)
+                alert("Error Market: " + error.message)
             })
     }
 
@@ -149,9 +149,9 @@ const Market = () => {
             //console.log("Account: "+uper)
             const walletObj = { wallet: uper }
             //console.log(walletObj)
-            axios.post(urlApi + "/api/v1/auth", walletObj).then((res) => {
+            axios.post(urlApi + "/api/v1/x", walletObj).then((res) => {
                 //console.log("Res data: "+res.data.user.wallet)
-            }).catch(err => alert(err.message))
+            }).catch(err => alert("Error in conection market: "+err.message))
 
         } catch (error) {
             //alert("Connection error: " + error.message)

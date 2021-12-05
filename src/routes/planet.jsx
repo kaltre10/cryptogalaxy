@@ -61,7 +61,7 @@ const Planet = () => {
             //console.log(walletObj)
             axios.post("http://localhost:4000/api/v1/auth", walletObj).then((res) => {
                 //console.log("Res data: "+res.data.user.wallet)
-            }).catch(err => alert(err.message))
+            }).catch(err => alert("Error in planet: "+err.message))
 
         } catch (error) {
             alert("Connection error: " + error.message)
@@ -153,7 +153,7 @@ const Planet = () => {
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Terrat} />
+                                            <img className="planet-image w-100" src={Terrat} alt="planet"/>
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
@@ -168,13 +168,13 @@ const Planet = () => {
                                                 </div>
                                                 <div>
                                                     <div className="mineral">
-                                                        <img className="vertical-align m-3" height="60px" src={iron} />
+                                                        <img className="vertical-align m-3" height="60px" alt="planet" src={iron} />
                                                         <div className="name-mineral">IRON</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {
-                                                planets[0] != 0 ?
+                                                planets[0] !== 0 ?
                                                     <div>
                                                         {loading ?
                                                             <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>
@@ -208,7 +208,7 @@ const Planet = () => {
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Elion} />
+                                            <img className="planet-image w-100" src={Elion} alt="planet"/>
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
@@ -223,7 +223,7 @@ const Planet = () => {
                                                 </div>
                                                 <div>
                                                     <div className="mineral">
-                                                        <img className="vertical-align m-3" height="60px" src={silver} />
+                                                        <img className="vertical-align m-3" height="60px" src={silver} alt="planet" />
                                                         <div className="name-mineral">Silver</div>
                                                     </div>
                                                 </div>
@@ -231,7 +231,7 @@ const Planet = () => {
 
                                             <div>
                                                 {
-                                                    planets[1] != 0 ?
+                                                    planets[1] !== 0 ?
                                                         <div>
                                                             {loading ?
                                                                 <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>
@@ -263,7 +263,7 @@ const Planet = () => {
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Argon} />
+                                            <img className="planet-image w-100" src={Argon} alt="planet"/>
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
@@ -279,13 +279,13 @@ const Planet = () => {
                                                 </div>
                                                 <div>
                                                     <div className="mineral">
-                                                        <img className="vertical-align m-3" height="60px" src={gold} />
+                                                        <img className="vertical-align m-3" height="60px" src={gold} alt="planet" />
                                                         <div className="name-mineral">Gold</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             {
-                                                planets[2] != 0 ?
+                                                planets[2] !== 0 ?
                                                     <div>
                                                         {loading ?
                                                             <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>

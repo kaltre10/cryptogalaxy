@@ -22,7 +22,7 @@ const Login = (props) => {
                 if(res){
                     setConnect(true)
                     setLoading(false)
-                    window.location.href="./market"
+                    //window.location.href="./market"
                 }
             }).catch((err)=>{
                 setLoading(false)
