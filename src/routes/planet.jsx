@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
 import Navbar from "../components/navbar";
-import Terrat from '../img/planets/Terrat.webp';
-import Elion from '../img/planets/Elion.webp';
+
+import Ares from '../img/planets/Ares.webp';
 import Argon from '../img/planets/Argon.webp';
+import Elion from '../img/planets/Elion.webp';
+import Fiz from '../img/planets/Fiz.webp';
+import Seea from '../img/planets/Seea.webp';
+import Terrat from '../img/planets/Terrat.webp';
+
 import Loading from "../components/loading";
+import SelectShip from "../components/SelectShip";
 import gm from '../img/gems.svg';
 
 import iron from '../img/meterials/crud/iron.webp';
 import silver from '../img/meterials/crud/silver.webp';
 import gold from '../img/meterials/crud/gold.webp';
+
+import ice from '../img/meterials/crud/ice.webp';
+import diamond from '../img/meterials/crud/diamond.webp';
+import petroleum from '../img/meterials/crud/petroleum.webp';
 
 import urlApi from "../urlApi";
 
@@ -21,6 +31,8 @@ const Planet = () => {
     }, [])
 
     const [wallet, setWallet] = useState('')
+    const [selectship, setSelectship] = useState(false);
+    const [planet, setPlanet] = useState({});
 
     //Loading, alerts and errors
     const [loading, setLoading] = useState(false)
@@ -35,10 +47,12 @@ const Planet = () => {
     //end Loading, alerts and errors
 
     const [user, setUser] = useState({})
-    const [planets, setPlanets] = useState([0,0,0,0,0,0])
+    const [planets, setPlanets] = useState([0, 0, 0, 0, 0, 0])
     const [materials, setMaterials] = useState({})
     const [bnb, setBnb] = useState(10)
-    const [glx, setGlx] = useState(10)
+    const [glx, setGlx] = useState(10);
+
+    const [ships, setShips] = useState([]);
 
     async function getUser() {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -46,10 +60,11 @@ const Planet = () => {
         const user = await axios.get(urlApi + "/api/v1/user/" + account)
         setMaterials(user.data[0].materials)
         setUser(user.data[0])
+        setShips(user.data[0].ships)
         setPlanets(user.data[0].planets)
     }
 
-    async function connection() {
+    /* async function connection() {
         try {
 
             const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -67,7 +82,7 @@ const Planet = () => {
             alert("Connection error: " + error.message)
             window.location.href = "./login"
         }
-    }
+    } */
 
     async function mine(material, mp) {
 
@@ -112,12 +127,18 @@ const Planet = () => {
         }
     }
 
+    function closeShips() {
+        setSelectship(false);
+    }
+
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
                 <Navbar />
 
                 <Loading load={loading} />
+
+                <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} />
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
                         <Sidebar />
@@ -146,14 +167,14 @@ const Planet = () => {
                                         Petroleum: {materials.petroleum}<br />
                                     </div>
                                 </div>
-
-
                             </div>
+
+                            {/* Terrat 1*/}
                             <div className="col-12 col-md-10 bg-w-planet">
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Terrat} alt="planet"/>
+                                            <img className="planet-image w-100" src={Terrat} alt="planet" />
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
@@ -176,15 +197,15 @@ const Planet = () => {
                                             {
                                                 planets[0] !== 0 ?
                                                     <div>
-                                                        {loading ?
-                                                            <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => mine("iron", 3)} className="btn bg-danger form-control text-white mt-2">
-                                                                Mine 20
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
-                                                            </button>
-                                                        }
-                                                    </div> :
+                                                        <button onClick={() => {
+                                                            setSelectship(true);
+                                                            setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8, cost: 20 })
+                                                        }}
+                                                            className="btn bg-danger form-control text-white mt-2">
+                                                            Mine
+                                                        </button>
+                                                    </div>
+                                                    :
                                                     <div>
                                                         {loading ?
                                                             <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
@@ -204,21 +225,23 @@ const Planet = () => {
                             </div>
                             <div className="col-12 col-md-2"></div>
                             <div className="col-12 col-md-2"></div>
+
+                            {/* Argon 2*/}
                             <div className="col-12 col-md-10 bg-w-planet">
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Elion} alt="planet"/>
+                                            <img className="planet-image w-100" src={Argon} alt="planet" />
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
                                         <div className="inplanet">
                                             <div className="d-flex justify-content-between">
                                                 <div >
-                                                    <h2 className="text-white m-0 p-0">Elion</h2>
+                                                    <h2 className="text-white m-0 p-0">Argon</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 2</p>
-                                                    <p className="m-0 price p-0 mb-1"> Silver planet</p>
-                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.6</b></p>
+                                                    <p className="m-0 price p-0 mb-1"> Silver Planet</p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.4</b></p>
 
                                                 </div>
                                                 <div>
@@ -233,14 +256,13 @@ const Planet = () => {
                                                 {
                                                     planets[1] !== 0 ?
                                                         <div>
-                                                            {loading ?
-                                                                <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>
-                                                                :
-                                                                <button onClick={() => mine("silver", 2)} className="btn bg-danger form-control text-white mt-2">
-                                                                    Mine 40
-                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
-                                                                </button>
-                                                            }
+                                                            <button onClick={() => {
+                                                                setSelectship(true);
+                                                                setPlanet({ name: "Argon", mine: "silver", id: 1, lvl: 2, dif: 0.4, cost: 30 })
+                                                            }}
+                                                                className="btn bg-danger form-control text-white mt-2">
+                                                                Mine
+                                                            </button>
                                                         </div> :
                                                         <div>
                                                             {loading ?
@@ -259,22 +281,23 @@ const Planet = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/* Elion 3*/}
                             <div className="col-12 col-md-10 bg-w-planet">
                                 <div className="row gx-0">
                                     <div className="col-4 col-md-5 px-2 py-3">
                                         <div className="w-img-planet p-3">
-                                            <img className="planet-image w-100" src={Argon} alt="planet"/>
+                                            <img className="planet-image w-100" src={Elion} alt="planet" />
                                         </div>
                                     </div>
                                     <div className="col-8 col-md-7 p-3 ">
                                         <div className="inplanet">
-                                                
-                                        <div className="d-flex justify-content-between">
+
+                                            <div className="d-flex justify-content-between">
                                                 <div >
-                                                    <h2 className="text-white m-0 p-0">Galion</h2>
+                                                    <h2 className="text-white m-0 p-0">Elion</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 3</p>
                                                     <p className="m-0 price p-0 mb-1"> Gold planet</p>
-                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.4</b></p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.02</b></p>
 
                                                 </div>
                                                 <div>
@@ -287,20 +310,183 @@ const Planet = () => {
                                             {
                                                 planets[2] !== 0 ?
                                                     <div>
-                                                        {loading ?
-                                                            <button className="btn form-control mt-2 bg-secondary px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => mine("gold", 1)} className="btn bg-danger form-control text-white mt-2">
-                                                                Mine 90
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
-                                                            </button>
-                                                        }
+                                                        <button onClick={() => {
+                                                            setSelectship(true);
+                                                            setPlanet({ name: "Elion", mine: "gold", id: 2, lvl: 3, dif: 0.2, cost: 50 })
+                                                        }}
+                                                            className="btn bg-danger form-control text-white mt-2">
+                                                            Mine
+                                                        </button>
                                                     </div> :
                                                     <div>
                                                         {loading ?
                                                             <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                             :
                                                             <button onClick={() => { unlockPlanet(2, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                Unlock 3000
+                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                            </button>
+                                                        }
+                                                    </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-2"></div>
+                            <div className="col-12 col-md-2"></div>
+                            {/* Fiz 4*/}
+                            <div className="col-12 col-md-10 bg-w-planet">
+                                <div className="row gx-0">
+                                    <div className="col-4 col-md-5 px-2 py-3">
+                                        <div className="w-img-planet p-3">
+                                            <img className="planet-image w-100" src={Fiz} alt="planet" />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-7 p-3 ">
+                                        <div className="inplanet">
+
+                                            <div className="d-flex justify-content-between">
+                                                <div >
+                                                    <h2 className="text-white m-0 p-0">Fiz</h2>
+                                                    <p className="m-0 p-0 text-white"> LVL 4</p>
+                                                    <p className="m-0 price p-0 mb-1"> Diamond planet</p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.1</b></p>
+
+                                                </div>
+                                                <div>
+                                                    <div className="mineral">
+                                                        <img className="vertical-align m-3" height="60px" src={diamond} alt="planet" />
+                                                        <div className="name-mineral">Diamond</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {
+                                                planets[3] !== 0 ?
+                                                    <div>
+                                                        <button onClick={() => {
+                                                            setSelectship(true);
+                                                            setPlanet({ name: "fiz", mine: "diamond", id: 3, lvl: 4, dif: 0.1, cost: 70 })
+                                                        }}
+                                                            className="btn bg-danger form-control text-white mt-2">
+                                                            Mine
+                                                        </button>
+                                                    </div> :
+                                                    <div>
+                                                        {loading ?
+                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                            :
+                                                            <button onClick={() => { unlockPlanet(3, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                Unlock 3000
+                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                            </button>
+                                                        }
+                                                    </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {/* Seea 5*/}
+                            <div className="col-12 col-md-10 bg-w-planet">
+                                <div className="row gx-0">
+                                    <div className="col-4 col-md-5 px-2 py-3">
+                                        <div className="w-img-planet p-3">
+                                            <img className="planet-image w-100" src={Seea} alt="planet" />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-7 p-3 ">
+                                        <div className="inplanet">
+
+                                            <div className="d-flex justify-content-between">
+                                                <div >
+                                                    <h2 className="text-white m-0 p-0">Seea</h2>
+                                                    <p className="m-0 p-0 text-white"> LVL 5</p>
+                                                    <p className="m-0 price p-0 mb-1"> Ice planet</p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.08</b></p>
+
+                                                </div>
+                                                <div>
+                                                    <div className="mineral">
+                                                        <img className="vertical-align m-3" height="60px" src={ice} alt="planet" />
+                                                        <div className="name-mineral">Ice</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {
+                                                planets[4] !== 0 ?
+                                                    <div>
+                                                         <button onClick={() => {
+                                                            setSelectship(true);
+                                                            setPlanet({ name: "seea", mine: "ice", id: 4, lvl: 5, dif: 0.08, cost: 90 })
+                                                        }}
+                                                            className="btn bg-danger form-control text-white mt-2">
+                                                            Mine
+                                                        </button>
+                                                    </div> :
+                                                    <div>
+                                                        {loading ?
+                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                            :
+                                                            <button onClick={() => { unlockPlanet(4, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                Unlock 3000
+                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                            </button>
+                                                        }
+                                                    </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div className="col-12 col-md-2"></div>
+                            <div className="col-12 col-md-2"></div>
+                            {/* Ares 6 */}
+                            <div className="col-12 col-md-10 bg-w-planet">
+                                <div className="row gx-0">
+                                    <div className="col-4 col-md-5 px-2 py-3">
+                                        <div className="w-img-planet p-3">
+                                            <img className="planet-image w-100" src={Ares} alt="planet" />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-7 p-3 ">
+                                        <div className="inplanet">
+
+                                            <div className="d-flex justify-content-between">
+                                                <div >
+                                                    <h2 className="text-white m-0 p-0">Ares</h2>
+                                                    <p className="m-0 p-0 text-white"> LVL 6</p>
+                                                    <p className="m-0 price p-0 mb-1"> Petroleum planet</p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.05</b></p>
+
+                                                </div>
+                                                <div>
+                                                    <div className="mineral">
+                                                        <img className="vertical-align m-3" height="60px" src={petroleum} alt="planet" />
+                                                        <div className="name-mineral">Petroleum</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {
+                                                planets[5] !== 0 ?
+                                                    <div>
+                                                        <button onClick={() => {
+                                                            setSelectship(true);
+                                                            setPlanet({ name: "ares", mine: "petroleum", id: 5, lvl: 6, dif: 0.05, cost: 120 })
+                                                        }}
+                                                            className="btn bg-danger form-control text-white mt-2">
+                                                            Mine
+                                                        </button>
+                                                    </div> :
+                                                    <div>
+                                                        {loading ?
+                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                            :
+                                                            <button onClick={() => { unlockPlanet(5, 3000) }} className="btn bg-success form-control mt-2 text-white ">
                                                                 Unlock 3000
                                                                 <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                             </button>

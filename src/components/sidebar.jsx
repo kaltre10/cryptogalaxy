@@ -77,7 +77,7 @@ function Sidebar() {
     async function getUser() {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const account = accounts[0].toLowerCase()
-        const user = await axios.get(urlApi+"/api/v1/user/" + account)
+        const user = await axios.get(urlApi + "/api/v1/user/" + account)
         //console.log("user: +"+user.data[0].wallet)
         setUser(user.data[0])
     }
@@ -111,7 +111,7 @@ function Sidebar() {
                 const hash = txHash
                 const account = accounts[0]
                 const wallet = account.toLowerCase()
-                const getGm = await axios.put(urlApi+"/api/v1/buygm", { wallet, amount, hash })
+                const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
                 console.log(getGm.data)
                 console.log("Transaction hash:" + hash)
                 getUser()
@@ -126,7 +126,6 @@ function Sidebar() {
                 console.log("Ocurrio el siguiente error: " + error.message)
             })
     }
-
 
     useEffect(() => {
         isConnected()
@@ -161,16 +160,18 @@ function Sidebar() {
             }
 
             <div className="flex-column text-white sidebar-w">
-                <div className="w-market">
-                    <Link to="/market" className="btn btn-wallet form-control">Market</Link>
 
-                </div>
                 <div className="">
 
                     <Accordion className="acord d-block d-md-none">
                         <Accordion.Item eventKey="0" className="bg-acorderon">
                             <Accordion.Header className="ac-head">=</Accordion.Header>
                             <Accordion.Body className="ac-body">
+
+                                <div className="w-market">
+                                    <Link to="/market" className="btn btn-wallet form-control">Market</Link>
+
+                                </div>
 
                                 <ul className="nav nav-pills flex-column mb-auto">
                                     <li>
@@ -186,158 +187,31 @@ function Sidebar() {
                                     </li>
 
                                 </ul>
+
                                 <div className="sidebar-balance pb-3">
-                                    <ul className="nav flex-column">
-                                        <li>
-                                            <img className="logo-sidebar" src={bnbLogo} />
-                                            {/* {props.bnb} */}
-                                        </li>
-                                        <li>
-                                            <img className="logo-sidebar" src={logo} />
-                                            {/* {props.glx} */}
-                                        </li>
-                                        <li>
-                                            <img className="logo-sidebar" src={gem} />
-                                            {/* {props.user.gm} */}
-                                        </li>
-                                        <li>
-                                            {/*   <button onClick={props.mas}>+</button>
-                            <button onClick={props.menos}>-</button> */}
 
 
-                                        </li>
-                                        <div className="w-gems mt-4">
-                                            <h4 className="text-white text-center">Exchange</h4>
-
-                                            <div onClick={handleShow} className="gems-exchange d-flex justify-content-between">
-
-                                                <div className="d-inline-block">
-                                                    <img className="img-gem" src={bnbLogo} />
-                                                </div>
-                                                <div className="d-inline-block">
-                                                    <img className="img-gem" src={arrow} />
-                                                </div>
-                                                <div className="d-inline-block">
-                                                    <img className="img-gem" src={gem} />
-                                                </div>
-                                            </div>
-
-                                            <Modal className="bg-modal" show={show} onHide={handleClose}>
-                                                <Modal.Header className="modal-w text-white hr-modal" closeButton>
-                                                    <Modal.Title>
-                                                        <div className="d-flex justify-content-between w-100">
-                                                            {/* {modalX ?
-                                                <div>
-                                                    <div className="d-inline-block">
-                                                        <img className="img-gem" src={gem} />
-                                                    </div>
-                                                    <div className="d-inline-block mx-3">
-                                                        <img className="img-gem" src={arrow} />
-                                                    </div>
-                                                    <div className="d-inline-block">
-                                                        <img className="img-gem" src={logo} />
-                                                    </div>
-                                                </div>
-                                                :
-                                                <div>
-                                                    <div className="d-inline-block">
-                                                        <img className="img-gem" src={logo} />
-                                                    </div>
-                                                    <div className="d-inline-block mx-3">
-                                                        <img className="img-gem" src={arrow} />
-                                                    </div>
-                                                    <div className="d-inline-block">
-                                                        <img className="img-gem" src={gem} />
-                                                    </div>
-                                                </div>
-                                            } */}
-                                                            <div>
-                                                                <div className="d-inline-block">
-                                                                    <img className="img-gem" src={bnbLogo} />
-                                                                </div>
-                                                                <div className="d-inline-block mx-3">
-                                                                    <img className="img-gem" src={arrow} />
-                                                                </div>
-                                                                <div className="d-inline-block">
-                                                                    <img className="img-gem" src={gem} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </Modal.Title>
-                                                </Modal.Header>
-                                                <Modal.Body className="modal-w text-center">
-
-                                                    <h4 className="text-white">1000 GM = { } BNB</h4>
-                                                    <h4 className="text-white">3000 GM = { } BNB</h4>
-                                                    <div className="modal-w py-4 d-flex justify-content-center">
-                                                        <div className="border p-3 m-2">
-                                                            <div className="text-center">
-                                                                <img height="50px" src={gem} alt="" />
-                                                            </div>
-                                                            <div className="text-white text-center mb-3">
-                                                                Gem Pack (1000 GM)
-                                                            </div>
-                                                            <button className="btn btn-success px-4" onClick={() => buyGm(1000, "0.01")}>
-                                                                Buy 1000 GM
-                                                            </button>
-                                                        </div>
-                                                        <div className="border p-3 m-2">
-                                                            <div className="text-center">
-                                                                <img height="50px" src={gem} alt="" />
-                                                            </div>
-                                                            <div className="text-white text-center mb-3">
-                                                                Gem Pack (3000 GM)
-                                                            </div>
-                                                            <button className="btn btn-success px-4" onClick={() => buyGm(3000, "0.025")}>
-                                                                Buy 3000 GM
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* <div className="row mt-3">
-                                        <div className="col-2 text-center">
-                                            {modalX ?
-                                                <img className="logo-modal" src={gem} /> : <img className="logo-modal" src={logo} />
-                                            }
-
+                                    <div className="d-flex justify-content-between">
+                                        <div className="">
+                                            <img className="logo-sidebar" src={bnbLogo} />  {bnb}
                                         </div>
-                                        <div className="col-10">
-                                            <input className="form-control input-modal" placeholder="0" type="number" />
-                                            <p className="text-danger">! Error message...</p>
+                                        <div className="">
+                                            <img className="logo-sidebar" src={logo} /> {glx}
+                                        </div>
+                                        <div className="">
+                                            <img className="logo-sidebar" src={gem} /> {user.gm}
                                         </div>
                                     </div>
-                                    <div className="row mt-1">
-                                        <div className="col-12 text-center" >
-                                            <h3 className="text-white">↓</h3>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-1">
-                                        <div className="col-2 text-center">
-                                            {modalX ?
-                                                <img className="logo-modal" src={logo} /> : <img className="logo-modal" src={gem} />
-                                            }
-                                        </div>
-                                        <div className="col-10">
-                                            <input className="form-control input-modal" placeholder="0" type="number" />
-                                        </div>
-                                    </div> */}
-
-                                                </Modal.Body>
-                                                <Modal.Footer className="modal-w text-center">
-                                                    <div className="text-center w-100">
-
-                                                    </div>
-                                                </Modal.Footer>
-                                            </Modal>
-
-                                        </div>
-                                    </ul>
                                 </div>
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
 
                     <div className="d-none d-md-block">
+                        <div className="w-market">
+                            <Link to="/market" className="btn btn-wallet form-control">Market</Link>
+
+                        </div>
                         <ul className="nav nav-pills flex-column mb-auto">
                             <li>
                                 <Link to="/inventory" className="nav-button">

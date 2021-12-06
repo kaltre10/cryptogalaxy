@@ -40,6 +40,9 @@ const Market = () => {
     function closeInfo() { setInfoToast(false) }
     //end Loading, alerts and errors
 
+    const date = new Date()
+    const nowDate = Date.now()
+
     window.ethereum.on('chainChanged', async (chainId) => {
         switchChain()
     }
@@ -92,7 +95,7 @@ const Market = () => {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const account = accounts[0]
         const wallet = account.toLowerCase()
-        const buyShip = await axios.put(urlApi + "/api/v1/buyship", { wallet, hash,objSell })
+        const buyShip = await axios.put(urlApi + "/api/v1/buyship", { wallet, hash, objSell })
         console.log(buyShip.data)
         //console.log("Transaction hash:" + hash)
         getUser()
@@ -151,7 +154,7 @@ const Market = () => {
             //console.log(walletObj)
             axios.post(urlApi + "/api/v1/x", walletObj).then((res) => {
                 //console.log("Res data: "+res.data.user.wallet)
-            }).catch(err => alert("Error in conection market: "+err.message))
+            }).catch(err => alert("Error in conection market: " + err.message))
 
         } catch (error) {
             //alert("Connection error: " + error.message)
@@ -226,6 +229,16 @@ const Market = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            
+                                                            <div className="energy">
+                                                                <div className="border-energy">
+                                                                    {item.energy > 0 ? <div className="in-energy">  </div> : <></>}
+                                                                    {item.energy > 1 ? <div className="in-energy">  </div> : <></>}
+                                                                    {item.energy < 2 ? <div className="out-energy">  </div> : <></>}
+                                                                    {item.energy < 1 ? <div className="out-energy">  </div> : <></>}
+                                                                </div>
+                                                            </div>
+
                                                             <div className="row pt-1 gx-0">
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
@@ -235,7 +248,7 @@ const Market = () => {
                                                                     {loading ?
                                                                         <button className="btn bg-secondary px-5 text-white">Loading...</button>
                                                                         :
-                                                                        <button onClick={() => { buyNFT({ name: item.name, id: item.id, sellPrice: item.sellPrice, img: item.img, mp: item.mp, type:item.type, subType:item.subType }) }} className="btn bg-success form-control text-white">Buy</button>
+                                                                        <button onClick={() => { buyNFT({ name: item.name, id: item.id, sellPrice: item.sellPrice, img: item.img, mp: item.mp, type: item.type, subType: item.subType }) }} className="btn bg-success form-control text-white">Buy</button>
                                                                     }
                                                                 </div>
                                                             </div>
@@ -245,57 +258,6 @@ const Market = () => {
                                             )
                                         })}
 
-
-                                        {/* 
-
-                                        <div className="col-12 col-sm-6 col-xl-3">
-                                            <div className="nft">
-                                                <div className="img">
-                                                    <img className="nft-image w-100" src={nft2} alt="" />
-                                                </div>
-                                                <div className="row pt-1 gx-1">
-                                                    <div className="col-6">
-                                                        <h4 className="name-nft m-0 p-0">Dolphin</h4>
-                                                        <p className="m-0 price p-0"> 0.01 BNB</p>
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <button className="btn bg-secondary form-control text-white">Buy</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-12 col-sm-6 col-xl-3">
-                                            <div className="nft">
-                                                <div className="img">
-                                                    <img className="nft-image w-100" src={nft4} alt="" />
-                                                </div>
-                                                <div className="row pt-1 gx-1">
-                                                    <div className="col-6">
-                                                        <h4 className="name-nft m-0 p-0">Factory</h4>
-                                                        <p className="m-0 price p-0"> 0.01 BNB</p>
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <button className="btn bg-secondary form-control text-white">Buy</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-12 col-sm-6 col-xl-3">
-                                            <div className="nft">
-                                                <div className="img">
-                                                    <img className="nft-image w-100" src={nft5} />
-                                                </div>
-                                                <div className="row pt-1 gx-1">
-                                                    <div className="col-6">
-                                                        <h4 className="name-nft m-0 p-0">Refinery</h4>
-                                                        <p className="m-0 price p-0"> 0.01 BNB</p>
-                                                    </div>
-                                                    <div className="col-6 ">
-                                                        <button className="btn bg-secondary form-control text-white">Buy</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>*/}
                                     </div>
                                 </div>
                             </div>
