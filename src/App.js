@@ -6,6 +6,13 @@ import React from 'react';
 import Login from './routes/login'
 import Planet from './routes/planet'
 import urlApi from './urlApi';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import TopNav from './components/topNav';
+import Sidebar from './components/sidebar';
+
+const eth = window.ethereum;
+
 /* import Web3 from 'web3' */
 
 //abis glx & nft
@@ -28,26 +35,44 @@ const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb' */
 
 const App = () => {
 
-    /* window.ethereum.on('accountsChanged', function (accounts) {
-        
-        alert("Change red2")
-    }); */
-    
-   /*  async function detectChainId(){
-        
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        alert(web3.utils.hexToNumber(chainId))
-    } */
-    
-    //connect()
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        connectOrRegister()
+    }, [])
+
+    async function connectOrRegister() {
+
+        eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
+            const wallet = res[0];
+            axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
+                //console.log(res.data.user);
+                setUser(res.data.user);
+                setLoading(false);
+            }).catch((err) => {
+                alert(err.message);
+            });
+        }).catch((err) => {
+            alert(err.message);
+        });
+    }
+
+    window.ethereum.on('accountsChanged', () => {
+        window.location.href = './login';
+    });
+
+    /*  async function detectChainId(){
+         
+         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+         alert(web3.utils.hexToNumber(chainId))
+     } */
+    //connect()
     /* const [wallet, setWallet] = useState('')
     const [bnbBalance, setBnbBalance] = useState(0)
     const [glxBalance, setGlxBalance] = useState(0)
     const [gemBalance, setGemBalance] = useState(0) */
-
     /* 
-
     function mas() {
         for (let i = 0; i < 10; i++) {
             setGemBalance(gemBalance + 1)
@@ -56,18 +81,8 @@ const App = () => {
             }
         }
     }
-
-    async function connect() {
-        try {
-            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-            setWallet(accounts[0])
-            getBnbBalance(accounts[0])
-            getGlx(accounts[0])
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    
+     
     function buy() {
         window.ethereum
             .request({
@@ -85,15 +100,14 @@ const App = () => {
             .then((txHash) => console.log(txHash))
             .catch(() => console.error);
     }
-
+    
     async function getBnbBalance(w) {
         web3.eth.getBalance(w).then((r) => {
             setBnbBalance(web3.utils.fromWei(r, 'ether'))
-
+    
         })
-
+    
     } */
-
     /* async function consulta() {
        await fecth("http://localhost:3001/api/getUser/"+wallet)
             .then((response) => {
@@ -102,29 +116,41 @@ const App = () => {
             .then((recurso) => {
                 alert(recurso);
             });
-
+    
         alert("Process end")
     } */
+
+
     return (
         <Router>
-            <Switch>
-                <Route path="/market">
-                    <Market/>
-                </Route>
-                <Route path="/inventory">
-                    <Inventory />
-                </Route>
-                <Route path="/login">
-                    <Login/>
-                </Route>
-                <Route path="/planet">
-                    <Planet/>
-                </Route>
-             
-                <Route path="/" exact>
-                    <Login/>
-                </Route>
-            </Switch>
+
+            <TopNav user={user} connectOrRegister={connectOrRegister} loading={loading} />
+            <div className="container-fluid p-0">
+                <div className="row gx-0">                    
+                    <div className="col-12">
+                        <Switch>
+                            <Route path="/market">
+                                <Market user={user} />
+                            </Route>
+                            <Route path="/inventory">
+                                <Inventory user={user} loading={loading} />
+                            </Route>
+                            <Route path="/login">
+                                <Login user={user} connectOrRegister={connectOrRegister} />
+                            </Route>
+                            <Route path="/planet">
+                                <Planet user={user} />
+                            </Route>
+                            <Route path="/" exact>
+                                <Login user={user} connectOrRegister={connectOrRegister} />
+                            </Route>
+                        </Switch>
+
+                    </div>
+                </div>
+            </div>
+
+
 
             {/* <div className="bg-img-planet">
 
@@ -136,7 +162,7 @@ const App = () => {
                     <Switch>
                         <Route path="/market">
                             <Market buy={buy} />
-                        </Route>
+                         </Route>
                         <Route path="/inventory">
                             <Inventory />
                         </Route>
@@ -150,7 +176,7 @@ const App = () => {
                 </div>
             </div> */}
         </Router>
-    );
+    )
 }
 
 export default App;

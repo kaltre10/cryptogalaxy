@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
-import Navbar from "../components/navbar";
+import Navbar from "../components/topNav";
 
 import Ares from '../img/planets/Ares.webp';
 import Argon from '../img/planets/Argon.webp';

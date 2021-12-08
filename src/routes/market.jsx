@@ -8,7 +8,7 @@ import nft5 from '../img/nft/stations/refinery.webp'; */
 
 import Loading from '../components/loading';
 import axios from 'axios';
-import Navbar from '../components/navbar';
+import Navbar from '../components/topNav';
 import Sidebar from '../components/sidebar';
 import glxAbi from '../token/glxAbi'
 import urlApi from '../urlApi';

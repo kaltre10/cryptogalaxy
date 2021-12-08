@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 /* import cat from '../img/nft/cat-miner.svg' */
 import Sidebar from '../components/sidebar'
-import Navbar from '../components/navbar'
+import Navbar from '../components/topNav'
 import axios from 'axios'
 import urlApi from '../urlApi'
 
@@ -15,66 +15,29 @@ import petroleum from '../img/meterials/crud/petroleum.webp';
 
 import shipsObj from '../items/ships'
 
-function Inventory() {
-    const [loading, setLoading] = useState(false)
-    const [ships, setShips] = useState([])
-    const [user, setUser] = useState({})
-    const [items, setItems] = useState({})
-    const [materials, setMaterials] = useState({})
-
-    useEffect(() => {
-        //getShips()
-        getUser()
-
-    }, [])
-
-    async function getUser() {
-        setLoading(true)
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
-        const account = accounts[0]
-        const user = await axios.get(urlApi + "/api/v1/user/" + account)
-        setItems(user.data[0].items)
-        setMaterials(user.data[0].materials)
-        setUser(user.data[0])
-        setShips(user.data[0].ships)
-        setLoading(false)
-    }
-
-    // const nowDate = Date.now()
+function Inventory(props) {
 
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
-
-                {/*  <div className="text-white border bg-danger p-4">
-                    { shipsObj[0].img }
-                    <img src={ shipsObj[0].img } alt="" srcset="" />
-                </div> */}
-                <Navbar />
-
                 <div className="row gx-0">
-                    <div className="col-12 col-md-3 ">
-                        <Sidebar />
+                    <div className="col-3 bg-danger d-none d-md-block">
+                        < Sidebar user={props.user} />
                     </div>
+
                     <div className="col-12 col-md-9">
                         <div className="w-market-container p-3">
-
                             <div className="w-inventory-item p-2">
-                                <h3 className="text-white"> Ships </h3>
-                                <hr />
-                                {loading ? <>
-                                    <div class="spinner-border" role="status"></div>
-                                </>
-                                    :
-                                    <>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h3 className="text-white"> Ships </h3><hr />
+                                    </div>
 
-                                        {ships.length == 0 ?
-                                            <p className="text-white">No ships </p>
-
-                                            : <></>}
-
-                                        <div className="row">
-                                            {ships.map((item) => {
+                                    {props.loading ? <>
+                                        <div class="spinner-border" role="status"></div>
+                                    </> : <>
+                                        {props.user.wallet != null ?
+                                            props.user.ships.map((item) => {
                                                 return (
                                                     <div key={item.id} className="col-12 col-sm-6 col-xl-3 ">
                                                         <div className="nft">
@@ -107,22 +70,33 @@ function Inventory() {
                                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
 
                                                                 </div>
-                                                                <div className="col-6">
+                                                                {/* <div className="col-6">
                                                                     {loading ?
                                                                         <button className="btn bg-secondary px-5 text-white">Loading...</button>
                                                                         :
                                                                         <button className="btn bg-success form-control text-white">Sell</button>
                                                                     }
-                                                                </div>
+                                                                </div> */}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 )
-                                            })}
-                                        </div>
+                                            })
+                                            : <>
+                                                No ships
+                                            </>
+                                        }
 
                                     </>}
+                                </div>
                             </div>
+                            {/* fin row */}
+
+
+
+
+
+                            {/* </div>
                             <div className="w-inventory-item p-2">
 
                                 <div className="row">
@@ -134,10 +108,10 @@ function Inventory() {
                                 <div className="p-2">
 
 
-                                    <div className="row">
+                                    <div className="row"> */}
 
 
-                                        {
+                            {/*  {
                                             materials.iron + materials.silver + materials.gold + materials.ice + materials.petroleum + materials.diamond < 1 ? <div>No materials in inventory</div>
                                                 : <>
 
@@ -235,11 +209,11 @@ function Inventory() {
                                                                     {materials.petroleum}
                                                                 </div>
                                                             </div>
-                                                        </div> : <></>}
+                                                        </div> : <></>} */}
 
-                                                </>}
+                            {/*  </>} */}
 
-                                    </div>
+                            {/*                              </div>
                                 </div>
                             </div>
                             <div className="w-inventory-item p-3">
@@ -254,8 +228,14 @@ function Inventory() {
                     </div>
                 </div>
             </div>
+        ) */}
+                            {/* }
+ */}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
-
 export default Inventory
