@@ -12,26 +12,18 @@ import TopNav from './components/topNav';
 import Web3 from 'web3'
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
-
 const eth = window.ethereum;
 
 
 //abis glx & nft
 /* import abi from './token/glxAbi'
 import abiNft from './token/abiNft' */
-
-//'
-/* 
-const addressContract = '0xA8928409d80D218E0B891D6FE9260D824990fd49'
+/* const addressContract = '0xA8928409d80D218E0B891D6FE9260D824990fd49'
 const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb' */
-
 //const myNftContract = new web3.eth.Contract(abiNft, nftCatMiner)
-
 /* console.log(myNftContract.methods.name().call().then((r) => {
     console.log(r)
 })) */
-
-
 //console.log(mycontract.methods)
 
 const App = () => {
@@ -42,7 +34,6 @@ const App = () => {
 
     useEffect(() => {
         connectOrRegister()
-       
     }, [])
 
     async function getBNB(w){
@@ -67,6 +58,10 @@ const App = () => {
         });
     }
 
+    function stateLoading(imp){
+        setLoading(imp);
+    }
+
     window.ethereum.on('accountsChanged', () => {
         window.location.href = './login';
     });
@@ -76,52 +71,7 @@ const App = () => {
          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
          alert(web3.utils.hexToNumber(chainId))
      } */
-    //connect()
-    /* const [wallet, setWallet] = useState('')
-    const [bnbBalance, setBnbBalance] = useState(0)
-    const [glxBalance, setGlxBalance] = useState(0)
-    const [gemBalance, setGemBalance] = useState(0) */
-    /* 
-    function mas() {
-        for (let i = 0; i < 10; i++) {
-            setGemBalance(gemBalance + 1)
-            for (var j = 0; j < 20; j++) {
-                console.log(5 * 6565 + 55 + 5 + 546 + 546 * 5)
-            }
-        }
-    }
-    
-     
-    function buy() {
-        window.ethereum
-            .request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: wallet,
-                        to: '0x0b18947426e74500dc0e96312A02E410d961a91E',
-                        value: web3.utils.toHex(web3.utils.toWei('0.03', 'ether')),
-                        gasPrice: web3.utils.toHex(web3.utils.toWei('5', 'gwei')),
-                        gas: web3.utils.toHex(web3.utils.toWei('21000', 'wei')),
-                    },
-                ],
-            })
-            .then((txHash) => console.log(txHash))
-            .catch(() => console.error);
-    }
-    
- */
-    /* async function consulta() {
-       await fecth("http://localhost:3001/api/getUser/"+wallet)
-            .then((response) => {
-                return response.json();
-            })
-            .then((recurso) => {
-                alert(recurso);
-            });
-    
-        alert("Process end")
-    } */
+ 
 
     return (
         <Router>
@@ -132,16 +82,16 @@ const App = () => {
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory bnb={bnb} user={user} loading={loading}/>
+                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading}/>
+                            </Route>
+                            <Route path="/planet">
+                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
                             </Route>
                             <Route path="/market">
                                 <Market user={user} />
                             </Route>
                             <Route path="/login">
                                 <Login user={user} connectOrRegister={connectOrRegister} />
-                            </Route>
-                            <Route path="/planet">
-                                <Planet user={user} />
                             </Route>
                             <Route path="/" exact>
                                 <Login user={user} connectOrRegister={connectOrRegister} />

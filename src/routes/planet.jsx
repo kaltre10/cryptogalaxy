@@ -24,35 +24,33 @@ import petroleum from '../img/meterials/crud/petroleum.webp';
 
 import urlApi from "../urlApi";
 
-const Planet = () => {
+const Planet = (props) => {
 
-    useEffect(() => {
-        getUser()
-    }, [])
 
     const [wallet, setWallet] = useState('')
     const [selectship, setSelectship] = useState(false);
-    const [planet, setPlanet] = useState({});
+    /*   
+      const [planet, setPlanet] = useState({}); */
 
     //Loading, alerts and errors
-    const [loading, setLoading] = useState(false)
-    const [errorToast, setErrorToast] = useState(false)
-    const [errorToasText, setErrorToastText] = useState("")
-    const [infoToast, setInfoToast] = useState(false)
-    const [infoToasText, setInfoToastText] = useState("")
-    function getErrorToast(bool, message) { setErrorToast(bool); setErrorToastText(message) }
-    function getInfoToasText(val) { setInfoToastText(val); setInfoToast(true) }
-    function closeAlert() { setErrorToast(false) }
-    function closeInfo() { setInfoToast(false) }
+    /*     const [loading, setLoading] = useState(false)
+        const [errorToast, setErrorToast] = useState(false)
+        const [errorToasText, setErrorToastText] = useState("")
+        const [infoToast, setInfoToast] = useState(false)
+        const [infoToasText, setInfoToastText] = useState("")
+        function getErrorToast(bool, message) { setErrorToast(bool); setErrorToastText(message) }
+        function getInfoToasText(val) { setInfoToastText(val); setInfoToast(true) }
+        function closeAlert() { setErrorToast(false) }
+        function closeInfo() { setInfoToast(false) } */
     //end Loading, alerts and errors
 
-    const [user, setUser] = useState({})
-    const [planets, setPlanets] = useState([0, 0, 0, 0, 0, 0])
-    const [materials, setMaterials] = useState({})
-    const [bnb, setBnb] = useState(10)
-    const [glx, setGlx] = useState(10);
+    /*   const [user, setUser] = useState({})
+      const [planets, setPlanets] = useState([0, 0, 0, 0, 0, 0])
+      const [materials, setMaterials] = useState({})
+      const [bnb, setBnb] = useState(10)
+      const [glx, setGlx] = useState(10); */
 
-    const [ships, setShips] = useState([]);
+    /* const [ships, setShips] = useState([]);
 
     async function getUser() {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -62,7 +60,7 @@ const Planet = () => {
         setUser(user.data[0])
         setShips(user.data[0].ships)
         setPlanets(user.data[0].planets)
-    }
+    } */
 
     /* async function connection() {
         try {
@@ -85,47 +83,42 @@ const Planet = () => {
     } */
 
     async function mine(material, mp) {
+        props.setLoading(true);
+        const balance = props.user.gm
 
-        setLoading(true)
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const wallet = accounts[0].toLowerCase()
-        const user = await axios.get(urlApi + "/api/v1/user/" + wallet)
-        const balance = user.data[0].gm
-        if (balance > 20) {
+        if (balance > mp) {
             const mine = await axios.put(urlApi + "/api/v1/mine", { mp, wallet, material })
             alert("you have mined some materials")
-            console.log(mine)
-            setLoading(false)
-            getUser()
+            console.log(mine.data)
+            props.setLoading(false);
+            props.connectOrRegister()
         } else {
             alert("Insuficient balance GM")
-            setLoading(false)
-            getUser()
+            props.setLoading(false);
         }
 
-        //alert("Minando: "+user.data.mine+" Iron")
     }
-
-    async function unlockPlanet(planet, amount) {
-        //alert(planet)
-
-        setLoading(true)
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const wallet = accounts[0].toLowerCase()
-        const user = await axios.get(urlApi + "/api/v1/user/" + wallet)
-        const balance = user.data[0].gm
-        if (balance > amount) {
-            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
-            alert("Planet Unlocked: ")
-            console.log(unlock)
-            setLoading(false)
-            getUser()
-        } else {
-            alert("Insuficient balance GM")
-            setLoading(false)
-            getUser()
-        }
-    }
+    /* 
+        async function unlockPlanet(planet, amount) {
+            //alert(planet)
+    
+            setLoading(true)
+            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+            const wallet = accounts[0].toLowerCase()
+            const user = await axios.get(urlApi + "/api/v1/user/" + wallet)
+            const balance = user.data[0].gm
+            if (balance > amount) {
+                const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
+                alert("Planet Unlocked: ")
+                console.log(unlock)
+                setLoading(false)
+                getUser()
+            } else {
+                alert("Insuficient balance GM")
+                setLoading(false)
+                getUser()
+            }
+        } */
 
     function closeShips() {
         setSelectship(false);
@@ -134,37 +127,59 @@ const Planet = () => {
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
-                <Navbar />
 
-                <Loading load={loading} />
-
-                <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} />
+                {/*  <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} /> */}
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
-                        <Sidebar />
+                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
                     <div className="col-12 col-md-9 px-4 py-3 w-market-container">
                         <div className="row">
 
                             <div className="col-12 p-3 bg-dark text-white mb-3 bg-materials-planet">
                                 <div className="row">
-                                    <div className="col-2 ">
-                                        Iron: {materials.iron}<br />
+                                    <div className="col-2 text-center">
+                                        Iron:<br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.iron}
+                                        </> : <></>
+                                        }
+
                                     </div>
-                                    <div className="col-2 ">
-                                        Silver: {materials.silver}<br />
+                                    <div className="col-2 text-center">
+                                        Silver:<br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.silver}
+                                        </> : <></>
+                                        }
                                     </div>
-                                    <div className="col-2 ">
-                                        Gold: {materials.gold}<br />
+                                    <div className="col-2 text-center">
+                                        Gold: <br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.gold}
+                                        </> : <></>
+                                        }
                                     </div>
-                                    <div className="col-2 ">
-                                        Diamond: {materials.diamond}<br />
+                                    <div className="col-2 text-center">
+                                        Diamond: <br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.diamond}
+                                        </> : <></>
+                                        }
                                     </div>
-                                    <div className="col-2 ">
-                                        Ice: {materials.ice}<br />
+                                    <div className="col-2 text-center">
+                                        Ice: <br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.ice}
+                                        </> : <></>
+                                        }
                                     </div>
-                                    <div className="col-2 ">
-                                        Petroleum: {materials.petroleum}<br />
+                                    <div className="col-2 text-center">
+                                        Petroleum:<br />
+                                        {props.user.wallet != null ? <>
+                                            {props.user.materials.petroleum}
+                                        </> : <></>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +209,7 @@ const Planet = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
+                                            {/* {
                                                 planets[0] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
@@ -216,7 +231,7 @@ const Planet = () => {
                                                             </button>
                                                         }
                                                     </div>
-                                            }
+                                            } */}
 
                                         </div>
                                     </div>
@@ -253,7 +268,7 @@ const Planet = () => {
                                             </div>
 
                                             <div>
-                                                {
+                                                {/* {
                                                     planets[1] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
@@ -274,7 +289,7 @@ const Planet = () => {
                                                                 </button>
                                                             }
                                                         </div>
-                                                }
+                                                } */}
                                             </div>
                                         </div>
 
@@ -307,7 +322,7 @@ const Planet = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
+                                            {/* {
                                                 planets[2] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
@@ -328,7 +343,7 @@ const Planet = () => {
                                                             </button>
                                                         }
                                                     </div>
-                                            }
+                                            } */}
                                         </div>
                                     </div>
 
@@ -362,7 +377,7 @@ const Planet = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
+                                            {/* {
                                                 planets[3] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
@@ -383,7 +398,7 @@ const Planet = () => {
                                                             </button>
                                                         }
                                                     </div>
-                                            }
+                                            } */}
                                         </div>
                                     </div>
 
@@ -415,7 +430,7 @@ const Planet = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
+                                            {/* {
                                                 planets[4] !== 0 ?
                                                     <div>
                                                          <button onClick={() => {
@@ -436,7 +451,7 @@ const Planet = () => {
                                                             </button>
                                                         }
                                                     </div>
-                                            }
+                                            } */}
                                         </div>
                                     </div>
 
@@ -471,7 +486,7 @@ const Planet = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {
+                                            {/* {
                                                 planets[5] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
@@ -492,7 +507,7 @@ const Planet = () => {
                                                             </button>
                                                         }
                                                     </div>
-                                            }
+                                            } */}
                                         </div>
                                     </div>
 
