@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
-import Navbar from "../components/topNav";
-
 import Ares from '../img/planets/Ares.webp';
 import Argon from '../img/planets/Argon.webp';
 import Elion from '../img/planets/Elion.webp';
@@ -10,115 +8,49 @@ import Fiz from '../img/planets/Fiz.webp';
 import Seea from '../img/planets/Seea.webp';
 import Terrat from '../img/planets/Terrat.webp';
 
-import Loading from "../components/loading";
 import SelectShip from "../components/SelectShip";
 import gm from '../img/gems.svg';
-
 import iron from '../img/meterials/crud/iron.webp';
 import silver from '../img/meterials/crud/silver.webp';
 import gold from '../img/meterials/crud/gold.webp';
-
 import ice from '../img/meterials/crud/ice.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
 
-import urlApi from "../urlApi";
 
 const Planet = (props) => {
 
-
     const [wallet, setWallet] = useState('')
     const [selectship, setSelectship] = useState(false);
-    /*   
-      const [planet, setPlanet] = useState({}); */
 
-    //Loading, alerts and errors
-    /*     const [loading, setLoading] = useState(false)
-        const [errorToast, setErrorToast] = useState(false)
-        const [errorToasText, setErrorToastText] = useState("")
-        const [infoToast, setInfoToast] = useState(false)
-        const [infoToasText, setInfoToastText] = useState("")
-        function getErrorToast(bool, message) { setErrorToast(bool); setErrorToastText(message) }
-        function getInfoToasText(val) { setInfoToastText(val); setInfoToast(true) }
-        function closeAlert() { setErrorToast(false) }
-        function closeInfo() { setInfoToast(false) } */
-    //end Loading, alerts and errors
+    async function unlockPlanet(planet) {
 
-    /*   const [user, setUser] = useState({})
-      const [planets, setPlanets] = useState([0, 0, 0, 0, 0, 0])
-      const [materials, setMaterials] = useState({})
-      const [bnb, setBnb] = useState(10)
-      const [glx, setGlx] = useState(10); */
+        if (planet == 0)
+            var amount = 600
+        if (planet == 1)
+            var amount = 1000
+        if (planet == 2)
+            var amount = 3000
+        if (planet == 3)
+            var amount = 6000
+        if (planet == 4)
+            var amount = 9000
+        if (planet == 5)
+            var amount = 12000
 
-    /* const [ships, setShips] = useState([]);
+        stateLoading(true)
 
-    async function getUser() {
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const account = accounts[0].toLowerCase()
-        const user = await axios.get(urlApi + "/api/v1/user/" + account)
-        setMaterials(user.data[0].materials)
-        setUser(user.data[0])
-        setShips(user.data[0].ships)
-        setPlanets(user.data[0].planets)
-    } */
-
-    /* async function connection() {
-        try {
-
-            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-            const account = accounts[0]
-            var uper = account.toLowerCase()
-            setWallet(account)
-            //console.log("Account: "+uper)
-            const walletObj = { wallet: uper }
-            //console.log(walletObj)
-            axios.post("http://localhost:4000/api/v1/auth", walletObj).then((res) => {
-                //console.log("Res data: "+res.data.user.wallet)
-            }).catch(err => alert("Error in planet: "+err.message))
-
-        } catch (error) {
-            alert("Connection error: " + error.message)
-            window.location.href = "./login"
-        }
-    } */
-
-    async function mine(material, mp) {
-        props.setLoading(true);
-        const balance = props.user.gm
-
-        if (balance > mp) {
-            const mine = await axios.put(urlApi + "/api/v1/mine", { mp, wallet, material })
-            alert("you have mined some materials")
-            console.log(mine.data)
-            props.setLoading(false);
+        if (props.user.gm > amount) {
+            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
+            props.Toast(1,"planet Unlocked")
+            stateLoading(false)
             props.connectOrRegister()
         } else {
-            alert("Insuficient balance GM")
-            props.setLoading(false);
+            props.Toast(0,"Insuficient GM balance!")
+            stateLoading(false)
+            props.connectOrRegister()
         }
-
     }
-    /* 
-        async function unlockPlanet(planet, amount) {
-            //alert(planet)
-    
-            setLoading(true)
-            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-            const wallet = accounts[0].toLowerCase()
-            const user = await axios.get(urlApi + "/api/v1/user/" + wallet)
-            const balance = user.data[0].gm
-            if (balance > amount) {
-                const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
-                alert("Planet Unlocked: ")
-                console.log(unlock)
-                setLoading(false)
-                getUser()
-            } else {
-                alert("Insuficient balance GM")
-                setLoading(false)
-                getUser()
-            }
-        } */
 
     function closeShips() {
         setSelectship(false);
@@ -128,7 +60,7 @@ const Planet = (props) => {
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
 
-                {/*  <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} /> */}
+                <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} /> 
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
@@ -209,12 +141,13 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {
-                                                planets[0] !== 0 ?
+
+                                            {props.user.wallet != null ? <>
+                                                {props.user.planets[0] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
                                                             setSelectship(true);
-                                                            setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8, cost: 20 })
+                                                            setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8 })
                                                         }}
                                                             className="btn bg-danger form-control text-white mt-2">
                                                             Mine
@@ -222,20 +155,19 @@ const Planet = (props) => {
                                                     </div>
                                                     :
                                                     <div>
-                                                        {loading ?
+                                                        {props.loading ?
                                                             <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                             :
-                                                            <button onClick={() => { unlockPlanet(0, 600) }} className="btn bg-success form-control mt-2 text-white ">
+                                                            <button onClick={() => { unlockPlanet(0) }} className="btn bg-success form-control mt-2 text-white ">
                                                                 Unlock 600
                                                                 <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                             </button>
                                                         }
                                                     </div>
-                                            } */}
-
+                                                }
+                                            </> : <></>}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <div className="col-12 col-md-2"></div>

@@ -10,10 +10,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TopNav from './components/topNav';
 import Web3 from 'web3'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 const eth = window.ethereum;
-
 
 //abis glx & nft
 /* import abi from './token/glxAbi'
@@ -30,13 +31,13 @@ const App = () => {
 
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
-    const [bnb,setBNB]= useState(0);
+    const [bnb, setBNB] = useState(0);
 
     useEffect(() => {
         connectOrRegister()
     }, [])
 
-    async function getBNB(w){
+    async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
             setBNB(web3.utils.fromWei(r, 'ether'))
         })
@@ -46,6 +47,7 @@ const App = () => {
         eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
             const wallet = res[0];
             getBNB(wallet);
+            
             axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
                 //console.log(res.data.user);
                 setUser(res.data.user);
@@ -58,7 +60,7 @@ const App = () => {
         });
     }
 
-    function stateLoading(imp){
+    function stateLoading(imp) {
         setLoading(imp);
     }
 
@@ -71,18 +73,24 @@ const App = () => {
          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
          alert(web3.utils.hexToNumber(chainId))
      } */
- 
 
+    const Toast = (type,msg) => {
+        if(type == 0)
+            toast.error(msg);
+        if(type == 1)
+            toast.success(msg);
+    }
     return (
         <Router>
-
+           {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
+            <ToastContainer theme="dark" /> 
             <TopNav user={user} connectOrRegister={connectOrRegister} loading={loading} />
             <div className="container-fluid p-0">
-                <div className="row gx-0">                    
+                <div className="row gx-0">
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading}/>
+                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
                             </Route>
                             <Route path="/planet">
                                 <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
