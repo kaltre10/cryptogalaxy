@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from 'react'
-/* import cat from '../img/nft/cat-miner.svg' */
 import Sidebar from '../components/sidebar'
-import Navbar from '../components/topNav'
-import axios from 'axios'
-import urlApi from '../urlApi'
-
 import iron from '../img/meterials/crud/iron.webp';
 import silver from '../img/meterials/crud/silver.webp';
 import gold from '../img/meterials/crud/gold.webp';
-
 import diamond from '../img/meterials/crud/diamond.webp';
 import ice from '../img/meterials/crud/ice.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
-
-import shipsObj from '../items/ships'
 
 function Inventory(props) {
 
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
+                
                 <div className="row gx-0">
                     <div className="col-3 bg-danger d-none d-md-block">
-                        < Sidebar user={props.user} />
+                        < Sidebar user={props.user} bnb={props.bnb}/>
                     </div>
 
                     <div className="col-12 col-md-9">
@@ -68,171 +61,128 @@ function Inventory(props) {
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
-
                                                                 </div>
-                                                                {/* <div className="col-6">
-                                                                    {loading ?
-                                                                        <button className="btn bg-secondary px-5 text-white">Loading...</button>
-                                                                        :
-                                                                        <button className="btn bg-success form-control text-white">Sell</button>
-                                                                    }
-                                                                </div> */}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 )
                                             })
                                             : <>
-                                                No ships
+                                                No ships in inventory
                                             </>
                                         }
-
                                     </>}
                                 </div>
                             </div>
-                            {/* fin row */}
 
+                            <div className="w-inventory-item p-3">
+                                <h3 className="text-white"> Mined </h3>
+                                <hr />
 
+                                {props.user.wallet != null ? <>
+                                    <div className="row">
 
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Iron</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={iron} />
 
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.iron}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            {/* </div>
-                            <div className="w-inventory-item p-2">
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Silver</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={silver} />
 
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h3 className="text-white"> Materials </h3>
-                                        <hr />
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.silver}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Gold</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={gold} />
+
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.gold}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Diamond</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={diamond} />
+
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.diamond}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Ice</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={ice} />
+
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.ice}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="px-2 col-6 col-md-2  my-2">
+                                            <div className="p-2 material-bg text-center ">
+                                                <div>
+                                                    <h4 className="text-white m-0 p-0">Petroleum</h4>
+                                                </div>
+                                                <div>
+                                                    <img height="50px" className="" src={petroleum} />
+
+                                                </div>
+                                                <div className="text-white">
+                                                    {props.user.materials.petroleum}
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                </div>
-                                <div className="p-2">
+                                </> : <></>}
 
-
-                                    <div className="row"> */}
-
-
-                            {/*  {
-                                            materials.iron + materials.silver + materials.gold + materials.ice + materials.petroleum + materials.diamond < 1 ? <div>No materials in inventory</div>
-                                                : <>
-
-
-                                                    {materials.iron > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Iron</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={iron} />
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.iron}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>}
-
-                                                    {materials.silver > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Silver</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={silver} />
-
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.silver}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>}
-
-                                                    {materials.gold > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Gold</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={gold} />
-
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.gold}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>}
-
-                                                    {materials.diamond > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Diamond</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={diamond} />
-
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.diamond}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>}
-
-                                                    {materials.ice > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Ice</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={ice} />
-
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.ice}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>}
-
-                                                    {materials.petroleum > 0 ?
-                                                        <div className="px-2 col-6 col-md-2  ">
-                                                            <div className="p-2 material-bg text-center ">
-                                                                <div>
-                                                                    <h4 className="text-white m-0 p-0">Petroleum</h4>
-                                                                </div>
-                                                                <div>
-                                                                    <img height="50px" className="" src={petroleum} />
-
-                                                                </div>
-                                                                <div className="text-white">
-                                                                    {materials.petroleum}
-                                                                </div>
-                                                            </div>
-                                                        </div> : <></>} */}
-
-                            {/*  </>} */}
-
-                            {/*                              </div>
-                                </div>
                             </div>
+
                             <div className="w-inventory-item p-3">
                                 <h3 className="text-white"> Items </h3>
                                 <hr />
                                 <div className="p-2 ">
-                                    No item in inventory
+                                    Coming soon...
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ) */}
-                            {/* }
- */}
-                        </div>
-                    </div>
                 </div>
             </div>
         </>

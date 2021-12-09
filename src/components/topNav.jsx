@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from '../img/logo-planet.svg';
-import axios from 'axios';
-import urlApi from '../urlApi';
-import metamask from "../img/assets/metamask.svg";
-import { Navbar, Container, Nav, NavDropdown, Form, FormControl, Button, Offcanvas } from 'react-bootstrap'
-
+import { Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 import bnbLogo from '../img/assets/bnb.svg';
 import gem from '../img/gems.svg';
 import arrow from '../img/arrow.svg';
 import { Link } from 'react-router-dom';
 
-function topNav(props) {
+function TopNav(props) {
+
+  const [Showx,setShowx] = React.useState()
+  const handleClose = () => setShowx(false);
 
   function filterWallet(w) {
     let str1 = w.substr(0, 4);
@@ -18,55 +18,10 @@ function topNav(props) {
     const str2 = w.substr(l - 4, 4);
     const result = str1 + "..." + str2;
     return result;
-  }
-  /* 
-    useEffect(() => {
-      connect()
-    }, [])
+  } 
   
-    const [wallet, setWallet] = useState('') */
-
-  /* async function connect() {
-    try {
-
-      const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-      const account = accounts[0]
-      var uper = account.toLowerCase();
-      setWallet(account);
-      //console.log("Account: "+uper)
-      const walletObj = { wallet: uper }
-      //console.log(walletObj)
-      await axios.post(urlApi + "/api/v1/x", walletObj).then((res) => {
-        //console.log("Res data: "+res.data.user.wallet)
-      }).catch(err => alert("error guardar auth: " + err.message))
-
-    } catch (error) {
-      alert("Connection error: " + error.message)
-      window.location.href = "./login"
-    }
-  } */
-
   return (
     <>
-      {/*  <nav className="navbar navbar-fixed-top navbar-expand navbar-dark">
-        <div className="container-fluid">
-          <div className="navbar-brand">
-            <img className="logo" src={logo} />
-            CryptoGalaxy
-          </div>
-          <div className="navbar-collapse justify-content-end" id="navbarSupportedContent">
-            {
-              props.user.wallet ?
-                <>
-                  <span className="text-white d-none d-md-block"> { props.user.wallet } </span>
-                  <span className="text-white d-md-none"> Connected </span>
-                </>
-                : <button onClick={ props.connectOrRegister } className="btn btn-wallet px-5">Connect Wallet</button>
-            }
-          </div>
-        </div>
-      </nav> */}
-
       <Navbar bg="dark" variant="dark" expand={false}>
         <Container fluid>
           <Navbar.Brand href="#">
@@ -135,19 +90,64 @@ function topNav(props) {
                   </div>
                 </div>
 
-              {/*  <Nav.Link>
-                  Home
-                </Nav.Link> */}
-
               </Nav>
-
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
 
+      <Modal className="bg-modal" show={Showx} onHide={handleClose}>
+        <Modal.Header className="modal-w text-white hr-modal" closeButton>
+          <Modal.Title>
+            <div className="d-flex justify-content-between">
+              <div>
+                <div className="d-inline-block">
+                  <img className="img-gem" src={bnbLogo} />
+                </div>
+                <div className="d-inline-block mx-3">
+                  <img className="img-gem" src={arrow} />
+                </div>
+                <div className="d-inline-block">
+                  <img className="img-gem" src={gem} />
+                </div>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+
+          <div className="py-4 d-flex justify-content-center">
+            <div className="p-4 w-buy-gm m-2">
+              <div className="text-center">
+                <img height="50px" src={gem} alt="" />
+              </div>
+              <div className="mb-2">
+                1000 GM - 0.01 BNB
+              </div>
+              <button className="btn btn-success px-4" >
+                Buy
+              </button>
+            </div>
+
+            <div className="p-4 w-buy-gm m-2">
+              <div className="text-center">
+                <img height="50px" src={gem} alt="" />
+              </div>
+              <div className="mb-2">
+                3000 gm - 0.025 BNB
+              </div>
+              <button className="btn btn-success px-4">
+                Buy
+              </button>
+              {/* onClick={() => buyGm(1000, "0.01")} */}
+            </div>
+          </div>
+        </Modal.Body>
+
+      </Modal>
+
     </>
   )
 }
 
-export default topNav
+export default TopNav
