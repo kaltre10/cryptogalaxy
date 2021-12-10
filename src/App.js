@@ -80,10 +80,11 @@ const App = () => {
         if(type == 1)
             toast.success(msg);
     }
+
     return (
         <Router>
            {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
-            <ToastContainer theme="dark" /> 
+            <ToastContainer theme="dark" className="z-index-max"/> 
             <TopNav user={user} connectOrRegister={connectOrRegister} loading={loading} />
             <div className="container-fluid p-0">
                 <div className="row gx-0">
@@ -93,7 +94,7 @@ const App = () => {
                                 <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
                             </Route>
                             <Route path="/planet">
-                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
+                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
                             </Route>
                             <Route path="/market">
                                 <Market user={user} />

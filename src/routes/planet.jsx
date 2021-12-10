@@ -7,7 +7,7 @@ import Elion from '../img/planets/Elion.webp';
 import Fiz from '../img/planets/Fiz.webp';
 import Seea from '../img/planets/Seea.webp';
 import Terrat from '../img/planets/Terrat.webp';
-
+import urlApi from "../urlApi";
 import SelectShip from "../components/SelectShip";
 import gm from '../img/gems.svg';
 import iron from '../img/meterials/crud/iron.webp';
@@ -17,11 +17,11 @@ import ice from '../img/meterials/crud/ice.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
 
-
 const Planet = (props) => {
 
-    const [wallet, setWallet] = useState('')
-    const [selectship, setSelectship] = useState(false);
+    const [wallet, setWallet] = useState('');
+    const [selectships, setSelectship] = useState(false);
+    const [planet, setPlanet] = useState({});
 
     async function unlockPlanet(planet) {
 
@@ -38,29 +38,25 @@ const Planet = (props) => {
         if (planet == 5)
             var amount = 12000
 
-        stateLoading(true)
+        props.stateLoading(true)
 
         if (props.user.gm > amount) {
             const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
-            props.Toast(1,"planet Unlocked")
-            stateLoading(false)
+            props.Toast(1, "planet Unlocked")
+            props.stateLoading(false)
             props.connectOrRegister()
         } else {
-            props.Toast(0,"Insuficient GM balance!")
-            stateLoading(false)
+            props.Toast(0, "Insuficient GM balance!")
+            props.stateLoading(false)
             props.connectOrRegister()
         }
-    }
-
-    function closeShips() {
-        setSelectship(false);
     }
 
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
 
-                <SelectShip selectship={selectship} closeShips={closeShips} ships={ships} planet={planet} /> 
+                <SelectShip connectOrRegister={props.connectOrRegister} loading={props.loading} loadingFalse={() => { props.stateLoading(false) }} loadingTrue={() => props.stateLoading(true)} selectship={selectships} closeShips={() => setSelectship(false)} user={props.user} planet={planet} Toast={props.Toast} />
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
@@ -200,28 +196,29 @@ const Planet = (props) => {
                                             </div>
 
                                             <div>
-                                                {/* {
-                                                    planets[1] !== 0 ?
+                                                {props.user.wallet != null ? <>
+                                                    {props.user.planets[1] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
-                                                                setPlanet({ name: "Argon", mine: "silver", id: 1, lvl: 2, dif: 0.4, cost: 30 })
+                                                                setPlanet({ name: "Argon", mine: "silver", id: 1, lvl: 2, dif: 0.4 })
                                                             }}
                                                                 className="btn bg-danger form-control text-white mt-2">
                                                                 Mine
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {loading ?
+                                                            {props.loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
-                                                                <button onClick={() => { unlockPlanet(1, 1000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                <button onClick={() => { unlockPlanet(1) }} className="btn bg-success form-control mt-2 text-white ">
                                                                     Unlock 1000
                                                                     <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                                 </button>
                                                             }
                                                         </div>
-                                                } */}
+                                                    }
+                                                </> : <></>}
                                             </div>
                                         </div>
 
@@ -254,28 +251,30 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {
-                                                planets[2] !== 0 ?
-                                                    <div>
-                                                        <button onClick={() => {
-                                                            setSelectship(true);
-                                                            setPlanet({ name: "Elion", mine: "gold", id: 2, lvl: 3, dif: 0.2, cost: 50 })
-                                                        }}
-                                                            className="btn bg-danger form-control text-white mt-2">
-                                                            Mine
-                                                        </button>
-                                                    </div> :
-                                                    <div>
-                                                        {loading ?
-                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => { unlockPlanet(2, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                Unlock 3000
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                            {props.user.wallet != null ? <>
+                                                {
+                                                    props.user.planets[2] !== 0 ?
+                                                        <div>
+                                                            <button onClick={() => {
+                                                                setSelectship(true);
+                                                                setPlanet({ name: "Elion", mine: "gold", id: 2, lvl: 3, dif: 0.2 })
+                                                            }}
+                                                                className="btn bg-danger form-control text-white mt-2">
+                                                                Mine
                                                             </button>
-                                                        }
-                                                    </div>
-                                            } */}
+                                                        </div> :
+                                                        <div>
+                                                            {props.loading ?
+                                                                <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                                :
+                                                                <button onClick={() => { unlockPlanet(2, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 3000
+                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                }
+                                            </> : <></>}
                                         </div>
                                     </div>
 
@@ -309,28 +308,31 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {
-                                                planets[3] !== 0 ?
-                                                    <div>
-                                                        <button onClick={() => {
-                                                            setSelectship(true);
-                                                            setPlanet({ name: "fiz", mine: "diamond", id: 3, lvl: 4, dif: 0.1, cost: 70 })
-                                                        }}
-                                                            className="btn bg-danger form-control text-white mt-2">
-                                                            Mine
-                                                        </button>
-                                                    </div> :
-                                                    <div>
-                                                        {loading ?
-                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => { unlockPlanet(3, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                Unlock 3000
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                            {props.user.wallet != null ? <>
+
+                                                {
+                                                    props.user.planets[3] !== 0 ?
+                                                        <div>
+                                                            <button onClick={() => {
+                                                                setSelectship(true);
+                                                                setPlanet({ name: "fiz", mine: "diamond", id: 3, lvl: 4, dif: 0.1 })
+                                                            }}
+                                                                className="btn bg-danger form-control text-white mt-2">
+                                                                Mine
                                                             </button>
-                                                        }
-                                                    </div>
-                                            } */}
+                                                        </div> :
+                                                        <div>
+                                                            {props.loading ?
+                                                                <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                                :
+                                                                <button onClick={() => { unlockPlanet(3, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 3000
+                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                }
+                                            </> : <></>}
                                         </div>
                                     </div>
 
@@ -352,7 +354,7 @@ const Planet = (props) => {
                                                     <h2 className="text-white m-0 p-0">Seea</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 5</p>
                                                     <p className="m-0 price p-0 mb-1"> Ice planet</p>
-                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.08</b></p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.06</b></p>
 
                                                 </div>
                                                 <div>
@@ -362,28 +364,31 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {
-                                                planets[4] !== 0 ?
-                                                    <div>
-                                                         <button onClick={() => {
-                                                            setSelectship(true);
-                                                            setPlanet({ name: "seea", mine: "ice", id: 4, lvl: 5, dif: 0.08, cost: 90 })
-                                                        }}
-                                                            className="btn bg-danger form-control text-white mt-2">
-                                                            Mine
-                                                        </button>
-                                                    </div> :
-                                                    <div>
-                                                        {loading ?
-                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => { unlockPlanet(4, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                Unlock 3000
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                            {props.user.wallet != null ? <>
+
+                                                {
+                                                    props.user.planets[4] !== 0 ?
+                                                        <div>
+                                                            <button onClick={() => {
+                                                                setSelectship(true);
+                                                                setPlanet({ name: "seea", mine: "ice", id: 4, lvl: 5, dif: 0.06 })
+                                                            }}
+                                                                className="btn bg-danger form-control text-white mt-2">
+                                                                Mine
                                                             </button>
-                                                        }
-                                                    </div>
-                                            } */}
+                                                        </div> :
+                                                        <div>
+                                                            {props.loading ?
+                                                                <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                                :
+                                                                <button onClick={() => { unlockPlanet(4, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 3000
+                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                }
+                                            </> : <></>}
                                         </div>
                                     </div>
 
@@ -408,7 +413,7 @@ const Planet = (props) => {
                                                     <h2 className="text-white m-0 p-0">Ares</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 6</p>
                                                     <p className="m-0 price p-0 mb-1"> Petroleum planet</p>
-                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.05</b></p>
+                                                    <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.03</b></p>
 
                                                 </div>
                                                 <div>
@@ -418,28 +423,31 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {
-                                                planets[5] !== 0 ?
-                                                    <div>
-                                                        <button onClick={() => {
-                                                            setSelectship(true);
-                                                            setPlanet({ name: "ares", mine: "petroleum", id: 5, lvl: 6, dif: 0.05, cost: 120 })
-                                                        }}
-                                                            className="btn bg-danger form-control text-white mt-2">
-                                                            Mine
-                                                        </button>
-                                                    </div> :
-                                                    <div>
-                                                        {loading ?
-                                                            <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
-                                                            :
-                                                            <button onClick={() => { unlockPlanet(5, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                Unlock 3000
-                                                                <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                            {props.user.wallet != null ? <>
+
+                                                {
+                                                    props.user.planets[5] !== 0 ?
+                                                        <div>
+                                                            <button onClick={() => {
+                                                                setSelectship(true);
+                                                                setPlanet({ name: "ares", mine: "petroleum", id: 5, lvl: 6, dif: 0.03 })
+                                                            }}
+                                                                className="btn bg-danger form-control text-white mt-2">
+                                                                Mine
                                                             </button>
-                                                        }
-                                                    </div>
-                                            } */}
+                                                        </div> :
+                                                        <div>
+                                                            {props.loading ?
+                                                                <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
+                                                                :
+                                                                <button onClick={() => { unlockPlanet(5, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 3000
+                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                }
+                                            </> : <></>}
                                         </div>
                                     </div>
 

@@ -259,7 +259,7 @@ div{
     height: 100%;
     width: 100%;
     position:fixed;
-    z-index: 100000;
+    z-index: 1;
     display: flex;
     text-align: center;
     top: 0px;
@@ -307,7 +307,7 @@ div{
     position: fixed;
     top:0px;
     right:0px;
-    z-index: 10000;
+    z-index: 101;
 }
 .img-gm-button{
     height: 18px;
@@ -487,4 +487,10 @@ div{
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.z-index-max{
+    z-index: 2;
+}
+.mhe{
+    min-height: 300px;
 }
