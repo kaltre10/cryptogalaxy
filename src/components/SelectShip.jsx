@@ -5,23 +5,43 @@ import axios from "axios";
 const SelectShip = (props) => {
 
     async function toMine(ship, planet) {
+        if(ship.energy >= 1){
+            props.loadingTrue()
+            const balance = props.user.gm
+            const wallet = props.user.wallet
+            if (balance >= ship.mp) {
+                const axiosHeader = { headers: { "Content-Type": "application/json", } }
+                const axiosParams = { wallet, planet, ship }
+                const axiosUrl = urlApi + "/api/v1/mine";
+                const mine = await axios.put(axiosUrl, axiosParams, axiosHeader);
+                console.log(mine.data);
+                props.Toast(1, "You have mined " + mine.data.mined + " " + mine.data.material);
+                props.loadingFalse()
+                props.connectOrRegister()
+            } else {
+                props.Toast(0, "Insuficient balance GM")
+                props.loadingFalse()
+            }
+        }else{
+            props.Toast(0, "No energy")
+        }
+    }
 
-        props.loadingTrue()
+    function energyFilter(en){
+        
+        const ex = Math.round((en - Date.now()) / 1000);
 
-        const balance = props.user.gm
-        const wallet = props.user.wallet
-        if (balance >= ship.mp) {
-            const axiosHeader = { headers: { "Content-Type": "application/json", } }
-            const axiosParams = { wallet, planet, ship }
-            const axiosUrl = urlApi + "/api/v1/mine";
-            const mine = await axios.put(axiosUrl, axiosParams, axiosHeader);
-            console.log(mine.data);
-            props.Toast(1, "You have mined " + mine.data.mined + " " + mine.data.material);
-            props.loadingFalse()
-            props.connectOrRegister()
-        } else {
-            props.Toast(0, "Insuficient balance GM")
-            props.loadingFalse()
+        if(ex <= 0)
+            return "0 S"
+        
+        if(ex > 60 && ex < 3600){
+            var min =  Math.floor(ex/60) 
+            return min +" M "
+        }else if(ex > 3600){
+            var hor = Math.floor(ex/3600)
+            return hor + " H "
+        }else if(ex < 60){
+            return Math.round(ex)
         }
     }
 
@@ -65,7 +85,10 @@ const SelectShip = (props) => {
                                                     {item.energy < 1 ? <div className="out-energy">  </div> : <></>}
                                                 </div>
                                             </div>
-                                            <div className="row pt-1 gx-0">
+                                            <div className="row gx-0">
+                                                <div className="col-12 text-center mb-2">
+                                                    Next Energy in { energyFilter(item.charge) }
+                                                </div>
                                                 <div className="col-6">
                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>

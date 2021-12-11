@@ -54,8 +54,8 @@ function Sidebar(props) {
                 const account = accounts[0]
                 const wallet = account
                 const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
-                
-                console.log("Buy gm: "+getGm.data);
+
+                console.log("Buy gm: " + getGm.data);
 
                 console.log("Transaction hash:" + hash);
                 setShow(false)
@@ -75,7 +75,8 @@ function Sidebar(props) {
                 <div className="">
                     <div className="d-none d-md-block">
                         <div className="w-market">
-                            <Link to="/market" className="btn btn-wallet form-control">Market</Link>
+                            <Link to="/market" className="btn btn-wallet form-control mb-3">Market</Link>
+                            <Link to="/shop" className="btn btn-primary form-control">Shop</Link>
                         </div>
                         <ul className="nav nav-pills flex-column mb-auto">
                             <li>

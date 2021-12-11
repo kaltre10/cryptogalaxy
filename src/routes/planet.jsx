@@ -41,14 +41,22 @@ const Planet = (props) => {
         props.stateLoading(true)
 
         if (props.user.gm > amount) {
-            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
+            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet: props.user.wallet, amount })
             props.Toast(1, "planet Unlocked")
+            console.log(unlock)
             props.stateLoading(false)
             props.connectOrRegister()
         } else {
             props.Toast(0, "Insuficient GM balance!")
             props.stateLoading(false)
             props.connectOrRegister()
+        }
+    }
+    function mineryLevel(xp) {
+        if (xp < 100) {
+            return 1
+        } else if (xp >= 100 && xp < 200) {
+            return 2
         }
     }
 
@@ -66,6 +74,12 @@ const Planet = (props) => {
 
                             <div className="col-12 p-3 bg-dark text-white mb-3 bg-materials-planet">
                                 <div className="row">
+                                    <div className="col-12 text-center ">
+                                        <h4 className="bg-title-market">Minery level: {props.user.wallet != null ? <>
+                                            {mineryLevel(props.user.xp.minery)}
+                                        </> : <></>
+                                        }</h4>
+                                    </div>
                                     <div className="col-2 text-center">
                                         Iron:<br />
                                         {props.user.wallet != null ? <>

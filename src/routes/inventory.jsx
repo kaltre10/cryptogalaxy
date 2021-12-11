@@ -9,37 +9,28 @@ import petroleum from '../img/meterials/crud/petroleum.webp';
 
 function Inventory(props) {
 
+    async function sellShip(id){
+        props.Toast(0,"Market is off")
+    }
+
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
-                
+
                 <div className="row gx-0">
                     <div className="col-3 bg-danger d-none d-md-block">
-                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading}/>
+                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
 
                     <div className="col-12 col-md-9">
                         <div className="w-market-container p-3">
-                            <div className="w-inventory-item p-2">
-                            <div className="row">
-                                    <div className="col-12">
-                                        <h3>Account XP</h3><hr/>
-                                        {props.user.wallet != null? <>
-                                            Minery: {props.user.xp.minery}
-                                        </>:<></>  }
-                                    </div>
-                                </div>
-                            </div>
+                            
 
                             <div className="w-inventory-item p-2">
-                                
                                 <div className="row">
-
-
                                     <div className="col-12">
-                                        <h3 className="text-white"> Ships </h3><hr />
+                                        <h3 className="text-center bg-title-market"> Ships </h3>
                                     </div>
-
                                     {props.loading ? <>
                                         <div class="spinner-border" role="status"></div>
                                     </> : <>
@@ -58,7 +49,7 @@ function Inventory(props) {
                                                                 </div>
                                                                 <div className="type-img d-flex">
                                                                     <div className="w-text-img">
-                                                                        {item.type}
+                                                                        {item.type} {item.subtype}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -69,19 +60,21 @@ function Inventory(props) {
                                                                     {item.energy > 1 ? <div className="in-energy">  </div> : <></>}
                                                                     {item.energy < 2 ? <div className="out-energy">  </div> : <></>}
                                                                     {item.energy < 1 ? <div className="out-energy">  </div> : <></>}
-
                                                                 </div>
                                                             </div>
-                                                                    { item.charge != null ? <> s:
-                                                                        {  Math.round( (item.charge - Date.now())/1000)    }
-                                                                        <div className="p-1 bg-danger">
-                                                                            { Date.now()+(60000) }
-                                                                        </div>
-                                                                    </>:<></> }
+                                                            {item.charge != null ? <> s - 
+                                                                {Math.round((item.charge - Date.now()) / 1000)}
+                                                                {/* <div className="p-1 bg-danger">
+                                                                    {Date.now() + (60000)}
+                                                                </div> */}
+                                                            </> : <></>}
                                                             <div className="row pt-1 gx-0">
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
+                                                                </div>
+                                                                <div className="col-6">
+                                                                    <button onClick={()=>sellShip(item.id)} className='form-control'> Sell </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -97,8 +90,7 @@ function Inventory(props) {
                             </div>
 
                             <div className="w-inventory-item p-3">
-                                <h3 className="text-white"> Mined </h3>
-                                <hr />
+                                <h3 className="text-center bg-title-market"> Materials </h3>
 
                                 {props.user.wallet != null ? <>
                                     <div className="row">
@@ -195,10 +187,20 @@ function Inventory(props) {
                             </div>
 
                             <div className="w-inventory-item p-3">
-                                <h3 className="text-white"> Items </h3>
-                                <hr />
+                                <h3 className="text-center bg-title-market"> Items </h3>
                                 <div className="p-2 ">
                                     Coming soon...
+                                </div>
+                            </div>
+
+                            <div className="w-inventory-item p-2">
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h3 className='text-center bg-title-market'>Account XP</h3>
+                                        {props.user.wallet != null ? <>
+                                            Minery: {props.user.xp.minery}
+                                        </> : <></>}
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -12,6 +12,7 @@ import TopNav from './components/topNav';
 import Web3 from 'web3'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Shop from './routes/shop';
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 const eth = window.ethereum;
@@ -35,6 +36,7 @@ const App = () => {
 
     useEffect(() => {
         connectOrRegister()
+        detectChainId()
     }, [])
 
     async function getBNB(w) {
@@ -52,12 +54,31 @@ const App = () => {
                 //console.log(res.data.user);
                 setUser(res.data.user);
                 setLoading(false);
+
+                var shipsObj = res.data.user.ships
+                var recTime = Date.now()
+                shipsObj.map((item)=>{
+                    if(item.charge <= recTime ){
+                        upEnergy(wallet,item.id)
+                    }
+                })
+
             }).catch((err) => {
                 alert(err.message);
             });
         }).catch((err) => {
             alert(err.message);
         });
+    }
+
+    async function upEnergy(wallet,id){
+
+        axios.put(urlApi+"/api/v1/upEnergy",{wallet,id})
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=> alert(err))
+        //alert("sube energia a la nave: "+nave+" wallet:"+w)
     }
 
     function stateLoading(imp) {
@@ -68,11 +89,10 @@ const App = () => {
         window.location.href = './login';
     });
 
-    /*  async function detectChainId(){
-         
+    async function detectChainId(){
          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-         alert(web3.utils.hexToNumber(chainId))
-     } */
+        console.log("Chain id: "+web3.utils.hexToNumber(chainId))
+     } 
 
     const Toast = (type,msg) => {
         if(type == 0)
@@ -91,10 +111,13 @@ const App = () => {
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} />
+                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
                             </Route>
                             <Route path="/planet">
                                 <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
+                            </Route>
+                            <Route path="/shop">
+                                <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
                             </Route>
                             <Route path="/market">
                                 <Market user={user} />

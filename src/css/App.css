@@ -494,3 +494,8 @@ div{
 .mhe{
     min-height: 300px;
 }
+.bg-title-market{
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 10px 0px;
+}

@@ -12,7 +12,6 @@ import Navbar from '../components/topNav';
 import Sidebar from '../components/sidebar';
 import glxAbi from '../token/glxAbi'
 import urlApi from '../urlApi';
-import shipsObj from '../items/ships';
 
 //const mainnetProvider = ""
 const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
@@ -20,9 +19,9 @@ const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
 const web3 = new Web3(testnetProvider)
 const glxContract = new web3.eth.Contract(glxAbi, contractOuner)
 
-const Market = () => {
+const Market = (props) => {
 
-    const [wallet, setWallet] = useState('')
+    /* const [wallet, setWallet] = useState('')
     const [user, setUser] = useState({})
     const [bnb, setBnb] = useState(10)
     const [glx, setGlx] = useState(10)
@@ -160,11 +159,44 @@ const Market = () => {
             //alert("Connection error: " + error.message)
             window.location.href = "./login"
         }
-    }
+    } */
 
     return (
         <>
-            <div className="container-fluid m-0 p-0 bg-planet">
+            <div className="container-fluid m-0 p-0 bg-stars">
+                <div className="row gx-0">
+                    <div className="col-12 col-md-3 ">
+                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
+                    </div>
+                    <div className="col-12 col-md-9 px-4 py-3 w-market-container">
+
+                        <div className="w-inventory-item p-2 m-3">
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="row">
+
+                                        <div className="col-12">
+                                            <h3 className='text-center bg-title-market'>Market</h3>
+
+
+                                            <div>
+                                                <ul>
+                                                    <li>Buy and sell mining materials, items and Ships</li>
+                                                    <li>Exchange GM to BNB whith Other players</li>
+                                                </ul>
+                                            </div>
+                                            <p className='text-center'>Coming soon...</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {/*  <div className="container-fluid m-0 p-0 bg-planet">
                 <Navbar connect={connection} wallet={wallet} />
 
                 <div className="row gx-0">
@@ -176,29 +208,7 @@ const Market = () => {
 
                             <Loading load={loading} />
 
-                            {errorToast ?
-                                <div className="alert alert-warning alert-dismissible d-flex justify-content-between">
-                                    <div className="text-dark">
-                                        <strong>Error! </strong> {errorToasText}
-                                    </div>
-                                    <button onClick={closeAlert} className="btn btn-warning" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                : <div></div>
-
-                            }
-                            {infoToast ?
-                                <div className="alert alert-success alert-dismissible d-flex justify-content-between">
-                                    <div className="text-success">
-                                        <strong>Success! </strong>{infoToasText}
-                                    </div>
-                                    <button onClick={closeInfo} className="btn btn-success" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                : <div></div>
-                            }
+                         
 
                             <div className="row">
 
@@ -264,7 +274,7 @@ const Market = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
         </>
 
