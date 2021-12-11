@@ -1,4 +1,4 @@
-const shipsObj = [
+const miners = [
     {
         "name": "Vulcan",
         "id": 0,
@@ -12,8 +12,9 @@ const shipsObj = [
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"miner",
-        "subType":"t1"
+        "type":"Miner",
+        "subType":"T1",
+        "charge":0
     },
     {
         "name": "Amarant",
@@ -25,11 +26,12 @@ const shipsObj = [
         "owner": "Game",
         "onSell": true,
         "sellPrice": "0.02",
-        "energy": 1,
+        "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"miner",
-        "subType":"t2"
+        "type":"Miner",
+        "subType":"T2",
+        "charge":0
     },
     {
         "name": "Conrrat",
@@ -40,12 +42,13 @@ const shipsObj = [
         "date": "",
         "owner": "Game",
         "onSell": true,
-        "sellPrice": "0.035",
-        "energy": 0,
+        "sellPrice": "0.04",
+        "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"miner",
-        "subType":"t3"
+        "type":"Miner",
+        "subType":"T3",
+        "charge":0
     },
     {
         "name": "RockWar",
@@ -56,15 +59,16 @@ const shipsObj = [
         "date": "",
         "owner": "Game",
         "onSell": true,
-        "sellPrice": "0.05",
+        "sellPrice": "0.09",
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"miner",
-        "subType":"t4"
+        "type":"Miner",
+        "subType":"T4",
+        "charge":0
     },
     
 
 ]
 
-export default shipsObj
+export default miners
