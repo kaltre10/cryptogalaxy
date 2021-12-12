@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import miners from "../items/miners";
-import figthers from "../items/figthers";
+import fighters from "../items/fighters";
 import stations from "../items/stations";
 import Web3 from 'web3'
 import urlApi from "../urlApi";
@@ -35,6 +35,8 @@ const Shop = (props) => {
     }
 
     async function buyShip(objSell) {
+
+        props.stateLoading(true)
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const account = accounts[0]
         const price = objSell.sellPrice;
@@ -53,15 +55,16 @@ const Shop = (props) => {
             })
             .then(async (txHash) => {
                 await buyShipDbUpdate(txHash, objSell)
-                //setLoading(false)
-                props.Toast(1, "Transaction hash: " + txHash);
-                console.log("Transaction hash: " + txHash);
+                props.stateLoading(false)
+                props.Toast(1, "Success!!");
+                //console.log("Transaction hash: " + txHash);
                 props.connectOrRegister()
             })
             .catch((error) => {
-                //setLoading(false)
+                props.stateLoading(false)
                 //getErrorToast(true, error.message)
-                alert("Error Market: " + error.message)
+                console.log(error.message)
+                props.Toast(0,"Transaction denied!")
             })
     }
 
@@ -77,7 +80,7 @@ const Shop = (props) => {
                     <div className="col-12 col-md-9 p-0 w-market-container">
                         <div className="bg-market-bar text-white text-center">
                             <button onClick={() => setSellObj(miners)} className="btn-market"> Miners ▼</button>
-                            <button onClick={() => setSellObj(figthers)} className="btn-market"> Figthers ▼</button>
+                            <button onClick={() => setSellObj(fighters)} className="btn-market"> Figthers ▼</button>
                             <button onClick={() => setSellObj(stations)} className="btn-market"> Stations ▼</button>
                         </div>
 
@@ -86,10 +89,6 @@ const Shop = (props) => {
                                 <div className="col-12">
                                     <h3 className="text-center bg-title-market">Shop</h3>
                                     <div className="row">
-
-                                        {props.loading ? <>
-                                            <div class="spinner-border" role="status"></div>
-                                        </> : <>
 
                                             {props.user.wallet != null ?
                                                 sellObj.map((item) => {
@@ -103,7 +102,7 @@ const Shop = (props) => {
                                                                     </div>
                                                                     <div className="id-img bg-dark p-1">
                                                                         <h4 className="text-warning p-0 m-0">
-                                                                        BNB {item.sellPrice} 
+                                                                            BNB {item.sellPrice}
                                                                         </h4>
                                                                     </div>
                                                                     <div className="type-img d-flex">
@@ -133,7 +132,14 @@ const Shop = (props) => {
                                                                         <p className="text-white m-0 p-0"> mp : {item.mp}</p>
                                                                     </div>
                                                                     <div className="col-6">
-                                                                        <button onClick={() => { buyShip(item) }} className="btn btn-danger form-control mt-1"> BUY </button>
+                                                                        {props.loading ? <>
+                                                                            <button className="btn btn-secondary form-control mt-1">
+                                                                                <div class="spinner-border" role="status"></div>
+                                                                            </button>
+                                                                        </> : <>
+                                                                            <button onClick={() => { buyShip(item) }} className="btn btn-danger form-control mt-1"> BUY </button>
+                                                                        </>
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -144,7 +150,7 @@ const Shop = (props) => {
                                                     No ships on sell
                                                 </>
                                             }
-                                        </>}
+                                       
                                     </div>
                                 </div>
                             </div>

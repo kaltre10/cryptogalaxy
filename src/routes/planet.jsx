@@ -281,7 +281,7 @@ const Planet = (props) => {
                                                             {props.loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
-                                                                <button onClick={() => { unlockPlanet(2, 3000) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                <button onClick={() => { unlockPlanet(2) }} className="btn bg-success form-control mt-2 text-white ">
                                                                     Unlock 3000
                                                                     <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                                 </button>
@@ -339,8 +339,8 @@ const Planet = (props) => {
                                                             {props.loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
-                                                                <button onClick={() => { unlockPlanet(3, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                    Unlock 3000
+                                                                <button onClick={() => { unlockPlanet(3) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 6000
                                                                     <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                                 </button>
                                                             }
@@ -395,8 +395,8 @@ const Planet = (props) => {
                                                             {props.loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
-                                                                <button onClick={() => { unlockPlanet(4, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                    Unlock 3000
+                                                                <button onClick={() => { unlockPlanet(4) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 9000
                                                                     <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                                 </button>
                                                             }
@@ -454,8 +454,8 @@ const Planet = (props) => {
                                                             {props.loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
-                                                                <button onClick={() => { unlockPlanet(5, 3000) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                    Unlock 3000
+                                                                <button onClick={() => { unlockPlanet(5) }} className="btn bg-success form-control mt-2 text-white ">
+                                                                    Unlock 12000
                                                                     <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                                 </button>
                                                             }

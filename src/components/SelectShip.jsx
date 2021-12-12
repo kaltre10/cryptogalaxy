@@ -5,7 +5,7 @@ import axios from "axios";
 const SelectShip = (props) => {
 
     async function toMine(ship, planet) {
-        if(ship.energy >= 1){
+        if (ship.energy >= 1) {
             props.loadingTrue()
             const balance = props.user.gm
             const wallet = props.user.wallet
@@ -22,26 +22,28 @@ const SelectShip = (props) => {
                 props.Toast(0, "Insuficient balance GM")
                 props.loadingFalse()
             }
-        }else{
+        } else {
             props.Toast(0, "No energy")
         }
     }
+    function energyFilter(en) {
 
-    function energyFilter(en){
-        
         const ex = Math.round((en - Date.now()) / 1000);
 
-        if(ex <= 0)
+        if (ex <= 0)
             return "0 S"
-        
-        if(ex > 60 && ex < 3600){
-            var min =  Math.floor(ex/60) 
-            return min +" M "
-        }else if(ex > 3600){
-            var hor = Math.floor(ex/3600)
-            return hor + " H "
-        }else if(ex < 60){
-            return Math.round(ex)
+
+        if (ex < 60) {
+            return Math.round(ex)+ "S"
+
+        } else if (ex > 60 && ex < 3600) {
+            var min = Math.floor(ex / 60)
+            var sec = Math.round( (ex-min)*60)
+            return min + " M " + sec + " S "
+        } else if (ex > 3600) {
+            var hor = Math.floor(ex / 3600)
+            var min = Math.floor( ((ex-hor )/60) )
+            return hor + " H " + min + " M "
         }
     }
 
@@ -87,7 +89,7 @@ const SelectShip = (props) => {
                                             </div>
                                             <div className="row gx-0">
                                                 <div className="col-12 text-center mb-2">
-                                                    Next Energy in { energyFilter(item.charge) }
+                                                    Next Energy in {energyFilter(item.charge)}
                                                 </div>
                                                 <div className="col-6">
                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>

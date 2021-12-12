@@ -141,25 +141,8 @@ const Market = (props) => {
             })
     }
 
-    async function connection() {
-        try {
-
-            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-            const account = accounts[0]
-            var uper = account.toLowerCase()
-            setWallet(account)
-            //console.log("Account: "+uper)
-            const walletObj = { wallet: uper }
-            //console.log(walletObj)
-            axios.post(urlApi + "/api/v1/x", walletObj).then((res) => {
-                //console.log("Res data: "+res.data.user.wallet)
-            }).catch(err => alert("Error in conection market: " + err.message))
-
-        } catch (error) {
-            //alert("Connection error: " + error.message)
-            window.location.href = "./login"
-        }
-    } */
+    
+     */
 
     return (
         <>
