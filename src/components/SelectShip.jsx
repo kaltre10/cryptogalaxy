@@ -4,6 +4,28 @@ import axios from "axios";
 
 const SelectShip = (props) => {
 
+    const [time,setTime] = useState(0)
+
+    const [s, setSeconds] = useState(0);
+    const [h,setH] = useState(0);
+    const [m,setM] = useState(0);
+    const [tim,setTim] = useState(time);
+
+    useEffect(() => {
+        let interval = null;
+        interval = setInterval(() => {
+            setTim(tim - 1);
+            var hours = Math.floor(tim/60/60)
+            setH(hours)
+            var mins = Math.floor(((tim/60/60)-hours)*60)
+            setM(mins)
+            var secs = Math.round((((((tim/60/60) - hours)*60))-mins)*60) 
+            setSeconds(secs)
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [tim]);
+
     async function toMine(ship, planet) {
         if (ship.energy >= 1) {
             props.loadingTrue()
@@ -26,7 +48,7 @@ const SelectShip = (props) => {
             props.Toast(0, "No energy")
         }
     }
-    function energyFilter(en) {
+   /*  function energyFilter(en) {
 
         const ex = Math.round((en - Date.now()) / 1000);
 
@@ -45,7 +67,7 @@ const SelectShip = (props) => {
             var min = Math.floor( ((ex-hor )/60) )
             return hor + " H " + min + " M "
         }
-    }
+    } */
 
     return (
         <>
@@ -89,12 +111,11 @@ const SelectShip = (props) => {
                                             </div>
                                             <div className="row gx-0">
                                                 <div className="col-12 text-center mb-2">
-                                                    Next Energy in {energyFilter(item.charge)}
+                                                    Next Energy in { h }h:{m}m:{s}s
                                                 </div>
                                                 <div className="col-6">
                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
-
                                                 </div>
                                                 <div className="col-6">
                                                     {props.loading ? <button className="btn btn-secondary"> Mining... </button> :

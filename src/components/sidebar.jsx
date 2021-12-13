@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import bnbLogo from '../img/assets/bnb.svg';
 import gem from '../img/gems.svg';
-import logo from '../img/logo-planet.svg';
+import logo from '../img/logoglx.svg';
 import arrow from '../img/arrow.svg';
 import Modal from 'react-bootstrap/Modal';
 import Web3 from 'web3'
@@ -79,6 +79,11 @@ function Sidebar(props) {
                             <Link to="/shop" className="btn btn-primary form-control">Shop</Link>
                         </div>
                         <ul className="nav nav-pills flex-column mb-auto">
+                            <li>
+                                <Link to="/login" className="nav-button">
+                                    • Login
+                                </Link>
+                            </li>
                             <li>
                                 <Link to="/inventory" className="nav-button">
                                     • Inventory

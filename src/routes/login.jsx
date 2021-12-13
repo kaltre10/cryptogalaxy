@@ -3,7 +3,7 @@ import metamask from "../img/assets/metamask.svg"
 import Loading from "../components/loading";
 import { Link } from 'react-router-dom';
 import Navbar from "../components/topNav";
-import logo from "../img/logo-planet.svg";
+import logo from "../img/logoglx.svg";
 
 const Login = (props) => {
 

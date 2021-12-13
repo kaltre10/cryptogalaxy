@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../img/logo-planet.svg';
+import logo from '../img/logoglx.svg';
 import { Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import bnbLogo from '../img/assets/bnb.svg';
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 function TopNav(props) {
 
-  const [Showx,setShowx] = React.useState()
+  const [Showx, setShowx] = React.useState()
   const handleClose = () => setShowx(false);
 
   function filterWallet(w) {
@@ -18,8 +18,8 @@ function TopNav(props) {
     const str2 = w.substr(l - 4, 4);
     const result = str1 + "..." + str2;
     return result;
-  } 
-  
+  }
+
   return (
     <>
       <Navbar bg="dark" variant="dark" expand={false}>
@@ -28,6 +28,9 @@ function TopNav(props) {
             <img src={logo} height="25px" alt="" className="mx-2" />
             CryptoGalaxy Online
           </Navbar.Brand>
+          <div className='d-sm-none d-md-block'> {props.user.wallet !=null ?<>
+            {filterWallet(props.user.wallet)}
+          </>:<></>} </div>
           <Navbar.Toggle aria-controls="offcanvasNavbar" className="d-block d-md-none" />
           <Navbar.Offcanvas
             id="offcanvasNavbar"
@@ -45,19 +48,22 @@ function TopNav(props) {
             </Offcanvas.Header>
             <Offcanvas.Body className="bg-dark">
               <Nav className="justify-content-end flex-grow-1">
-                <ul className="nav nav-pills flex-column">
+                <ul className="nav nav-pills flex-column mb-auto">
+                  <li>
+                    <Link to="/login" className="nav-button">
+                      • Login
+                    </Link>
+                  </li>
                   <li>
                     <Link to="/inventory" className="nav-button">
                       • Inventory
                     </Link>
                   </li>
-
                   <li>
                     <Link to="/planet" className="nav-button">
                       • Planets
                     </Link>
                   </li>
-
                 </ul>
                 <div className="sidebar-balance pb-3">
                   <div className="d-flex justify-content-between">

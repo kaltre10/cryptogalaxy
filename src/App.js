@@ -13,6 +13,7 @@ import Web3 from 'web3'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Shop from './routes/shop';
+import Timer from './routes/timer';
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 const eth = window.ethereum;
@@ -124,6 +125,9 @@ const App = () => {
                             </Route>
                             <Route path="/login">
                                 <Login user={user} connectOrRegister={connectOrRegister} />
+                            </Route>
+                            <Route path="/timer">
+                                <Timer />
                             </Route>
                             <Route path="/" exact>
                                 <Login user={user} connectOrRegister={connectOrRegister} />
