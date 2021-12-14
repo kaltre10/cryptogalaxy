@@ -28,9 +28,10 @@ function TopNav(props) {
             <img src={logo} height="25px" alt="" className="mx-2" />
             CryptoGalaxy Online
           </Navbar.Brand>
-          <div className='d-sm-none d-md-block'> {props.user.wallet !=null ?<>
+         
+          <div className='d-none d-sm-none d-md-block'> {props.user.wallet != null ? <>
             {filterWallet(props.user.wallet)}
-          </>:<></>} </div>
+          </> : <></>} </div>
           <Navbar.Toggle aria-controls="offcanvasNavbar" className="d-block d-md-none" />
           <Navbar.Offcanvas
             id="offcanvasNavbar"

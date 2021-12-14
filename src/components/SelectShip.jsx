@@ -4,28 +4,6 @@ import axios from "axios";
 
 const SelectShip = (props) => {
 
-    const [time,setTime] = useState(0)
-
-    const [s, setSeconds] = useState(0);
-    const [h,setH] = useState(0);
-    const [m,setM] = useState(0);
-    const [tim,setTim] = useState(time);
-
-    useEffect(() => {
-        let interval = null;
-        interval = setInterval(() => {
-            setTim(tim - 1);
-            var hours = Math.floor(tim/60/60)
-            setH(hours)
-            var mins = Math.floor(((tim/60/60)-hours)*60)
-            setM(mins)
-            var secs = Math.round((((((tim/60/60) - hours)*60))-mins)*60) 
-            setSeconds(secs)
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [tim]);
-
     async function toMine(ship, planet) {
         if (ship.energy >= 1) {
             props.loadingTrue()
@@ -48,26 +26,26 @@ const SelectShip = (props) => {
             props.Toast(0, "No energy")
         }
     }
-   /*  function energyFilter(en) {
-
-        const ex = Math.round((en - Date.now()) / 1000);
-
-        if (ex <= 0)
-            return "0 S"
-
-        if (ex < 60) {
-            return Math.round(ex)+ "S"
-
-        } else if (ex > 60 && ex < 3600) {
-            var min = Math.floor(ex / 60)
-            var sec = Math.round( (ex-min)*60)
-            return min + " M " + sec + " S "
-        } else if (ex > 3600) {
-            var hor = Math.floor(ex / 3600)
-            var min = Math.floor( ((ex-hor )/60) )
-            return hor + " H " + min + " M "
-        }
-    } */
+    /*  function energyFilter(en) {
+ 
+         const ex = Math.round((en - Date.now()) / 1000);
+ 
+         if (ex <= 0)
+             return "0 S"
+ 
+         if (ex < 60) {
+             return Math.round(ex)+ "S"
+ 
+         } else if (ex > 60 && ex < 3600) {
+             var min = Math.floor(ex / 60)
+             var sec = Math.round( (ex-min)*60)
+             return min + " M " + sec + " S "
+         } else if (ex > 3600) {
+             var hor = Math.floor(ex / 3600)
+             var min = Math.floor( ((ex-hor )/60) )
+             return hor + " H " + min + " M "
+         }
+     } */
 
     return (
         <>
@@ -84,7 +62,7 @@ const SelectShip = (props) => {
                         <div className="row">
                             {props.user.ships.map((item) => {
                                 return (
-                                    <div key={item.id} className="col-6 col-sm-4 col-md-3">
+                                    <div key={item.id} className="col-12 col-sm-6 col-md-3">
                                         <div className="nft">
                                             <div className="img mhe">
                                                 <img className="nft-image w-100" src={item.img} />
@@ -110,9 +88,6 @@ const SelectShip = (props) => {
                                                 </div>
                                             </div>
                                             <div className="row gx-0">
-                                                <div className="col-12 text-center mb-2">
-                                                    Next Energy in { h }h:{m}m:{s}s
-                                                </div>
                                                 <div className="col-6">
                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>

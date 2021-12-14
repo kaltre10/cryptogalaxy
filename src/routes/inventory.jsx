@@ -30,6 +30,7 @@ function Inventory(props) {
                                 <div className="row">
                                     <div className="col-12">
                                         <h3 className="text-center bg-title-market"> Ships </h3>
+                                   
                                     </div>
                                     {props.loading ? <>
                                         <div class="spinner-border" role="status"></div>
@@ -62,12 +63,7 @@ function Inventory(props) {
                                                                     {item.energy < 1 ? <div className="out-energy">  </div> : <></>}
                                                                 </div>
                                                             </div>
-                                                            {item.charge != null ? <> s - 
-                                                                {Math.round((item.charge - Date.now()) / 1000)}
-                                                                {/* <div className="p-1 bg-danger">
-                                                                    {Date.now() + (60000)}
-                                                                </div> */}
-                                                            </> : <></>}
+                                                            
                                                             <div className="row pt-1 gx-0">
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
