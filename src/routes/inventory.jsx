@@ -6,11 +6,14 @@ import gold from '../img/meterials/crud/gold.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import ice from '../img/meterials/crud/ice.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
+import RecTimer from '../components/recTimer';
 
 function Inventory(props) {
 
-    async function sellShip(id){
-        props.Toast(0,"Market is off")
+    const [sell, setSell] = useState();
+
+    async function sellShip(id) {
+        props.Toast(0, "Market is off")
     }
 
     return (
@@ -24,13 +27,16 @@ function Inventory(props) {
 
                     <div className="col-12 col-md-9">
                         <div className="w-market-container p-3">
-                            
 
+
+                            <div className=''>
+                                <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                            </div>
                             <div className="w-inventory-item p-2">
                                 <div className="row">
                                     <div className="col-12">
                                         <h3 className="text-center bg-title-market"> Ships </h3>
-                                   
+
                                     </div>
                                     {props.loading ? <>
                                         <div class="spinner-border" role="status"></div>
@@ -63,14 +69,14 @@ function Inventory(props) {
                                                                     {item.energy < 1 ? <div className="out-energy">  </div> : <></>}
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <div className="row pt-1 gx-0">
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
                                                                 </div>
                                                                 <div className="col-6">
-                                                                    <button onClick={()=>sellShip(item.id)} className='form-control'> Sell </button>
+                                                                    <button onClick={() => sellShip(item.id)} className='form-control'> Sell </button>
                                                                 </div>
                                                             </div>
                                                         </div>

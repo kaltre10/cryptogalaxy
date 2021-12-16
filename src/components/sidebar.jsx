@@ -94,6 +94,11 @@ function Sidebar(props) {
                                     • Planets
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/invaders" className="nav-button bg-danger">
+                                    • Invaders
+                                </Link>
+                            </li>
                         </ul>
                         <div className="sidebar-balance pb-3">
                             <div className="d-flex justify-content-between">

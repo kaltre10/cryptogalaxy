@@ -8,11 +8,11 @@ const RecTimer = (props) => {
     const [time, setTime] = useState(3600);
 
     useEffect(() => {
-        if (props.user.recharge != null) {
+        if (props.user.wallet != null) {
             const asig = Math.round((props.user.recharge - Date.now()) / 1000)
             setTime(asig)
+            rechargeTime()
         }
-        rechargeTime()
         let interval = null;
         interval = setInterval(() => {
 
@@ -30,14 +30,15 @@ const RecTimer = (props) => {
     }, [time]);
 
     function rechargeTime() {
-        if (time < 1) {
-            props.upEnergy(props.user.wallet)
+        if (time <= 1) {
+           // alert(time)
+           props.upEnergy(props.user.wallet)
         }
     }
 
     return (
         <div className="text-center">
-            Next Energizer : {h}:{m}:{s}
+            Next Energizer in {h}:{m}:{s}
         </div>
     )
 }

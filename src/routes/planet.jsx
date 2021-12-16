@@ -140,6 +140,11 @@ const Planet = (props) => {
                                                 <div >
                                                     <h2 className="text-white m-0 p-0">Terrat</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 1</p>
+                                                    <p className="border p-2">
+                                                        {props.user.wallet != undefined ? <>
+                                                            Your minery level: {props.xp.minery}
+                                                        </> : <>x</>}
+                                                    </p>
                                                     <p className="m-0 price p-0 mb-1"> Iron planet</p>
                                                     <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.8</b></p>
 
