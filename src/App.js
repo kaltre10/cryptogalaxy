@@ -13,12 +13,15 @@ import Web3 from 'web3'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Shop from './routes/shop';
-import RecTimer from './components/recTimer';
 import Invaders from './routes/invaders';
+import glxAbi from './token/glxAbi';
 
-const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-const web3 = new Web3(provider)
+//const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
+const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
+const mainnetProvider = 'https://bsc-dataseed.binance.org/'
+const web3 = new Web3(mainnetProvider)
 const eth = window.ethereum;
+const mycontract = new web3.eth.Contract(glxAbi, mainnetContractAbiGlx)
 
 //abis glx & nft
 /* import abi from './token/glxAbi'
@@ -36,6 +39,7 @@ const App = () => {
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
     const [bnb, setBNB] = useState(0);
+    const [glx,setGlx] = useState(0);
 
     useEffect(() => {
         (() => {
@@ -66,10 +70,10 @@ const App = () => {
 
         if (typeof window.ethereum !== 'undefined') {
             if (await validateChain()) {
-                //alert("Validate: " + validateChain())
                 eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
                     const wallet = res[0];
-                    getBNB(wallet);
+                    await getBNB(wallet);
+                    await getGlx(wallet);
 
                     axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
                         //console.log(res.data.user);
@@ -77,11 +81,11 @@ const App = () => {
                         setLoading(false);
 
                         var recharge = res.data.user.recharge
-                        var rectime = recharge-Date.now()
-                        if(rectime<1){
+                        var rectime = recharge - Date.now()
+                        if (rectime < 1) {
                             upEnergy(wallet)
                         }
-                        
+
                     }).catch((err) => {
                         alert(err.message);
                     });
@@ -89,9 +93,9 @@ const App = () => {
                     alert(err.message);
                 });
             } else {
-               // alert("Validate: " + validateChain)
+                // alert("Validate: " + validateChain)
                 alert("Wrong Network: Configure Binance Testnet in Metamask")
-                
+
                 window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: net }],
@@ -106,12 +110,12 @@ const App = () => {
 
     async function upEnergy(wallet) {
 
-         await axios.put(urlApi + "/api/v1/upEnergy", { wallet })
-             .then((res) => {
-                 console.log(res.data)
-                 Toast(1, "sube energia");
-             })
-             .catch((err) => alert(err))
+        await axios.put(urlApi + "/api/v1/upEnergy", { wallet })
+            .then((res) => {
+                console.log(res.data)
+                Toast(1, "sube energia");
+            })
+            .catch((err) => alert(err))
 
         connectOrRegister()
     }
@@ -125,7 +129,7 @@ const App = () => {
         });
     }
 
-    /*    async function detectChainId() {
+    /*async function detectChainId() {
            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
            console.log("Chain id: " + web3.utils.hexToNumber(chainId))
            if (chainId != "0x61") {
@@ -134,7 +138,7 @@ const App = () => {
            } else if (chainId == "0x31") {
                return true
            }
-       } */
+    }*/
 
     const Toast = (type, msg) => {
         if (type == 0)
@@ -143,19 +147,25 @@ const App = () => {
             toast.success(msg);
     }
 
+    async function getGlx(ownerAddress) {
+        mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
+            setGlx(web3.utils.fromWei(r, 'ether'))
+        })
+    }
+
     return (
         <Router>
 
             {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
             <ToastContainer theme="dark" className="z-index-max" />
             <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
-            
+
             <div className="container-fluid p-0">
                 <div className="row gx-0">
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Inventory glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/planet">
                                 <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />

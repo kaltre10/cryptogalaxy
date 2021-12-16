@@ -22,7 +22,7 @@ function Inventory(props) {
 
                 <div className="row gx-0">
                     <div className="col-3 bg-danger d-none d-md-block">
-                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
+                        < Sidebar glx={props.glx} connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
 
                     <div className="col-12 col-md-9">

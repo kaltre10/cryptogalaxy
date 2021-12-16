@@ -106,7 +106,7 @@ function Sidebar(props) {
                                     <img className="logo-sidebar" src={bnbLogo} alt="" /> {props.bnb}
                                 </div>
                                 <div className="">
-                                    <img className="logo-sidebar" src={logo} alt="" />
+                                    <img className="logo-sidebar" src={logo} alt="" /> {props.glx}
                                 </div>
                                 <div className="">
                                     <img className="logo-sidebar" src={gem} alt="" /> {props.user.gm}
