@@ -16,12 +16,12 @@ import Shop from './routes/shop';
 import Invaders from './routes/invaders';
 import glxAbi from './token/glxAbi';
 
-const testnetContractAbiGlx = ""
+//const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
-const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 const mainnetProvider = 'https://bsc-dataseed.binance.org/'
-const web3 = new Web3(testnetProvider)
+const web3 = new Web3(mainnetProvider)
 const eth = window.ethereum;
+const mycontract = new web3.eth.Contract(glxAbi, mainnetContractAbiGlx)
 
 //abis glx & nft
 /* import abi from './token/glxAbi'
@@ -69,11 +69,10 @@ const App = () => {
 
         if (typeof window.ethereum !== 'undefined') {
             if (await validateChain()) {
-                //alert("Validate: " + validateChain())
                 eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
                     const wallet = res[0];
-                    getBNB(wallet);
-                    getGlx(wallet);
+                    await getBNB(wallet);
+                    await getGlx(wallet);
 
                     axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
                         //console.log(res.data.user);
