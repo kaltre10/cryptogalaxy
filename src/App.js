@@ -39,6 +39,7 @@ const App = () => {
 
     useEffect(() => {
         connectOrRegister()
+
     }, []);
 
     async function getBNB(w) {
@@ -46,22 +47,25 @@ const App = () => {
             setBNB(web3.utils.fromWei(r, 'ether'))
         })
     }
+    //test 97 smart 56
+    const net = web3.utils.toHex(97)
 
     const validateChain = async () => {
         const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' });
         const chainId = await web3.utils.hexToNumber(chainIdhex)
-        if (chainId != 97) {
+        if (chainId != net) {
             return false
         } else {
             return true
         }
+
     }
 
     async function connectOrRegister() {
 
         if (typeof window.ethereum !== 'undefined') {
-            if (validateChain) {
-
+            if (await validateChain()) {
+                //alert("Validate: " + validateChain())
                 eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
                     const wallet = res[0];
                     getBNB(wallet);
@@ -84,14 +88,13 @@ const App = () => {
                     alert(err.message);
                 });
             } else {
+               // alert("Validate: " + validateChain)
                 alert("Wrong Network: Configure Binance Testnet in Metamask")
-                const net = web3.utils.toHex(97)
+                
                 window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: net }],
                 });
-
-
             }
         } else {
             alert("Need Metamask extension!")
