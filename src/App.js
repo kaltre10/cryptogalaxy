@@ -38,8 +38,9 @@ const App = () => {
     const [bnb, setBNB] = useState(0);
 
     useEffect(() => {
-        connectOrRegister()
-
+        (() => {
+            connectOrRegister()
+        })();
     }, []);
 
     async function getBNB(w) {
