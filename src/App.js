@@ -13,6 +13,9 @@ import Web3 from 'web3'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Shop from './routes/shop';
+import RecTimer from './components/recTimer';
+import Invaders from './routes/invaders';
+
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 const eth = window.ethereum;
@@ -36,88 +39,128 @@ const App = () => {
 
     useEffect(() => {
         connectOrRegister()
-        detectChainId()
-    }, [])
+    }, []);
 
     async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
             setBNB(web3.utils.fromWei(r, 'ether'))
         })
     }
-    async function connectOrRegister() {
 
-        eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
-            const wallet = res[0];
-            getBNB(wallet);
-            
-            axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
-                //console.log(res.data.user);
-                setUser(res.data.user);
-                setLoading(false);
-
-                var shipsObj = res.data.user.ships
-                var recTime = Date.now()
-                shipsObj.map((item)=>{
-                    if(item.charge <= recTime ){
-                        upEnergy(wallet,item.id)
-                    }
-                })
-
-            }).catch((err) => {
-                alert(err.message);
-            });
-        }).catch((err) => {
-            alert(err.message);
-        });
+    const validateChain = async () => {
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' });
+        const chainId = await web3.utils.hexToNumber(chainIdhex)
+        if (chainId != 97) {
+            return false
+        } else {
+            return true
+        }
     }
 
-    async function upEnergy(wallet,id){
+    async function connectOrRegister() {
 
-        axios.put(urlApi+"/api/v1/upEnergy",{wallet,id})
-        .then((res)=>{
-            console.log(res.data)
-        })
-        .catch((err)=> alert(err))
-        //alert("sube energia a la nave: "+nave+" wallet:"+w)
+        if (typeof window.ethereum !== 'undefined') {
+            if (validateChain) {
+
+                eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
+                    const wallet = res[0];
+                    getBNB(wallet);
+
+                    axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
+                        //console.log(res.data.user);
+                        setUser(res.data.user);
+                        setLoading(false);
+
+                        var recharge = res.data.user.recharge
+                        var rectime = recharge-Date.now()
+                        if(rectime<1){
+                            upEnergy(wallet)
+                        }
+                        
+                    }).catch((err) => {
+                        alert(err.message);
+                    });
+                }).catch((err) => {
+                    alert(err.message);
+                });
+            } else {
+                alert("Wrong Network: Configure Binance Testnet in Metamask")
+                const net = web3.utils.toHex(97)
+                window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: net }],
+                });
+
+
+            }
+        } else {
+            alert("Need Metamask extension!")
+        }
+
+
+    }
+
+    async function upEnergy(wallet) {
+
+         await axios.put(urlApi + "/api/v1/upEnergy", { wallet })
+             .then((res) => {
+                 console.log(res.data)
+                 Toast(1, "sube energia");
+             })
+             .catch((err) => alert(err))
+
+        connectOrRegister()
     }
 
     function stateLoading(imp) {
         setLoading(imp);
     }
+    if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.on('accountsChanged', () => {
+            window.location.href = './login';
+        });
+    }
 
-    window.ethereum.on('accountsChanged', () => {
-        window.location.href = './login';
-    });
+    /*    async function detectChainId() {
+           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+           console.log("Chain id: " + web3.utils.hexToNumber(chainId))
+           if (chainId != "0x61") {
+               alert("Wron network, Need use the binance Testnet")
+               return false
+           } else if (chainId == "0x31") {
+               return true
+           }
+       } */
 
-    async function detectChainId(){
-         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        console.log("Chain id: "+web3.utils.hexToNumber(chainId))
-     } 
-
-    const Toast = (type,msg) => {
-        if(type == 0)
+    const Toast = (type, msg) => {
+        if (type == 0)
             toast.error(msg);
-        if(type == 1)
+        if (type == 1)
             toast.success(msg);
     }
 
     return (
         <Router>
-           {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
-            <ToastContainer theme="dark" className="z-index-max"/> 
-            <TopNav user={user} connectOrRegister={connectOrRegister} loading={loading} />
+
+            {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
+            <ToastContainer theme="dark" className="z-index-max" />
+            <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
+            
             <div className="container-fluid p-0">
                 <div className="row gx-0">
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
+                                <Inventory upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/planet">
-                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
+                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/shop">
-                                <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast}/>
+                                <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                            </Route>
+                            <Route path="/invaders">
+                                <Invaders connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/market">
                                 <Market user={user} />
