@@ -8,7 +8,7 @@ const SelectShip = (props) => {
         if (ship.energy >= 1) {
             props.loadingTrue()
             const balance = props.user.gm
-            const wallet = props.user.wallet
+            const wallet = props.user.wallet.toLowerCase()
             if (balance >= ship.mp) {
                 const axiosHeader = { headers: { "Content-Type": "application/json", } }
                 const axiosParams = { wallet, planet, ship }
@@ -60,7 +60,7 @@ const SelectShip = (props) => {
                             <button onClick={props.closeShips} className="btn-close-ships" > Close </button>
                         </div>
                         <div className="row">
-                            {props.user.ships.map((item) => {
+                            {props.ships.map((item) => {
                                 return (
                                     <div key={item.id} className="col-12 col-sm-6 col-md-3">
                                         <div className="nft">
@@ -74,7 +74,7 @@ const SelectShip = (props) => {
                                                 </div>
                                                 <div className="type-img d-flex">
                                                     <div className="w-text-img">
-                                                        {item.type} {item.subtype}
+                                                        {item.type} {item.subType}
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@ const SelectShip = (props) => {
                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                     <p className="text-white m-0 p-0"> mp : {item.mp}</p>
                                                 </div>
-                                                <div className="col-6">
+                                                <div className="col-6 pt-1">
                                                     {props.loading ? <button className="btn btn-secondary"> Mining... </button> :
                                                         <button onClick={() => { toMine(item, props.planet) }} className="btn bg-danger form-control text-white">Mine - {item.mp} GM</button>
                                                     }

@@ -42,9 +42,9 @@ function Inventory(props) {
                                         <div class="spinner-border" role="status"></div>
                                     </> : <>
                                         {props.user.wallet != null ?
-                                            props.user.ships.map((item) => {
+                                            props.ships.map((item) => {
                                                 return (
-                                                    <div key={item.id} className="col-12 col-sm-6 col-xl-3 ">
+                                                    <div key={item._id} className="col-12 col-sm-6 col-xl-3 ">
                                                         <div className="nft">
                                                             <div className="img">
                                                                 <img className="nft-image w-100" src={item.img} />
@@ -52,11 +52,11 @@ function Inventory(props) {
                                                                     mp : {item.mp}
                                                                 </div>
                                                                 <div className="id-img">
-                                                                    {item.id}
+                                                                    {item._id}
                                                                 </div>
                                                                 <div className="type-img d-flex">
                                                                     <div className="w-text-img">
-                                                                        {item.type} {item.subtype}
+                                                                        {item.type} {item.subType}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -73,7 +73,7 @@ function Inventory(props) {
                                                             <div className="row pt-1 gx-0">
                                                                 <div className="col-6">
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
-                                                                    <p className="text-white m-0 p-0"> mp : {item.mp}</p>
+                                                                    <p className="text-white m-0 p-0"> ATK {item.attack!= null?<>{item.attack}</>:<>0</> } </p>
                                                                 </div>
                                                                 <div className="col-6">
                                                                     <button onClick={() => sellShip(item.id)} className='form-control'> Sell </button>

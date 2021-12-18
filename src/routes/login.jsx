@@ -56,8 +56,7 @@ const Login = (props) => {
 
     return (
         <>
-            {/*  <Loading load={load} /> */}
-            {/* <Navbar connect={connection} wallet={wallet}/> */}
+            
             <div className="text-center mt-5 d-flex justify-content-center">
                 <div className="w-login">
                     <div className="mb-4">

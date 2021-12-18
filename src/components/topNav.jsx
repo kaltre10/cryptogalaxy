@@ -53,7 +53,7 @@ function TopNav(props) {
 
         const hash = txHash
         const account = accounts[0]
-        const wallet = account
+        const wallet = account.toLowerCase()
         const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
 
         console.log("Buy gm: " + getGm.data);

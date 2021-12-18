@@ -36,14 +36,18 @@ const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb' */
 
 const App = () => {
 
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({wallet:null});
+    const [ships, setShips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bnb, setBNB] = useState(0);
-    const [glx,setGlx] = useState(0);
+    const [glx, setGlx] = useState(0);
+    //for market
+    const [shipsOnSell, setShipsOnSell] = useState([]);
+    const [gmOnSell, setGmOnSell] = useState([]);
 
     useEffect(() => {
         connectOrRegister()
-        
+
     }, []);
 
     async function getBNB(w) {
@@ -69,12 +73,14 @@ const App = () => {
 
         if (typeof window.ethereum !== 'undefined') {
             if (await validateChain()) {
-                eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
-                    const wallet = res[0];
+                eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
+                    const wallet = res[0].toLowerCase();
+
+                    await getShips(wallet);
                     await getBNB(wallet);
                     await getGlx(wallet);
-
-                    axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
+                    const axiosHeader = { headers: { "Content-Type": "application/json", } }
+                    axios.post(urlApi + "/api/v1/x/", { wallet },axiosHeader).then((res) => {
                         //console.log(res.data.user);
                         setUser(res.data.user);
                         setLoading(false);
@@ -107,9 +113,20 @@ const App = () => {
 
     }
 
-    async function upEnergy(wallet) {
+    async function getShips(wallet) {
+        const axiosHeader = { headers: { "Content-Type": "application/json", } }
+        
+        let ships = await axios.get(urlApi + '/api/v1/getShips/' + wallet,axiosHeader);
+        console.log(ships.data)
+        setShips(ships.data)
+    }
 
-        await axios.put(urlApi + "/api/v1/upEnergy", { wallet })
+    async function upEnergy() {
+
+        const account = await eth.request({ 'method': 'eth_requestAccounts' })
+        const wallet = account[0].toLowerCase()
+        const axiosHeader = { headers: { "Content-Type": "application/json", } }
+        await axios.put(urlApi + "/api/v1/upEnergy", { wallet },axiosHeader)
             .then((res) => {
                 console.log(res.data)
                 Toast(1, "sube energia");
@@ -154,8 +171,6 @@ const App = () => {
 
     return (
         <Router>
-
-            {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
             <ToastContainer theme="dark" className="z-index-max" />
             <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
 
@@ -164,19 +179,19 @@ const App = () => {
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Inventory ships={ships} glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/planet">
-                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Planet ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/shop">
                                 <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/invaders">
-                                <Invaders connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/market">
-                                <Market user={user} />
+                                <Market gmOnSell={gmOnSell} shipsOnSell={shipsOnSell} user={user} />
                             </Route>
                             <Route path="/login">
                                 <Login user={user} connectOrRegister={connectOrRegister} />
