@@ -1,6 +1,6 @@
 const fighters = [
     {
-        "name": "Persival",
+        "name": "Persival2",
         "id": 4,
         "img": "https://cryptogalaxy.online/ships/fighters/persival.webp",
         "mp": 2,
@@ -10,11 +10,12 @@ const fighters = [
         "onSell": true,
         "sellPrice": "0.1",
         "energy": 2,
-        "shield": 100,
+        "shield": 185,
         "damage": 100,
         "type":"Fighter",
         "subType":"T1",
-        "charge":0
+        "charge":0,
+        "attack":95
     },
     {
         "name": "JackSaw",
@@ -27,11 +28,12 @@ const fighters = [
         "onSell": true,
         "sellPrice": "0.2",
         "energy": 2,
-        "shield": 100,
+        "shield": 385,
         "damage": 100,
         "type":"Fighter",
         "subType":"T2",
-        "charge":0
+        "charge":0,
+        "attack":280
     },
     {
         "name": "Pelican",
@@ -44,11 +46,12 @@ const fighters = [
         "onSell": true,
         "sellPrice": "0.35",
         "energy": 2,
-        "shield": 100,
+        "shield": 1450,
         "damage": 100,
         "type":"Fighter",
         "subType":"T3",
-        "charge":0
+        "charge":0,
+        "attack":780
     },
     {
         "name": "Hell",
@@ -61,11 +64,12 @@ const fighters = [
         "onSell": true,
         "sellPrice": "0.5",
         "energy": 2,
-        "shield": 100,
+        "shield": 4020,
         "damage": 100,
         "type":"Fighter",
         "subType":"T4",
-        "charge":0
+        "charge":0,
+        "attack":1920
     },
     
 

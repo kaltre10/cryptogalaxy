@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Shop from './routes/shop';
 import Invaders from './routes/invaders';
 import glxAbi from './token/glxAbi';
+import Refinery from './routes/refinery';
+import Factory from './routes/factory';
 
 //const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
@@ -37,15 +39,15 @@ const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb' */
 const App = () => {
 
     const [user, setUser] = useState({});
+    const [ships, setShips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bnb, setBNB] = useState(0);
-    const [glx,setGlx] = useState(0);
+    const [glx, setGlx] = useState(0);
 
     useEffect(() => {
-        (() => {
-            connectOrRegister()
-        })();
-    }, []);
+        connectOrRegister()
+    },[]);
+
 
     async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
@@ -58,7 +60,7 @@ const App = () => {
     const validateChain = async () => {
         const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' });
         const chainId = await web3.utils.hexToNumber(chainIdhex)
-        if (chainId != net) {
+        if (chainId !== net) {
             return false
         } else {
             return true
@@ -67,25 +69,23 @@ const App = () => {
     }
 
     async function connectOrRegister() {
-
+        setLoading(true);
         if (typeof window.ethereum !== 'undefined') {
-            if (await validateChain()) {
-                eth.request({ 'method': 'eth_requestAccounts' }).then((res) => {
-                    const wallet = res[0];
+            if (validateChain()) {
+                eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
+                    const wallet = res[0].toLowerCase();
+                    await getShips(wallet);
                     await getBNB(wallet);
                     await getGlx(wallet);
-
-                    axios.post(urlApi + "/api/v1/x/", { wallet }).then((res) => {
-                        //console.log(res.data.user);
-                        setUser(res.data.user);
+                    const axiosHeader = { headers: { "Content-Type": "application/json" } }
+                    axios.post(urlApi + "/api/v1/x/", { wallet }, axiosHeader).then((res) => {
+                        setUser(res.data);
                         setLoading(false);
-
-                        var recharge = res.data.user.recharge
+                        var recharge = res.data.recharge
                         var rectime = recharge - Date.now()
                         if (rectime < 1) {
                             upEnergy(wallet)
                         }
-
                     }).catch((err) => {
                         alert(err.message);
                     });
@@ -104,16 +104,25 @@ const App = () => {
         } else {
             alert("Need Metamask extension!")
         }
-
-
     }
 
-    async function upEnergy(wallet) {
+    async function getShips(wallet) {
+        const axiosHeader = { headers: { "Content-Type": "application/json" } }
 
-        await axios.put(urlApi + "/api/v1/upEnergy", { wallet })
+        let ships = await axios.get(urlApi + '/api/v1/getShips/' + wallet, axiosHeader);
+        //console.log(ships.data)
+        setShips(ships.data)
+    }
+
+    async function upEnergy() {
+
+        const account = await eth.request({ 'method': 'eth_requestAccounts' })
+        const wallet = account[0].toLowerCase()
+        const axiosHeader = { headers: { "Content-Type": "application/json", } }
+        await axios.put(urlApi + "/api/v1/upEnergy", { wallet }, axiosHeader)
             .then((res) => {
                 console.log(res.data)
-                Toast(1, "sube energia");
+                Toast(1, "Energyzer Actived");
             })
             .catch((err) => alert(err))
 
@@ -141,9 +150,9 @@ const App = () => {
     }*/
 
     const Toast = (type, msg) => {
-        if (type == 0)
+        if (type === 0)
             toast.error(msg);
-        if (type == 1)
+        if (type === 1)
             toast.success(msg);
     }
 
@@ -155,8 +164,6 @@ const App = () => {
 
     return (
         <Router>
-
-            {/*  <button onClick={()=>Toast(1,"mensage de error")}>Notify!</button>*/}
             <ToastContainer theme="dark" className="z-index-max" />
             <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
 
@@ -165,16 +172,22 @@ const App = () => {
                     <div className="col-12">
                         <Switch>
                             <Route path="/inventory">
-                                <Inventory glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Inventory ships={ships} glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/planet">
-                                <Planet connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Planet ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/shop">
                                 <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/invaders">
-                                <Invaders connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                            </Route>
+                            <Route path="/refinery">
+                                <Refinery ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                            </Route>
+                            <Route path="/factory">
+                                <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/market">
                                 <Market user={user} />

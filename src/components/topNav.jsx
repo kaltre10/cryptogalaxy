@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import bnbLogo from '../img/assets/bnb.svg';
@@ -12,23 +12,28 @@ import urlApi from '../urlApi';
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
-const eth = window.ethereum;
 
 function TopNav(props) {
+  useEffect(() => {
+    setUser(props.user)
+    console.log(" Desde topNav: " + props.user.wallet)
+  }, [])
 
+  const [user, setUser] = useState({})
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
   async function buyGm(id) {
 
     props.stateLoading(true)
-
-    if (id == 1) {
-      var price = "0.01"
-      var amount = 1000
-    } else if (id == 2) {
-      var price = "0.028"
-      var amount = 3000
+    var price = 0
+    var amount = 0
+    if (id === 1) {
+      price = "0.01"
+      amount = 1000
+    } else if (id === 2) {
+      price = "0.028"
+      amount = 3000
     }
 
     const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -53,7 +58,7 @@ function TopNav(props) {
 
         const hash = txHash
         const account = accounts[0]
-        const wallet = account
+        const wallet = account.toLowerCase()
         const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
 
         console.log("Buy gm: " + getGm.data);
@@ -70,13 +75,13 @@ function TopNav(props) {
       })
   }
 
-  function filterWallet(w) {
-    let str1 = w.substr(0, 4);
-    const l = w.length
-    const str2 = w.substr(l - 4, 4);
-    const result = str1 + "..." + str2;
-    return result;
-  }
+  /*   function filterWallet(w) {
+      let str1 = w.substr(0, 4);
+      const l = w.length
+      const str2 = w.substr(l - 4, 4);
+      const result = str1 + "..." + str2;
+      return result;
+    } */
 
   const [exp, setExp] = useState(false)
 
@@ -89,12 +94,14 @@ function TopNav(props) {
             CryptoGalaxy Online
           </Navbar.Brand>
 
-          
+          <div className='d-none d-sm-none d-md-block'>
 
-          <div className='d-none d-sm-none d-md-block'> {props.user.wallet != null ? <>
-            {filterWallet(props.user.wallet)}
-          </> : <></>} </div>
-          <Navbar.Toggle onClick={() => setExp(!exp)} aria-controls="offcanvasNavbar" className="d-block d-md-none" />
+            {user.wallet}
+
+          </div>
+          {props.user.wallet !== undefined ? <>
+            <Navbar.Toggle onClick={() => setExp(!exp)} aria-controls="offcanvasNavbar" className="d-block d-md-none" />
+          </> : <></>}
           <Navbar.Offcanvas
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
@@ -132,13 +139,16 @@ function TopNav(props) {
                 <div className="sidebar-balance pb-3">
                   <div className="d-flex justify-content-between">
                     <div className="">
-                      <img className="logo-sidebar" src={bnbLogo} /> {props.bnb}
+                      <img alt="" className="logo-sidebar" src={bnbLogo} /> {props.bnb}
                     </div>
                     <div className="">
-                      <img className="logo-sidebar" src={logo} /> 0
+                      <img alt="" className="logo-sidebar" src={logo} /> 0
                     </div>
                     <div className="">
-                      <img className="logo-sidebar" src={gem} /> {props.user.gm}
+                      <img alt="" className="logo-sidebar" src={gem} /> {user.wallet !== 0 ? <>
+                        {user.gm}
+                      </> : <></>
+                      }
                     </div>
                   </div>
                 </div>
@@ -149,13 +159,13 @@ function TopNav(props) {
                   <div onClick={() => { setShow(true) }} className="gems-exchange d-flex justify-content-between">
 
                     <div className="d-inline-block">
-                      <img className="img-gem" src={bnbLogo} />
+                      <img alt="" className="img-gem" src={bnbLogo} />
                     </div>
                     <div className="d-inline-block">
-                      <img className="img-gem" src={arrow} />
+                      <img alt="" className="img-gem" src={arrow} />
                     </div>
                     <div className="d-inline-block">
-                      <img className="img-gem" src={gem} />
+                      <img alt="" className="img-gem" src={gem} />
                     </div>
                   </div>
                 </div>
@@ -172,13 +182,13 @@ function TopNav(props) {
             <div className="d-flex justify-content-between">
               <div>
                 <div className="d-inline-block">
-                  <img className="img-gem" src={bnbLogo} />
+                  <img alt="" className="img-gem" src={bnbLogo} />
                 </div>
                 <div className="d-inline-block mx-3">
-                  <img className="img-gem" src={arrow} />
+                  <img alt="" className="img-gem" src={arrow} />
                 </div>
                 <div className="d-inline-block">
-                  <img className="img-gem" src={gem} />
+                  <img alt="" className="img-gem" src={gem} />
                 </div>
               </div>
             </div>
@@ -231,3 +241,7 @@ function TopNav(props) {
 }
 
 export default TopNav
+
+TopNav.defaultProps = {
+  user: { wallet: null }
+}

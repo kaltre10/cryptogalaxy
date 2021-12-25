@@ -28,6 +28,8 @@ const Shop = (props) => {
         const account = accounts[0]
         const wallet = account.toLowerCase()
         const buyShip = await axios.put(urlApi + "/api/v1/buyship", { wallet, hash, objSell })
+        console.log(buyShip.data)
+        props.connectOrRegister()
         //console.log(buyShip.data)
         //console.log("Transaction hash:" + hash)
         //getUser()
@@ -55,10 +57,11 @@ const Shop = (props) => {
             })
             .then(async (txHash) => {
                 await buyShipDbUpdate(txHash, objSell)
-                props.stateLoading(false)
-                props.Toast(1, "Success!!");
-                //console.log("Transaction hash: " + txHash);
                 props.connectOrRegister()
+
+                props.stateLoading(false)
+                props.Toast(1, "Success Buy a ship");
+                console.log("Transaction hash: " + txHash);
             })
             .catch((error) => {
                 props.stateLoading(false)
@@ -96,8 +99,9 @@ const Shop = (props) => {
                                                         <div key={item.id} className="col-12 col-sm-6 col-xl-3 ">
                                                             <div className="nft">
                                                                 <div className="img">
-                                                                    <img className="nft-image w-100" src={item.img} />
+                                                                    <img alt="" className="nft-image w-100" src={item.img} />
                                                                     <div className="mp-img">
+                                                                        
                                                                         mp : {item.mp}
                                                                     </div>
                                                                     <div className="id-img bg-dark p-1">
@@ -129,12 +133,12 @@ const Shop = (props) => {
                                                                 <div className="row pt-1 gx-0">
                                                                     <div className="col-6">
                                                                         <h4 className="name-nft m-0 p-0">{item.name}</h4>
-                                                                        <p className="text-white m-0 p-0"> mp : {item.mp}</p>
+                                                                        <p className="text-white m-0 p-0"> ATK { item.attack } </p>
                                                                     </div>
                                                                     <div className="col-6">
                                                                         {props.loading ? <>
                                                                             <button className="btn btn-secondary form-control mt-1">
-                                                                                <div class="spinner-border" role="status"></div>
+                                                                                <div className="spinner-border" role="status"></div>
                                                                             </button>
                                                                         </> : <>
                                                                             <button onClick={() => { buyShip(item) }} className="btn btn-danger form-control mt-1"> BUY </button>

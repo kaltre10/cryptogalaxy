@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
 import Ares from '../img/planets/Ares.webp';
@@ -16,32 +16,33 @@ import gold from '../img/meterials/crud/gold.webp';
 import ice from '../img/meterials/crud/ice.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
+import RecTimer from "../components/recTimer";
 
 const Planet = (props) => {
 
-    const [wallet, setWallet] = useState('');
     const [selectships, setSelectship] = useState(false);
     const [planet, setPlanet] = useState({});
 
     async function unlockPlanet(planet) {
-
-        if (planet == 0)
-            var amount = 600
-        if (planet == 1)
-            var amount = 1000
-        if (planet == 2)
-            var amount = 3000
-        if (planet == 3)
-            var amount = 6000
-        if (planet == 4)
-            var amount = 9000
-        if (planet == 5)
-            var amount = 12000
+        var amount
+        if (planet === 0)
+            amount = 600
+        if (planet === 1)
+            amount = 1000
+        if (planet === 2)
+            amount = 3000
+        if (planet === 3)
+            amount = 6000
+        if (planet === 4)
+            amount = 9000
+        if (planet === 5)
+            amount = 12000
 
         props.stateLoading(true)
 
         if (props.user.gm > amount) {
-            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet: props.user.wallet, amount })
+            const wallet = props.user.wallet.toLowerCase()
+            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
             props.Toast(1, "planet Unlocked")
             console.log(unlock)
             props.stateLoading(false)
@@ -52,6 +53,7 @@ const Planet = (props) => {
             props.connectOrRegister()
         }
     }
+
     function mineryLevel(xp) {
         if (xp < 100) {
             return 1
@@ -64,12 +66,15 @@ const Planet = (props) => {
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
 
-                <SelectShip connectOrRegister={props.connectOrRegister} loading={props.loading} loadingFalse={() => { props.stateLoading(false) }} loadingTrue={() => props.stateLoading(true)} selectship={selectships} closeShips={() => setSelectship(false)} user={props.user} planet={planet} Toast={props.Toast} />
+                <SelectShip ships={props.ships} connectOrRegister={props.connectOrRegister} loading={props.loading} loadingFalse={() => { props.stateLoading(false) }} loadingTrue={() => props.stateLoading(true)} selectship={selectships} closeShips={() => setSelectship(false)} user={props.user} planet={planet} Toast={props.Toast} />
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
                     <div className="col-12 col-md-9 px-4 py-3 w-market-container">
+                        <div className=''>
+                            <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                        </div>
                         <div className="row">
 
                             <div className="col-12 p-3 bg-dark text-white mb-3 bg-materials-planet">
@@ -140,11 +145,11 @@ const Planet = (props) => {
                                                 <div >
                                                     <h2 className="text-white m-0 p-0">Terrat</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 1</p>
-                                                    <p className="border p-2">
+                                                    {/* <p className="border p-2">
                                                         {props.user.wallet != null ? <>
                                                             Your minery level: {props.user.xp.minery}
                                                         </> : <>x</>}
-                                                    </p>
+                                                    </p> */}
                                                     <p className="m-0 price p-0 mb-1"> Iron planet</p>
                                                     <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.8</b></p>
 

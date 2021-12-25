@@ -16,12 +16,20 @@ div{
     
 }
 .bg-stars{
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 75%, #000 100%), url(../img//assets/star-sky.webp);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 75%, #000 100%), url(../img/assets/star-sky.webp);
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
+}
+.bg-ref{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 75%, #000 100%), url(../img/assets/bgrefinery.webp);
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 93vh;
 }
 
 
@@ -492,10 +500,155 @@ div{
     z-index: 2;
 }
 .mhe{
-    min-height: 300px;
+    height: 300px;
 }
+.mhe2{
+    height: 100px !important;
+}
+
 .bg-title-market{
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 8px;
     padding: 10px 0px;
+}
+
+.invadersBG{
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.822) 0%, rgba(0, 0, 0, 0.856) 75%, #000 100%), url(../img/assets/invaders.webp);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 92vh;
+}
+.invader-content{
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    border:1px solid  rgba(255, 255, 255, 0.1);
+}
+.invader-ship{
+    background-color: rgba(60, 60, 60, 0.1);
+    border: 2px dotted rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    height: 100px;
+    color: gray;
+    border-radius: 10px;
+    text-align: center;
+}
+.invader-ship:hover{
+    cursor: pointer;
+}
+
+.bg-h3-invader-title{
+    background-color: rgba(0, 102, 255, 0.1);
+    border-radius: 8px;
+}
+.bg-invader-enemy{
+    position: relative;
+    background-color: rgba(150, 0, 0, 0.1);
+    border-bottom-left-radius: 10px;
+    border:1px solid rgba(255, 255, 255, 0.096);
+    width: 100%;
+}
+.bg-battle-zone{
+    background-color: black;
+    border-radius: 8px;
+    padding: 7px;
+}
+.imgx{
+    background: rgba(19, 19, 19, 0.95);
+    background: linear-gradient(to bottom, rgba(20, 20, 20,9) 0%, rgba(25,25,25,0.8) 20%, rgba(85, 85, 85, 0.7) 50%, rgba(25, 25, 25, 0.8) 80%, rgba(20, 20, 20, 9) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0d0d0d', endColorstr='#0d0d0d', GradientType=0 );
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    align-items: center;
+    /*border: 1px solid rgba(255, 255, 255, 0.089);*/
+    padding: 5px;
+    border-top-left-radius: 8px;
+    transition-duration:0.3s;
+    height: 150px;
+    clip-path:  polygon(0% 0%, 92% 0%, 100% 10%,  100% 100%, 0 100%);
+    position: relative;
+}
+.bg-refinery{
+    padding: 10px;
+    background-color: rgba(53, 53, 53, 0.6);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 8px;
+    position: relative;
+}
+.park{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    border-radius: 10px;
+    border:2px dotted rgba(255, 255, 255, 0.5);
+}
+.bg-title-refinery{
+    border-radius: 8px;
+    background-color: rgba(37, 37, 37, 0.8) ;
+}
+.items{
+    height: 50px;
+    width: 50px;
+    padding: 3px;
+    background-color: rgba(126, 6, 6, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    color: rgb(0, 0, 0);
+}
+.item-to-refine{
+    border: 2px dotted rgba(255, 255, 255, 0.5);
+    height: 100px;
+    width: 100px;
+    align-items: center;
+    border-radius: 8px;
+}
+.container-station{
+    background-color: rgba(5, 5, 5, 0.95);
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    padding: 2rem;
+    z-index: 10;
+}
+.wrap-station{
+    padding: 1rem;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px dotted rgba(255, 255, 255, 0.5);
+
+}
+.prepared{
+    border: 2px solid red;
+}
+.load-ref{
+    position: absolute;
+    height: 100%;
+    border-radius: 8px;
+    background-color: rgba(44, 44, 44, 0.9);
+    top:0px;
+    left:0px;
+    z-index: 100;
+}
+.energy-w{
+    background-color: rgba(105, 105, 105, 0.2);
+    position: absolute;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+    border-left: 1px dotted rgba(255, 255, 255, 0.5);
+    border-right: 1px dotted rgba(255, 255, 255, 0.5);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.energy-logo{
+    height: 14px;
+}
+.energy-cant{
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size: 18px;
 }

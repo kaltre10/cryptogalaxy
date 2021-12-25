@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import Web3 from 'web3'
+import React from 'react';
+/* import Web3 from 'web3' */
 
 /* import nft from '../img/nft/miners/aligator.webp';
 import nft2 from '../img/nft/figthers/dolphin.webp';
 import nft4 from '../img/nft/stations/factory.webp'
 import nft5 from '../img/nft/stations/refinery.webp'; */
 
-import Loading from '../components/loading';
+/* import Loading from '../components/loading';
 import axios from 'axios';
-import Navbar from '../components/topNav';
+import Navbar from '../components/topNav'; */
 import Sidebar from '../components/sidebar';
-import glxAbi from '../token/glxAbi'
-import urlApi from '../urlApi';
+/* import glxAbi from '../token/glxAbi' */
+/* import urlApi from '../urlApi'; */
 
 //const mainnetProvider = ""
-const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+/* const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
 const web3 = new Web3(testnetProvider)
-const glxContract = new web3.eth.Contract(glxAbi, contractOuner)
+const glxContract = new web3.eth.Contract(glxAbi, contractOuner) */
 
 const Market = (props) => {
 
@@ -169,13 +169,11 @@ const Market = (props) => {
                                                 </ul>
                                             </div>
                                             <p className='text-center'>Coming soon...</p>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
