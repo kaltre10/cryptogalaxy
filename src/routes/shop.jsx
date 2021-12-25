@@ -99,7 +99,7 @@ const Shop = (props) => {
                                                         <div key={item.id} className="col-12 col-sm-6 col-xl-3 ">
                                                             <div className="nft">
                                                                 <div className="img">
-                                                                    <img className="nft-image w-100" src={item.img} />
+                                                                    <img alt="" className="nft-image w-100" src={item.img} />
                                                                     <div className="mp-img">
                                                                         
                                                                         mp : {item.mp}
@@ -138,7 +138,7 @@ const Shop = (props) => {
                                                                     <div className="col-6">
                                                                         {props.loading ? <>
                                                                             <button className="btn btn-secondary form-control mt-1">
-                                                                                <div class="spinner-border" role="status"></div>
+                                                                                <div className="spinner-border" role="status"></div>
                                                                             </button>
                                                                         </> : <>
                                                                             <button onClick={() => { buyShip(item) }} className="btn btn-danger form-control mt-1"> BUY </button>

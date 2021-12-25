@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
 import Ares from '../img/planets/Ares.webp';
@@ -16,27 +16,27 @@ import gold from '../img/meterials/crud/gold.webp';
 import ice from '../img/meterials/crud/ice.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
+import RecTimer from "../components/recTimer";
 
 const Planet = (props) => {
 
-    const [wallet, setWallet] = useState('');
     const [selectships, setSelectship] = useState(false);
     const [planet, setPlanet] = useState({});
 
     async function unlockPlanet(planet) {
-
-        if (planet == 0)
-            var amount = 600
-        if (planet == 1)
-            var amount = 1000
-        if (planet == 2)
-            var amount = 3000
-        if (planet == 3)
-            var amount = 6000
-        if (planet == 4)
-            var amount = 9000
-        if (planet == 5)
-            var amount = 12000
+        var amount
+        if (planet === 0)
+            amount = 600
+        if (planet === 1)
+            amount = 1000
+        if (planet === 2)
+            amount = 3000
+        if (planet === 3)
+            amount = 6000
+        if (planet === 4)
+            amount = 9000
+        if (planet === 5)
+            amount = 12000
 
         props.stateLoading(true)
 
@@ -72,6 +72,9 @@ const Planet = (props) => {
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
                     <div className="col-12 col-md-9 px-4 py-3 w-market-container">
+                        <div className=''>
+                            <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                        </div>
                         <div className="row">
 
                             <div className="col-12 p-3 bg-dark text-white mb-3 bg-materials-planet">

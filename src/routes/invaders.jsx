@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import urlApi from '../urlApi';
 import invader from '../img/ships/invaders/rat.svg'
+import RecTimer from '../components/recTimer';
 
 const Invaders = (props) => {
 
@@ -32,7 +33,7 @@ const Invaders = (props) => {
                 } else {
                     props.Toast(0, res.data.msg)
                 }
-                console.log(res.data)
+               // console.log(res.data)
                 props.stateLoading(false)
             }).catch(err => {
                 alert(err.message)
@@ -61,6 +62,9 @@ const Invaders = (props) => {
         <div className='invadersBG'>
             <div className="container-fluid p-4">
                 <div className="row">
+                <div className=''>
+                                <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                            </div>
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12">
@@ -93,11 +97,11 @@ const Invaders = (props) => {
                                             return (
                                                 <>
                                                     {
-                                                        item.type == "Fighter" ? <>
+                                                        item.type === "Fighter" ? <>
                                                             <div key={item.id} className="col-12 col-sm-4">
                                                                 <div className="nft">
                                                                     <div className="imgx">
-                                                                        <img className="nft-image2 w-100" src={item.img} />
+                                                                        <img alt="" className="nft-image2 w-100" src={item.img} />
 
                                                                         <div className="id-img">
                                                                             {item.id}

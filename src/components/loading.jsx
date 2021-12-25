@@ -6,7 +6,7 @@ const Loading = (props) => {
 
     useEffect(() => {
         setLoad(props.load)
-    })
+    },[load])
     return (
 
         <>

@@ -11,7 +11,6 @@ import urlApi from '../urlApi';
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
-const eth = window.ethereum;
 
 function Sidebar(props) {
 
@@ -19,15 +18,17 @@ function Sidebar(props) {
     const handleClose = () => setShow(false);
 
     async function buyGm(id) {
-
         props.stateLoading(true)
+        
+        var price = 0
+        var amount = 0
 
-        if (id == 1) {
-            var price = "0.01"
-            var amount = 1000
-        } else if (id == 2) {
-            var price = "0.028"
-            var amount = 3000
+        if (id === 1) {
+            price = "0.01"
+            amount = 1000
+        } else if (id === 2) {
+            price = "0.028"
+            amount = 3000
         }
 
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -69,6 +70,10 @@ function Sidebar(props) {
             })
     }
 
+    const roundBnb = (bnb)=>{
+         return (Math.round(bnb*10000))/10000
+    }
+
     return (
         <div className="sidebar">
             <div className="flex-column text-white sidebar-w">
@@ -79,11 +84,7 @@ function Sidebar(props) {
                             <Link to="/shop" className="btn btn-primary form-control">Shop</Link>
                         </div>
                         <ul className="nav nav-pills flex-column mb-auto">
-                            <li>
-                                <Link to="/login" className="nav-button">
-                                    • Login
-                                </Link>
-                            </li>
+                            
                             <li>
                                 <Link to="/inventory" className="nav-button">
                                     • Inventory
@@ -99,11 +100,21 @@ function Sidebar(props) {
                                     • Invaders
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/refinery" className="nav-button ">
+                                    • Refinery
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/factory" className="nav-button ">
+                                    • Factory
+                                </Link>
+                            </li>
                         </ul>
                         <div className="sidebar-balance pb-3">
                             <div className="d-flex justify-content-between">
                                 <div className="">
-                                    <img className="logo-sidebar" src={bnbLogo} alt="" /> {props.bnb}
+                                    <img className="logo-sidebar" src={bnbLogo} alt="" /> { roundBnb(props.bnb)}
                                 </div>
                                 <div className="">
                                     <img className="logo-sidebar" src={logo} alt="" /> {props.glx}
@@ -118,13 +129,13 @@ function Sidebar(props) {
                                 <div onClick={() => { setShow(true) }} className="gems-exchange d-flex justify-content-between">
 
                                     <div className="d-inline-block">
-                                        <img className="img-gem" src={bnbLogo} />
+                                        <img alt="" className="img-gem" src={bnbLogo} />
                                     </div>
                                     <div className="d-inline-block">
-                                        <img className="img-gem" src={arrow} />
+                                        <img alt="" className="img-gem" src={arrow} />
                                     </div>
                                     <div className="d-inline-block">
-                                        <img className="img-gem" src={gem} />
+                                        <img alt="" className="img-gem" src={gem} />
                                     </div>
                                 </div>
 
@@ -139,13 +150,13 @@ function Sidebar(props) {
                         <div className="d-flex justify-content-between">
                             <div>
                                 <div className="d-inline-block">
-                                    <img className="img-gem" src={bnbLogo} />
+                                    <img alt="" className="img-gem" src={bnbLogo} />
                                 </div>
                                 <div className="d-inline-block mx-3">
-                                    <img className="img-gem" src={arrow} />
+                                    <img alt="" className="img-gem" src={arrow} />
                                 </div>
                                 <div className="d-inline-block">
-                                    <img className="img-gem" src={gem} />
+                                    <img alt="" className="img-gem" src={gem} />
                                 </div>
                             </div>
                         </div>
