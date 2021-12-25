@@ -48,6 +48,7 @@ const App = () => {
         connectOrRegister()
     },[]);
 
+
     async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
             setBNB(web3.utils.fromWei(r, 'ether'))
