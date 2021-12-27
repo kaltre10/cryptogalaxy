@@ -168,6 +168,7 @@ const Planet = (props) => {
                                                         <button onClick={() => {
                                                             setSelectship(true);
                                                             setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8 })
+                                                            props.connectOrRegister()
                                                         }}
                                                             className="btn bg-danger form-control text-white mt-2">
                                                             Mine

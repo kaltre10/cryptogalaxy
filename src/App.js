@@ -46,8 +46,11 @@ const App = () => {
 
     useEffect(() => {
         connectOrRegister()
-    },[]);
+    }, []);
 
+   /* window.ethereum.on('chainChanged', async (chainId) => {
+        switchChain()
+    }*/
 
     async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
@@ -57,21 +60,13 @@ const App = () => {
     //test 97 smart 56
     const net = web3.utils.toHex(97)
 
-    const validateChain = async () => {
-        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' });
-        const chainId = await web3.utils.hexToNumber(chainIdhex)
-        if (chainId !== net) {
-            return false
-        } else {
-            return true
-        }
-
-    }
-
     async function connectOrRegister() {
+
         setLoading(true);
         if (typeof window.ethereum !== 'undefined') {
-            if (validateChain()) {
+            const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+            if (chainIdhex === net) {
+
                 eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
                     const wallet = res[0].toLowerCase();
                     await getShips(wallet);
@@ -91,19 +86,23 @@ const App = () => {
                     });
                 }).catch((err) => {
                     alert(err.message);
-                });
-            } else {
-                // alert("Validate: " + validateChain)
-                alert("Wrong Network: Configure Binance Testnet in Metamask")
+                })
 
-                window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: net }],
-                });
+            } else {
+                alert("Wrong Network: Configure Binance Testnet in Metamask")
+                switchEthereumChain()
             }
         } else {
             alert("Need Metamask extension!")
         }
+    }
+
+    async function switchEthereumChain(){
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: net }],
+        })
+        connectOrRegister()
     }
 
     async function getShips(wallet) {
@@ -118,15 +117,11 @@ const App = () => {
 
         const account = await eth.request({ 'method': 'eth_requestAccounts' })
         const wallet = account[0].toLowerCase()
-        const axiosHeader = { headers: { "Content-Type": "application/json", } }
-        await axios.put(urlApi + "/api/v1/upEnergy", { wallet }, axiosHeader)
-            .then((res) => {
-                console.log(res.data)
-                Toast(1, "Energyzer Actived");
-            })
-            .catch((err) => alert(err))
-
-        connectOrRegister()
+        const axiosHeader = { headers: { "Content-Type": "application/json" } }
+        axios.put(`${urlApi}/api/v1/upEnergy`, { wallet }, axiosHeader)
+            .then(res => console.log(res.data))
+            .catch((err) => alert(err.message))
+            .finally(() => connectOrRegister())
     }
 
     function stateLoading(imp) {
@@ -190,7 +185,7 @@ const App = () => {
                                 <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/market">
-                                <Market user={user} />
+                                <Market user={user} connectOrRegister={connectOrRegister} bnb={bnb} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                             </Route>
                             <Route path="/login">
                                 <Login user={user} connectOrRegister={connectOrRegister} />

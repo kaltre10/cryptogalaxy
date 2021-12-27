@@ -1,127 +1,43 @@
-import React from 'react';
-/* import Web3 from 'web3' */
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Web3 from 'web3'
 
-/* import nft from '../img/nft/miners/aligator.webp';
-import nft2 from '../img/nft/figthers/dolphin.webp';
-import nft4 from '../img/nft/stations/factory.webp'
-import nft5 from '../img/nft/stations/refinery.webp'; */
-
-/* import Loading from '../components/loading';
-import axios from 'axios';
-import Navbar from '../components/topNav'; */
 import Sidebar from '../components/sidebar';
-/* import glxAbi from '../token/glxAbi' */
-/* import urlApi from '../urlApi'; */
+import urlApi from '../urlApi'
 
-//const mainnetProvider = ""
-/* const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
+const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(testnetProvider)
-const glxContract = new web3.eth.Contract(glxAbi, contractOuner) */
+
+/*const glxContract = new web3.eth.Contract(glxAbi, contractOuner) */
 
 const Market = (props) => {
 
-    /* const [wallet, setWallet] = useState('')
-    const [user, setUser] = useState({})
-    const [bnb, setBnb] = useState(10)
-    const [glx, setGlx] = useState(10)
-    const [listItems, setList] = useState([])
-
-    //Loading, alerts and errors
-    const [loading, setLoading] = useState(false)
-    const [errorToast, setErrorToast] = useState(false)
-    const [errorToasText, setErrorToastText] = useState("")
-    const [infoToast, setInfoToast] = useState(false)
-    const [infoToasText, setInfoToastText] = useState("")
-    function getErrorToast(bool, message) { setErrorToast(bool); setErrorToastText(message) }
-    function getInfoToasText(val) { setInfoToastText(val); setInfoToast(true) }
-    function closeAlert() { setErrorToast(false) }
-    function closeInfo() { setInfoToast(false) }
-    //end Loading, alerts and errors
-
-    const date = new Date()
-    const nowDate = Date.now()
-
-    window.ethereum.on('chainChanged', async (chainId) => {
-        switchChain()
-    }
-        //window.location.href = './login'
-    );
+    const [ships, setShips] = useState([])
 
     useEffect(() => {
-        switchChain()
-        connection()
-        getUser()
-        getBnb()
-        getGlx()
-        setList(shipsObj)
+        getAllShips("Miner")
     }, [])
 
-    async function getGlx() {
-        glxContract.methods.balanceOf(contractOuner).call().then((res) => {
-            setGlx(web3.utils.fromWei(res, 'ether'))
-        })
+    const getAllShips = async (type) => {
+        const objShips = await axios.get(urlApi + "/api/v1/getSellingShips/" + type)
+        console.log(objShips.data)
+        setShips(objShips.data)
     }
 
-    async function getBnb() {
-        const accounts = await window.ethereum.request({ "method": "eth_requestAccount" })
-        //const account = accounts[0]
-        setBnb(456)
-    }
+    const buyShipOnMarket = async (ship) => {
 
-    async function getUser() {
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const account = accounts[0].toLowerCase()
-        const user = await axios.get(urlApi + "/api/v1/user/" + account)
-        //console.log("user: +"+user.data[0].wallet)
-        setUser(user.data[0])
-    }
-
-    async function switchChain() {
-        try {
-            await window.ethereum.request({
-                method: "wallet_switchEthereumChain",
-                params: [{ chainId: "0x61" }],
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async function buyNFTDbUpdate(txHash, objSell) {
-        //alert(num + " " + txHash)
-        const hash = txHash
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const account = accounts[0]
-        const wallet = account.toLowerCase()
-        const buyShip = await axios.put(urlApi + "/api/v1/buyship", { wallet, hash, objSell })
-        console.log(buyShip.data)
-        //console.log("Transaction hash:" + hash)
-        getUser()
-        setLoading(false)
-    }
-
-    async function buyNFT(objSell) {
-
-        switchChain()
-        setLoading(true)
-
-        //console.log(objSell)
-
-        //getWallet
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const account = accounts[0]
-
-        const price = objSell.sellPrice;
-        console.log(price);
-
-        await window.ethereum
+        const ac = await window.ethereum.request({ "method": "eth_requestAccounts" })
+        const wallet = ac[0]
+        const own = ship.wallet
+        const price = ship.sellPrice.toString()
+        props.stateLoading(true)
+        window.ethereum
             .request({
                 method: 'eth_sendTransaction',
                 params: [
                     {
-                        from: account,
-                        to: contractOuner,
+                        from: wallet,
+                        to: own,
                         value: web3.utils.toHex(web3.utils.toWei(price, 'ether')),
                         gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
                         gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
@@ -129,21 +45,24 @@ const Market = (props) => {
                 ],
             })
             .then(async (txHash) => {
-                await buyNFTDbUpdate(txHash, objSell)
-                setLoading(false)
-                getInfoToasText("Transaction hash: " + txHash)
-                console.log("Transaction hash: " + txHash)
+
+                const objBuyShip = await axios.put(urlApi + "/api/v1/buyShipMarket", {
+                    ship, wallet,txHash
+                })
+                props.Toast(1,"Success Buy!")
+                console.log(objBuyShip.data)
+                
             })
             .catch((error) => {
-                setLoading(false)
-                getErrorToast(true, error.message)
-                alert("Error Market: " + error.message)
+                props.Toast(0, "Error: " + error.message)
+            }).finally(()=>{
+                props.connectOrRegister()
+                getAllShips("Miner")
+                props.stateLoading(false)
             })
+
+        //alert("Buy:"+ship.name+" wallet:"+ship.wallet+" id:"+ship._id)
     }
-
-    
-     */
-
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
@@ -151,8 +70,13 @@ const Market = (props) => {
                     <div className="col-12 col-md-3 ">
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
-                    <div className="col-12 col-md-9 px-4 py-3 w-market-container">
-
+                    <div className="col-12 col-md-9 p-0 w-market-container">
+                        <div className="bg-market-bar text-white text-center">
+                            <button onClick={() => getAllShips("Miner")} className="btn-market"> Miners ▼</button>
+                            <button onClick={() => getAllShips("Fighter")} className="btn-market"> Figthers ▼</button>
+                            <button onClick={() => getAllShips("Refinery")} className="btn-market"> Refinery ▼</button>
+                            <button onClick={() => getAllShips("Factory")} className="btn-market"> Factory ▼</button>
+                        </div>
                         <div className="w-inventory-item p-2 m-3">
                             <div className="row">
                                 <div className="col-12">
@@ -161,14 +85,64 @@ const Market = (props) => {
                                         <div className="col-12">
                                             <h3 className='text-center bg-title-market'>Market</h3>
 
+                                            {ships.map((ship) => {
+                                                return (
+                                                    <div key={ship._id} className='p-1'>
+                                                        <div className='row gx-2'>
+                                                            <div className='bg-dark text-center  img-ship-market col-2'>
+                                                                <div className=''>
+                                                                    {ship.type} {ship.subType}
+                                                                </div>
+                                                                <img height="60px" src={ship.img} alt="" srcset="" />
+                                                                <div className="energy mt-1">
+                                                                    <div className="border-energy">
+                                                                        {ship.energy > 0 ? <div className="in-energy">  </div> : <></>}
+                                                                        {ship.energy > 1 ? <div className="in-energy">  </div> : <></>}
+                                                                        {ship.energy < 2 ? <div className="out-energy">  </div> : <></>}
+                                                                        {ship.energy < 1 ? <div className="out-energy">  </div> : <></>}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className='col-10'>
+                                                                <div className='d-flex justify-content-between'>
+                                                                    <div>
+                                                                        <h3>{ship.name}</h3>
+                                                                    </div>
+                                                                    <div>
+                                                                        <h3 className='text-warning'>
+                                                                            {ship.sellPrice} BNB
+                                                                        </h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div className='d-flex justify-content-between'>
+                                                                    <div className='w-text-ship-mark'>
+                                                                        <b className='text-white'> ID: </b>  {ship._id}<br />
+                                                                        <b className='text-white'> OWNER: </b> {ship.wallet}<br />
+                                                                        <div className='text-danger p-1 bg-dark'>
+                                                                            Mining Power: {ship.mp} -
+                                                                            Attack Power: {ship.attack === undefined ? <> 0 </> : <>{ship.attack}</>}
 
-                                            <div>
-                                                <ul>
-                                                    <li>Buy and sell mining materials, items and Ships</li>
-                                                    <li>Exchange GM to BNB whith Other players</li>
-                                                </ul>
-                                            </div>
-                                            <p className='text-center'>Coming soon...</p>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div className=''>
+                                                                        {props.loading ? <>
+                                                                        <button className='btn btn-secondary'> <div className='spinner-border' role="status"></div> </button>
+                                                                        </>:<>
+                                                                        <button onClick={() => buyShipOnMarket(ship)} className='btn btn-success'> Buy </button>
+                                                                        </>}
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div><hr />
+                                                    </div>
+                                                )
+                                            })
+                                            }
+
+
                                         </div>
                                     </div>
                                 </div>

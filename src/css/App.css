@@ -1,4 +1,10 @@
 
+:root{
+    --azul-oscuro-trans: rgb(15, 15, 15);
+    --wrap-modal-black:rgba(0, 0, 0, 0.95);
+}
+
+
 body{
     background-color: rgb(40, 42, 46);
 }
@@ -651,4 +657,43 @@ div{
     padding: 0px !important;
     margin: 0px !important;
     font-size: 18px;
+}
+.sellModal{
+    background-color: var(--wrap-modal-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    z-index: 1000;
+}
+.in-content-sell{
+    padding: 10px 20px 20px 20px; 
+    border-radius: 8px;
+    background-color: var(--azul-oscuro-trans);
+
+}
+.close-button{
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 0px 6px;
+    color: rgba(255, 255, 255, 0.5);
+    border:1px solid rgba(255, 255, 255, 0.1);
+}
+.fee{
+    font-size: 12px;
+}
+.onsell{
+    background-color: rgba(209, 142, 18, 0.699);
+    width: 102%;
+    left: 0px;
+    bottom: 40%;
+    padding: 10px;
+    position: absolute;
+}
+.w-text-ship-mark{
+    color: rgb(167, 167, 167);
+    font-size: 14px;
 }

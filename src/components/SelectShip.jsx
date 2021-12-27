@@ -1,8 +1,29 @@
 import React from "react";
 import urlApi from '../urlApi';
 import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const SelectShip = (props) => {
+
+    const [miners, setMiners] = useState({})
+
+    useEffect(() => {
+        getMiners()
+    }, [])
+
+    async function getMiners() {
+        let newMiners = []
+        if (props.ships.length > 0) {
+            props.ships.map((ship) => {
+                if (ship.type === "Miner") {
+                    newMiners.push(ship)
+                }
+            })
+            setMiners(newMiners)
+        }
+
+    }
 
     async function toMine(ship, planet) {
         if (ship.energy >= 1) {
@@ -14,10 +35,10 @@ const SelectShip = (props) => {
                 const axiosParams = { wallet, planet, ship }
                 const axiosUrl = urlApi + "/api/v1/mine";
                 const mine = await axios.put(axiosUrl, axiosParams, axiosHeader);
+                props.connectOrRegister()
                 console.log(mine.data);
                 props.Toast(1, "You have mined " + mine.data.mined + " " + mine.data.material);
                 props.loadingFalse()
-                props.connectOrRegister()
             } else {
                 props.Toast(0, "Insuficient balance GM")
                 props.loadingFalse()
@@ -40,14 +61,13 @@ const SelectShip = (props) => {
                             <button onClick={props.closeShips} className="btn-close-ships" > Close </button>
                         </div>
                         <div className="row">
-
-                            {props.ships.map((item) => {
-                                if(item.type==="Miner"){
+                            {miners.length > 0 ? <>
+                                {miners.map((item) => {
                                     return (
-                                        <div key={item.id} className="col-12 col-sm-6 col-md-3">
+                                        <div key={item._id} className="col-12 col-sm-6 col-md-3">
                                             <div className="nft">
                                                 <div className="img mhe">
-                                                    <img className="nft-image w-100" src={item.img} alt={item.name}/>
+                                                    <img className="nft-image w-100" src={item.img} alt={item.name} />
                                                     <div className="mp-img">
                                                         mp : {item.mp}
                                                     </div>
@@ -62,6 +82,7 @@ const SelectShip = (props) => {
                                                 </div>
     
                                                 <div className="energy">
+                                                    
                                                     <div className="border-energy">
                                                         {item.energy > 0 ? <div className="in-energy">  </div> : <></>}
                                                         {item.energy > 1 ? <div className="in-energy">  </div> : <></>}
@@ -70,6 +91,7 @@ const SelectShip = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className="row gx-0">
+                                                {item.energy}
                                                     <div className="col-6">
                                                         <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                         <p className="text-white m-0 p-0"> mp : {item.mp}</p>
@@ -84,8 +106,10 @@ const SelectShip = (props) => {
                                             </div>
                                         </div>
                                     )
+                                })
                                 }
-                            })}
+                            </>:<></>
+                            }
 
                         </div>
 

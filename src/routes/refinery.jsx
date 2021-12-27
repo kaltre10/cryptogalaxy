@@ -29,9 +29,9 @@ const Refinery = (props) => {
         park()
     }, [props.ships])
 
-    async function park() {
+    function park() {
         var stationsPark = []
-        await props.ships.map((ship) => {
+        props.ships.map((ship) => {
             if (ship.type === "Refinery") {
                 stationsPark.push({
                     ...ship,
@@ -144,10 +144,10 @@ const Refinery = (props) => {
 
     }
 
-    const energyTozero = (energy)=>{
-        if(energy < 1){
+    const energyTozero = (energy) => {
+        if (energy < 1) {
             return 0
-        }else{
+        } else {
             return energy
         }
     }
@@ -160,9 +160,9 @@ const Refinery = (props) => {
                         < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
                     </div>
                     <div className="col-12 col-md-9 px-4 py-3 w-market-container">
-                    <div className=''>
-                                <RecTimer user={props.user} upEnergy={props.upEnergy} />
-                            </div>
+                        <div className=''>
+                            <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                        </div>
                         <div className="row">
                             <div className="col-12 bg-refinery mb-4 text-center">
                                 <h1>Refinery</h1>
@@ -193,8 +193,8 @@ const Refinery = (props) => {
                                                                     <img className="energy-logo mx-1" src={energy} alt="" />
                                                                 </div>
                                                                 <div className="energy-cant ">
-                                                                    { energyTozero(item.energy) }
-                                                                    
+                                                                    {energyTozero(item.energy)}
+
                                                                 </div>
                                                             </div>
                                                             <img className="w-100" src={item.img} alt="" />

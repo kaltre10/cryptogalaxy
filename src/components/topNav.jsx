@@ -9,6 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
+import LinksN from './links';
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
@@ -119,23 +120,7 @@ function TopNav(props) {
             </Offcanvas.Header>
             <Offcanvas.Body className="bg-dark">
               <Nav className="justify-content-end flex-grow-1">
-                <ul className="nav nav-pills flex-column mb-auto">
-                  <li>
-                    <Link onClick={() => setExp(!exp)} to="/login" className="nav-button">
-                      • Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={() => setExp(!exp)} to="/inventory" className="nav-button">
-                      • Inventory
-                    </Link>
-                  </li>
-                  <li>
-                    <Link onClick={() => setExp(!exp)} to="/planet" className="nav-button">
-                      • Planets
-                    </Link>
-                  </li>
-                </ul>
+                <LinksN/>
                 <div className="sidebar-balance pb-3">
                   <div className="d-flex justify-content-between">
                     <div className="">

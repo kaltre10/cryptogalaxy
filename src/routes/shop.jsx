@@ -67,7 +67,7 @@ const Shop = (props) => {
                 props.stateLoading(false)
                 //getErrorToast(true, error.message)
                 console.log(error.message)
-                props.Toast(0,"Transaction denied!")
+                props.Toast(0,error.message)
             })
     }
 

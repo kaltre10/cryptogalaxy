@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import metamask from "../img/assets/metamask.svg"
 import { Link } from 'react-router-dom';
 import logo from "../img/logoglx.svg";
 
 const Login = (props) => {
-
-   /*  const [user, setUser] = useState({ wallet: 0 })
-    useEffect(() => {
-        console.log("effect del login: " + props.user.wallet)
-        setUser(props.user)
-        console.log("desde login" + user.wallet)
-    }, []) */
-
 
     function filterWallet(w) {
         let str1 = w.substr(0, 4);

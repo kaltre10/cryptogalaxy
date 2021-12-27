@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
+import Links from './links';
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
@@ -83,34 +84,7 @@ function Sidebar(props) {
                             <Link to="/market" className="btn btn-wallet form-control mb-3">Market</Link>
                             <Link to="/shop" className="btn btn-primary form-control">Shop</Link>
                         </div>
-                        <ul className="nav nav-pills flex-column mb-auto">
-                            
-                            <li>
-                                <Link to="/inventory" className="nav-button">
-                                    • Inventory
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/planet" className="nav-button">
-                                    • Planets
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/invaders" className="nav-button ">
-                                    • Invaders
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/refinery" className="nav-button ">
-                                    • Refinery
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/factory" className="nav-button ">
-                                    • Factory
-                                </Link>
-                            </li>
-                        </ul>
+                        <Links/>
                         <div className="sidebar-balance pb-3">
                             <div className="d-flex justify-content-between">
                                 <div className="">
