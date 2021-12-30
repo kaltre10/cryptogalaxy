@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { DataContext } from '../context/DataContext';
 import { Navbar, Container, Nav, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import bnbLogo from '../img/assets/bnb.svg';
@@ -14,19 +15,16 @@ const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 
-function TopNav(props) {
-  useEffect(() => {
-    setUser(props.user)
-    console.log(" Desde topNav: " + props.user.wallet)
-  }, [])
+function TopNav() {
 
-  const [user, setUser] = useState({})
+  const { connectOrRegister,bnb,user,loading,stateLoading } = useContext(DataContext)
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
   async function buyGm(id) {
 
-    props.stateLoading(true)
+    stateLoading(true)
     var price = 0
     var amount = 0
     if (id === 1) {
@@ -66,12 +64,12 @@ function TopNav(props) {
 
         console.log("Transaction hash:" + hash);
         setShow(false)
-        props.stateLoading(false);
-        props.connectOrRegister()
+        stateLoading(false);
+        connectOrRegister()
 
       })
       .catch((error) => {
-        props.stateLoading(false);
+        stateLoading(false);
         console.log("Ocurrio el siguiente error: " + error.message)
       })
   }
@@ -100,7 +98,7 @@ function TopNav(props) {
             {user.wallet}
 
           </div>
-          {props.user.wallet !== undefined ? <>
+          {user.wallet !== undefined ? <>
             <Navbar.Toggle onClick={() => setExp(!exp)} aria-controls="offcanvasNavbar" className="d-block d-md-none" />
           </> : <></>}
           <Navbar.Offcanvas
@@ -124,7 +122,7 @@ function TopNav(props) {
                 <div className="sidebar-balance pb-3">
                   <div className="d-flex justify-content-between">
                     <div className="">
-                      <img alt="" className="logo-sidebar" src={bnbLogo} /> {props.bnb}
+                      <img alt="" className="logo-sidebar" src={bnbLogo} /> {bnb}
                     </div>
                     <div className="">
                       <img alt="" className="logo-sidebar" src={logo} /> 0
@@ -189,7 +187,7 @@ function TopNav(props) {
               <div className="mb-2">
                 1000 GM - 0.01 BNB
               </div>
-              {props.loading ? <>
+              {loading ? <>
                 <button className="btn btn-secondary px-4" >
                   <div class="spinner-border" role="status"></div>
                 </button>
@@ -207,7 +205,7 @@ function TopNav(props) {
               <div className="mb-2">
                 3000 gm - 0.028 BNB
               </div>
-              {props.loading ? <>
+              {loading ? <>
                 <button className="btn btn-secondary px-4" >
                   <div class="spinner-border" role="status"></div>
                 </button>

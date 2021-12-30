@@ -697,3 +697,80 @@ div{
     color: rgb(167, 167, 167);
     font-size: 14px;
 }
+.img-factory{
+    border: 1px dotted rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+}
+.select-factory{
+    background-color: rgba(255, 255, 255, 0.247);
+    color: rgb(22, 22, 22);
+    font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, 0.205);
+}
+.bg-const{
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 2px;
+    transition-duration: 0.5s;
+}
+.bg-const:hover{
+    transform: scale(1.01);
+    cursor:pointer;
+    border:1px solid rgba(255, 255, 255, 0.4);
+}
+.materials-to-build{
+    border: 1px dotted rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    min-height: 90px;
+    background: linear-gradient(to bottom, rgba(20, 20, 20,9) 0%, rgba(25,25,25,0.8) 20%, rgba(85, 85, 85, 0.7) 50%, rgba(25, 25, 25, 0.8) 80%, rgba(20, 20, 20, 9) 100%);
+}
+.w-it-build{
+    height: 100%;
+}
+.name-item-build{
+    bottom: 0px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    width: 100%;
+
+}
+.img-build{
+    height: 120px;
+}
+.bg-refined{
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+hr{
+    margin: 3px 0px;
+}
+.asd{
+    padding: 3px;
+    text-align: center;
+    margin-bottom: 3px;
+}
+.wasd{
+    background-color: rgba(102, 102, 102, 0.199);
+    border: 1px solid rgba(34, 34, 34, 0.404);
+    border-radius: 3px;
+    color: rgba(109, 109, 109, 0.486);
+}
+.wasd-success{
+    background-color: rgba(13, 102, 25, 0.527);
+    border: 1px solid rgba(16, 102, 38, 0.747);
+    color: rgba(87, 255, 95, 0.753);
+    border-radius: 3px;
+}
+.he-1{
+    height: 40px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+.border-radius{
+    border-radius: 8px;
+}

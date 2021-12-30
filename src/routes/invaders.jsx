@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DataContext } from '../context/DataContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import urlApi from '../urlApi';
 import invader from '../img/ships/invaders/rat.svg'
 import RecTimer from '../components/recTimer';
 
-const Invaders = (props) => {
+const Invaders = () => {
+
+    const { ships, upEnergy, connectOrRegister, user, loading, stateLoading, Toast } = useContext(DataContext)
 
     const [ship, setShip] = useState({})
 
     function getEnergy(ship) {
         if (ship.energy <= 0) {
-            props.Toast(0, "No Energy!")
+            Toast(0, "No Energy!")
         } else {
             setShip(ship)
         }
@@ -22,39 +25,39 @@ const Invaders = (props) => {
     }
 
     async function attack(def) {
-        props.stateLoading(true)
+        stateLoading(true)
         if (ship.energy > 0) {
             //alert("energia: "+ship.energy)
-            const wallet = props.user.wallet.toLowerCase()
+            const wallet = user.wallet.toLowerCase()
             axios.put(urlApi + "/api/v1/attack", { wallet, def, ship }).then((res) => {
-                props.connectOrRegister()
+                connectOrRegister()
                 if (res.data.win) {
-                    props.Toast(1, res.data.msg)
+                    Toast(1, res.data.msg)
                 } else {
-                    props.Toast(0, res.data.msg)
+                    Toast(0, res.data.msg)
                 }
-               // console.log(res.data)
-                props.stateLoading(false)
+                // console.log(res.data)
+                stateLoading(false)
             }).catch(err => {
                 alert(err.message)
-                props.stateLoading(false)
+                stateLoading(false)
 
             })
 
             /*
                 .then((res) => {
                     if (res.data.win) {
-                        props.Toast(1, res.data.msg)
+                        Toast(1, res.data.msg)
                     } else {
-                        props.Toast(0, res.data.msg)
+                        Toast(0, res.data.msg)
                     }
                     console.log(res.data)
 
-                    props.connectOrRegister()
+                    connectOrRegister()
                 })
                 .catch(err => console.log(err)) */
         } else {
-            props.Toast(0, "No energy!")
+            Toast(0, "No energy!")
         }
     }
 
@@ -62,20 +65,20 @@ const Invaders = (props) => {
         <div className='invadersBG'>
             <div className="container-fluid p-4">
                 <div className="row">
-                <div className=''>
-                                <RecTimer user={props.user} upEnergy={props.upEnergy} />
-                            </div>
+
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12">
-                                <div className='bg-battle-zone d-flex justify-content-between'>
+                                <div className='bg-battle-zone d-flex justify-content-between align-items-center'>
                                     <Link to="/inventory" className='btn btn-primary'>
                                         ← Back
                                     </Link>
                                     <div className=' text-center'>
                                         <h3> Battle Zone </h3>
                                     </div>
-                                    <div></div>
+                                    <div className=''>
+                                        <RecTimer />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -88,12 +91,12 @@ const Invaders = (props) => {
                         <div className='invader-content p-2'>
                             <div className='d-flex justify-content-between px-4 bg-h3-invader-title mb-2'>
                                 <h3 className='text-center'>My ships</h3>
-                                <h3 className='text-warning'>{props.user.gm} Gm</h3>
+                                <h3 className='text-warning'>{user.gm} Gm</h3>
                             </div>
                             <div className='p-1'>
                                 <div className='row gx-2 gy-2'>
-                                    {props.user.wallet != null ? <>
-                                        {props.ships.map((item) => {
+                                    {user.wallet != null ? <>
+                                        {ships.map((item) => {
                                             return (
                                                 <>
                                                     {
@@ -127,7 +130,7 @@ const Invaders = (props) => {
                                                                             <p className="text-white m-0 pt-1"> ATK {item.attack} </p>
                                                                         </div>
                                                                         <div className="col-6">
-                                                                            {props.loading ? <button className="btn btn-secondary"> Attacking... </button> :
+                                                                            {loading ? <button className="btn btn-secondary"> Attacking... </button> :
                                                                                 <button onClick={() => { getEnergy(item) }} className="btn bg-danger form-control text-white"> Atack </button>
                                                                             }
 
@@ -158,7 +161,7 @@ const Invaders = (props) => {
                             <h3 className='text-center bg-h3-invader-title p-1'>Invaders</h3>
                             <div className="row p-2">
 
-                            <div className="col-3">
+                                <div className="col-3">
                                     <h4 className='text-center'>Inv T1</h4>
                                     <div className='bg-invader-enemy p-2'>
                                         <img src={invader} alt="" className='img-fluid' srcset="" />
@@ -183,7 +186,7 @@ const Invaders = (props) => {
                                     </div>
                                     <div className='text-center'>
                                         {ship.attack != null ? <>
-                                            {props.loading ?
+                                            {loading ?
                                                 <button className='btn btn-secondary mt-2'> → Loading ← </button>
                                                 :
                                                 <button onClick={() => attack(40)} className='btn btn-danger mt-2'> → Select ← </button>
@@ -218,7 +221,7 @@ const Invaders = (props) => {
                                     </div>
                                     <div className='text-center'>
                                         {ship.attack != null ? <>
-                                            {props.loading ?
+                                            {loading ?
                                                 <button className='btn btn-secondary mt-2'> → Loading ← </button>
                                                 :
                                                 <button onClick={() => attack(120)} className='btn btn-danger mt-2'> → Select ← </button>
@@ -253,7 +256,7 @@ const Invaders = (props) => {
                                     </div>
                                     <div className='text-center'>
                                         {ship.attack != null ? <>
-                                            {props.loading ?
+                                            {loading ?
                                                 <button className='btn btn-secondary mt-2'> → Loading ← </button>
                                                 :
                                                 <button onClick={() => attack(320)} className='btn btn-danger mt-2'> → Select ← </button>
@@ -288,7 +291,7 @@ const Invaders = (props) => {
                                     </div>
                                     <div className='text-center'>
                                         {ship.attack != null ? <>
-                                            {props.loading ?
+                                            {loading ?
                                                 <button className='btn btn-secondary mt-2'> → Loading ← </button>
                                                 :
                                                 <button onClick={() => attack(720)} className='btn btn-danger mt-2'> → Select ← </button>

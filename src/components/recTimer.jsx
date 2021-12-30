@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
+import { DataContext } from "../context/DataContext";
+const RecTimer = () => {
 
-const RecTimer = (props) => {
+    const { user,upEnergy } = useContext(DataContext)
 
     const [h, setH] = useState(0);
     const [m, setM] = useState(0);
@@ -8,8 +10,8 @@ const RecTimer = (props) => {
     const [time, setTime] = useState(3600);
 
     useEffect(() => {
-        if (props.user.wallet != null) {
-            const asig = Math.round((props.user.recharge - Date.now()) / 1000)
+        if (user.wallet != null) {
+            const asig = Math.round((user.recharge - Date.now()) / 1000)
             setTime(asig)
             rechargeTime()
         }
@@ -32,7 +34,7 @@ const RecTimer = (props) => {
     function rechargeTime() {
         if (time <= 1) {
            // alert(time)
-           props.upEnergy(props.user.wallet)
+           upEnergy(user.wallet)
         }
     }
 
