@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { DataContext } from "../context/DataContext";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
 import Ares from '../img/planets/Ares.webp';
@@ -7,7 +8,6 @@ import Elion from '../img/planets/Elion.webp';
 import Fiz from '../img/planets/Fiz.webp';
 import Seea from '../img/planets/Seea.webp';
 import Terrat from '../img/planets/Terrat.webp';
-import urlApi from "../urlApi";
 import SelectShip from "../components/SelectShip";
 import gm from '../img/gems.svg';
 import iron from '../img/meterials/crud/iron.webp';
@@ -18,113 +18,73 @@ import diamond from '../img/meterials/crud/diamond.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
 import RecTimer from "../components/recTimer";
 
-const Planet = (props) => {
-
-    const [selectships, setSelectship] = useState(false);
-    const [planet, setPlanet] = useState({});
-
-    async function unlockPlanet(planet) {
-        var amount
-        if (planet === 0)
-            amount = 600
-        if (planet === 1)
-            amount = 1000
-        if (planet === 2)
-            amount = 3000
-        if (planet === 3)
-            amount = 6000
-        if (planet === 4)
-            amount = 9000
-        if (planet === 5)
-            amount = 12000
-
-        props.stateLoading(true)
-
-        if (props.user.gm > amount) {
-            const wallet = props.user.wallet.toLowerCase()
-            const unlock = await axios.put(urlApi + "/api/v1/unlockPlanet", { planet, wallet, amount })
-            props.Toast(1, "planet Unlocked")
-            console.log(unlock)
-            props.stateLoading(false)
-            props.connectOrRegister()
-        } else {
-            props.Toast(0, "Insuficient GM balance!")
-            props.stateLoading(false)
-            props.connectOrRegister()
-        }
-    }
-
-    function mineryLevel(xp) {
-        if (xp < 100) {
-            return 1
-        } else if (xp >= 100 && xp < 200) {
-            return 2
-        }
-    }
+const Planet = () => {
+    const {  upEnergy,user,loading,setSelectship,mineryLevel,setPlanet,unlockPlanet } = useContext(DataContext)
 
     return (
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
 
-                <SelectShip ships={props.ships} connectOrRegister={props.connectOrRegister} loading={props.loading} loadingFalse={() => { props.stateLoading(false) }} loadingTrue={() => props.stateLoading(true)} selectship={selectships} closeShips={() => setSelectship(false)} user={props.user} planet={planet} Toast={props.Toast} />
+                <SelectShip  />
+
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
-                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
+                        < Sidebar />
                     </div>
                     <div className="col-12 col-md-9 px-4 py-3 w-market-container">
                         <div className=''>
-                            <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                            <RecTimer user={user} upEnergy={upEnergy} />
                         </div>
                         <div className="row">
 
                             <div className="col-12 p-3 bg-dark text-white mb-3 bg-materials-planet">
                                 <div className="row">
                                     <div className="col-12 text-center ">
-                                        <h4 className="bg-title-market">Minery level: {props.user.wallet != null ? <>
-                                            {mineryLevel(props.user.xp.minery)}
+                                        <h4 className="bg-title-market">Minery level: {user.wallet != null ? <>
+                                            {mineryLevel(user.xp.minery)}
                                         </> : <></>
                                         }</h4>
                                     </div>
                                     <div className="col-2 text-center">
                                         Iron:<br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.iron}
+                                        {user.wallet != null ? <>
+                                            {user.materials.iron}
                                         </> : <></>
                                         }
 
                                     </div>
                                     <div className="col-2 text-center">
                                         Silver:<br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.silver}
+                                        {user.wallet != null ? <>
+                                            {user.materials.silver}
                                         </> : <></>
                                         }
                                     </div>
                                     <div className="col-2 text-center">
                                         Gold: <br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.gold}
+                                        {user.wallet != null ? <>
+                                            {user.materials.gold}
                                         </> : <></>
                                         }
                                     </div>
                                     <div className="col-2 text-center">
                                         Diamond: <br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.diamond}
+                                        {user.wallet != null ? <>
+                                            {user.materials.diamond}
                                         </> : <></>
                                         }
                                     </div>
                                     <div className="col-2 text-center">
                                         Ice: <br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.ice}
+                                        {user.wallet != null ? <>
+                                            {user.materials.ice}
                                         </> : <></>
                                         }
                                     </div>
                                     <div className="col-2 text-center">
                                         Petroleum:<br />
-                                        {props.user.wallet != null ? <>
-                                            {props.user.materials.petroleum}
+                                        {user.wallet != null ? <>
+                                            {user.materials.petroleum}
                                         </> : <></>
                                         }
                                     </div>
@@ -145,11 +105,6 @@ const Planet = (props) => {
                                                 <div >
                                                     <h2 className="text-white m-0 p-0">Terrat</h2>
                                                     <p className="m-0 p-0 text-white"> LVL 1</p>
-                                                    {/* <p className="border p-2">
-                                                        {props.user.wallet != null ? <>
-                                                            Your minery level: {props.user.xp.minery}
-                                                        </> : <>x</>}
-                                                    </p> */}
                                                     <p className="m-0 price p-0 mb-1"> Iron planet</p>
                                                     <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.8</b></p>
 
@@ -162,13 +117,12 @@ const Planet = (props) => {
                                                 </div>
                                             </div>
 
-                                            {props.user.wallet != null ? <>
-                                                {props.user.planets[0] !== 0 ?
+                                            {user.wallet != null ? <>
+                                                {user.planets[0] !== 0 ?
                                                     <div>
                                                         <button onClick={() => {
                                                             setSelectship(true);
                                                             setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8 })
-                                                            props.connectOrRegister()
                                                         }}
                                                             className="btn bg-danger form-control text-white mt-2">
                                                             Mine
@@ -176,7 +130,7 @@ const Planet = (props) => {
                                                     </div>
                                                     :
                                                     <div>
-                                                        {props.loading ?
+                                                        {loading ?
                                                             <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                             :
                                                             <button onClick={() => { unlockPlanet(0) }} className="btn bg-success form-control mt-2 text-white ">
@@ -221,8 +175,8 @@ const Planet = (props) => {
                                             </div>
 
                                             <div>
-                                                {props.user.wallet != null ? <>
-                                                    {props.user.planets[1] !== 0 ?
+                                                {user.wallet != null ? <>
+                                                    {user.planets[1] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
@@ -233,7 +187,7 @@ const Planet = (props) => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {props.loading ?
+                                                            {loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
                                                                 <button onClick={() => { unlockPlanet(1) }} className="btn bg-success form-control mt-2 text-white ">
@@ -276,9 +230,9 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {props.user.wallet != null ? <>
+                                            {user.wallet != null ? <>
                                                 {
-                                                    props.user.planets[2] !== 0 ?
+                                                    user.planets[2] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
@@ -289,7 +243,7 @@ const Planet = (props) => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {props.loading ?
+                                                            {loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
                                                                 <button onClick={() => { unlockPlanet(2) }} className="btn bg-success form-control mt-2 text-white ">
@@ -333,10 +287,10 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {props.user.wallet != null ? <>
+                                            {user.wallet != null ? <>
 
                                                 {
-                                                    props.user.planets[3] !== 0 ?
+                                                    user.planets[3] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
@@ -347,7 +301,7 @@ const Planet = (props) => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {props.loading ?
+                                                            {loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
                                                                 <button onClick={() => { unlockPlanet(3) }} className="btn bg-success form-control mt-2 text-white ">
@@ -389,10 +343,10 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {props.user.wallet != null ? <>
+                                            {user.wallet != null ? <>
 
                                                 {
-                                                    props.user.planets[4] !== 0 ?
+                                                    user.planets[4] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
@@ -403,7 +357,7 @@ const Planet = (props) => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {props.loading ?
+                                                            {loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
                                                                 <button onClick={() => { unlockPlanet(4) }} className="btn bg-success form-control mt-2 text-white ">
@@ -448,10 +402,10 @@ const Planet = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {props.user.wallet != null ? <>
+                                            {user.wallet != null ? <>
 
                                                 {
-                                                    props.user.planets[5] !== 0 ?
+                                                    user.planets[5] !== 0 ?
                                                         <div>
                                                             <button onClick={() => {
                                                                 setSelectship(true);
@@ -462,7 +416,7 @@ const Planet = (props) => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            {props.loading ?
+                                                            {loading ?
                                                                 <button className="btn bg-secondary form-control mt-2 px-5 text-white">Loading...</button>
                                                                 :
                                                                 <button onClick={() => { unlockPlanet(5) }} className="btn bg-success form-control mt-2 text-white ">

@@ -12,9 +12,23 @@ const miners = [
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"Miner",
-        "subType":"T1",
-        "charge":0
+        "type": "Miner",
+        "subType": "T1",
+        "charge": 0,
+        "recipe": [
+            {
+                "item": "Ironbar",
+                "cant": 140,
+            },
+            {
+                "item": "Silverbar",
+                "cant": 10
+            },
+            {
+                "item": "Oil",
+                "cant": 1,
+            },
+        ]
     },
     {
         "name": "Amarant",
@@ -29,9 +43,22 @@ const miners = [
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"Miner",
-        "subType":"T2",
-        "charge":0
+        "type": "Miner",
+        "subType": "T2",
+        "charge": 0,
+        "recipe": [
+            {
+                "item": "Silverbar",
+                "cant": 80,
+            },
+            {
+                "item": "Oil",
+                "cant": 3,
+            },{
+                "item": "Icebar",
+                "cant": 5
+            }
+        ]
     },
     {
         "name": "Conrrat",
@@ -46,9 +73,22 @@ const miners = [
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"Miner",
-        "subType":"T3",
-        "charge":0
+        "type": "Miner",
+        "subType": "T3",
+        "charge": 0,
+        "recipe": [
+            {
+                "item": "Goldbar",
+                "cant": 60,
+            },
+            {
+                "item": "Oil",
+                "cant": 9,
+            },{
+                "item": "Icebar",
+                "cant": 10
+            }
+        ]
     },
     {
         "name": "RockWar",
@@ -63,11 +103,27 @@ const miners = [
         "energy": 2,
         "shield": 100,
         "damage": 100,
-        "type":"Miner",
-        "subType":"T4",
-        "charge":0
-    },
-    
+        "type": "Miner",
+        "subType": "T4",
+        "charge": 0,
+        "recipe": [
+            {
+                "item": "Cutdiamond",
+                "cant": 20,
+            },
+            {
+                "item": "Goldbar",
+                "cant": 25,
+            },
+            {
+                "item": "Oil",
+                "cant": 12,
+            },{
+                "item": "Icebar",
+                "cant": 20
+            }
+        ]
+    }
 
 ]
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Link } from 'react-router-dom';
 import bnbLogo from '../img/assets/bnb.svg';
 import gem from '../img/gems.svg';
@@ -9,17 +9,21 @@ import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
 import Links from './links';
+import { DataContext } from '../context/DataContext';
+
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 
-function Sidebar(props) {
+function Sidebar() {
+
+    const { glx,connectOrRegister,bnb,user,loading,stateLoading } = useContext(DataContext)
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
 
     async function buyGm(id) {
-        props.stateLoading(true)
+        stateLoading(true)
         
         var price = 0
         var amount = 0
@@ -61,12 +65,12 @@ function Sidebar(props) {
 
                 console.log("Transaction hash:" + hash);
                 setShow(false)
-                props.stateLoading(false);
-                props.connectOrRegister()
+                stateLoading(false);
+                connectOrRegister()
 
             })
             .catch((error) => {
-                props.stateLoading(false);
+                stateLoading(false);
                 console.log("Ocurrio el siguiente error: " + error.message)
             })
     }
@@ -88,13 +92,13 @@ function Sidebar(props) {
                         <div className="sidebar-balance pb-3">
                             <div className="d-flex justify-content-between">
                                 <div className="">
-                                    <img className="logo-sidebar" src={bnbLogo} alt="" /> { roundBnb(props.bnb)}
+                                    <img className="logo-sidebar" src={bnbLogo} alt="" /> { roundBnb(bnb)}
                                 </div>
                                 <div className="">
-                                    <img className="logo-sidebar" src={logo} alt="" /> {props.glx}
+                                    <img className="logo-sidebar" src={logo} alt="" /> {glx}
                                 </div>
                                 <div className="">
-                                    <img className="logo-sidebar" src={gem} alt="" /> {props.user.gm}
+                                    <img className="logo-sidebar" src={gem} alt="" /> {user.gm}
                                 </div>
                             </div>
                             <div className="w-gems mt-4">
@@ -146,7 +150,7 @@ function Sidebar(props) {
                             <div className="mb-2">
                                 1000 GM - 0.01 BNB
                             </div>
-                            {props.loading ? <>
+                            {loading ? <>
                                 <button className="btn btn-secondary px-4" >
                                     <div class="spinner-border" role="status"></div>
                                 </button>
@@ -164,7 +168,7 @@ function Sidebar(props) {
                             <div className="mb-2">
                                 3000 gm - 0.028 BNB
                             </div>
-                            {props.loading ? <>
+                            {loading ? <>
                                 <button className="btn btn-secondary px-4" >
                                     <div class="spinner-border" role="status"></div>
                                 </button>

@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { DataContext } from '../context/DataContext';
+
 import Sidebar from '../components/sidebar'
 import RecTimer from '../components/recTimer';
 import axios from 'axios'
 import urlApi from '../urlApi'
 import Web3 from 'web3'
 
-import iron from '../img/meterials/crud/iron.webp';
 import iron_bar from '../img/meterials/refined/iron_bar.webp';
 import silver_bar from '../img/meterials/refined/silver_bar.webp';
 import gold_bar from '../img/meterials/refined/gold_bar.webp';
+import cut_diamond from '../img/meterials/refined/cut_diamond.webp';
 import ice_bar from '../img/meterials/refined/ice_bar.webp';
 import oil from '../img/meterials/refined/oil.webp';
-import cut_diamond from '../img/meterials/refined/cut_diamond.webp';
 
+import iron from '../img/meterials/crud/iron.webp';
 import silver from '../img/meterials/crud/silver.webp';
 import gold from '../img/meterials/crud/gold.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
@@ -22,7 +24,9 @@ import petroleum from '../img/meterials/crud/petroleum.webp';
 const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(testnetProvider)
 
-function Inventory(props) {
+function Inventory() {
+    
+    const { ships,connectOrRegister,bnb,user,loading,stateLoading,Toast } = useContext(DataContext)
 
     const [sellPrice, setSellPrice] = useState(0);
     const [selling, setSelling] = useState(false);
@@ -52,11 +56,11 @@ function Inventory(props) {
             wallet
         }, headers)
         if (res.data.error) {
-            props.Toast(0, res.data.message);
+            Toast(0, res.data.message);
         } else {
-            props.Toast(1, res.data.message)
+            Toast(1, res.data.message)
         }
-        props.connectOrRegister()
+        connectOrRegister()
     }
 
     const sell = async (objSell) => {
@@ -64,7 +68,7 @@ function Inventory(props) {
         if (sellPrice <= 0) {
             alert("Incorrect price, not sellin in 0bnb")
         } else {
-            props.stateLoading(true)
+            stateLoading(true)
             const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
             const account = accounts[0]
             await window.ethereum
@@ -91,19 +95,19 @@ function Inventory(props) {
                         sellPrice
                     }, headers)
                     if (res.data.error) {
-                        props.Toast(0, res.data.message);
+                        Toast(0, res.data.message);
                     } else {
-                        props.Toast(1, res.data.message)
+                        Toast(1, res.data.message)
                     }
 
                 })
                 .catch((error) => {
                     //getErrorToast(true, error.message)
                     console.log(error.message)
-                    props.Toast(0, error.message)
+                    Toast(0, error.message)
                 }).finally(() => {
-                    props.connectOrRegister()
-                    props.stateLoading(false)
+                    connectOrRegister()
+                    stateLoading(false)
                     reset()
                 })
             console.log(objSell)
@@ -144,7 +148,7 @@ function Inventory(props) {
                             </h3>
                         </div>
                         <div className='mt-2'>
-                            {props.loading ? <>
+                            {loading ? <>
                                 <button className='btn btn-secondary form-control'> <div className="spinner-border" role="status"></div> </button>
                             </> : <>
                                 <button onClick={() => { sell(ship) }} className='btn btn-primary form-control'> Sell </button>
@@ -159,7 +163,7 @@ function Inventory(props) {
 
                 <div className="row gx-0">
                     <div className="col-3 bg-danger d-none d-md-block">
-                        < Sidebar glx={props.glx} connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
+                        < Sidebar />
                     </div>
 
                     <div className="col-12 col-md-9">
@@ -167,7 +171,7 @@ function Inventory(props) {
 
 
                             <div className=''>
-                                <RecTimer user={props.user} upEnergy={props.upEnergy} />
+                                <RecTimer />
                             </div>
                             <div className="w-inventory-item p-2">
                                 <div className="row">
@@ -175,11 +179,11 @@ function Inventory(props) {
                                         <h3 className="text-center bg-title-market"> Ships </h3>
 
                                     </div>
-                                    {props.loading ? <div className='w-100 text-center'>
+                                    {loading ? <div className='w-100 text-center'>
                                         <div className="spinner-border" role="status"></div>
                                     </div> : <>
-                                        {props.user.wallet !== undefined ?
-                                            props.ships.map((item) => {
+                                        {user.wallet !== undefined ?
+                                            ships.map((item) => {
                                                 return (
                                                     <div key={item._id} className="col-12 col-sm-6 col-xl-3 ">
                                                         <div className="nft">
@@ -248,9 +252,9 @@ function Inventory(props) {
                             <div className="w-inventory-item p-3">
                                 <h3 className="text-center bg-title-market"> Materials </h3>
 
-                                {props.user.wallet !== undefined ? <>
+                                {user.wallet !== undefined ? <>
                                     <div className="row">
-                                        {props.user.materials.iron > 0 ? <>
+                                        {user.materials.iron > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -261,12 +265,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.iron}
+                                                        {user.materials.iron}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.materials.silver > 0 ? <>
+                                        {user.materials.silver > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -277,13 +281,13 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.silver}
+                                                        {user.materials.silver}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
 
-                                        {props.user.materials.gold > 0 ? <>
+                                        {user.materials.gold > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -294,13 +298,13 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.gold}
+                                                        {user.materials.gold}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>
                                         }
-                                        {props.user.materials.diamond > 0 ? <>
+                                        {user.materials.diamond > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -311,12 +315,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.diamond}
+                                                        {user.materials.diamond}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.materials.ice > 0 ? <>
+                                        {user.materials.ice > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -327,12 +331,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.ice}
+                                                        {user.materials.ice}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.materials.petroleum > 0 ? <>
+                                        {user.materials.petroleum > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -343,7 +347,7 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.materials.petroleum}
+                                                        {user.materials.petroleum}
                                                     </div>
                                                 </div>
                                             </div>
@@ -356,9 +360,9 @@ function Inventory(props) {
                             <div className="w-inventory-item p-3">
                                 <h3 className="text-center bg-title-market"> Refined Materials </h3>
 
-                                {props.user.wallet !== undefined ? <>
+                                {user.wallet !== undefined ? <>
                                     <div className="row">
-                                        {props.user.refined.ironbar > 0 ? <>
+                                        {user.refined.ironbar > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -369,12 +373,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.ironbar}
+                                                        {user.refined.ironbar}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.refined.silverbar > 0 ? <>
+                                        {user.refined.silverbar > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -385,12 +389,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.silverbar}
+                                                        {user.refined.silverbar}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.refined.goldbar > 0 ? <>
+                                        {user.refined.goldbar > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -401,12 +405,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.goldbar}
+                                                        {user.refined.goldbar}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.refined.cutdiamond > 0 ? <>
+                                        {user.refined.cutdiamond > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -416,12 +420,12 @@ function Inventory(props) {
                                                         <img alt="" height="50px" className="" src={cut_diamond} />
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.cutdiamond}
+                                                        {user.refined.cutdiamond}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.refined.icebar > 0 ? <>
+                                        {user.refined.icebar > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -432,12 +436,12 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.icebar}
+                                                        {user.refined.icebar}
                                                     </div>
                                                 </div>
                                             </div>
                                         </> : <></>}
-                                        {props.user.refined.oil > 0 ? <>
+                                        {user.refined.oil > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
                                                 <div className="p-2 material-bg text-center ">
                                                     <div>
@@ -448,7 +452,7 @@ function Inventory(props) {
 
                                                     </div>
                                                     <div className="text-white">
-                                                        {props.user.refined.oil}
+                                                        {user.refined.oil}
                                                     </div>
                                                 </div>
                                             </div>
@@ -470,8 +474,8 @@ function Inventory(props) {
                                 <div className="row">
                                     <div className="col-12">
                                         <h3 className='text-center bg-title-market'>Account XP</h3>
-                                        {props.user.wallet !== undefined ? <>
-                                            Minery: {props.user.xp.minery}
+                                        {user.wallet !== undefined ? <>
+                                            Minery: {user.xp.minery}
                                         </> : <></>}
                                     </div>
                                 </div>

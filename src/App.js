@@ -1,8 +1,11 @@
+import React, { useContext } from 'react';
+import { DataProvider } from './context/DataContext';
+import { DataContext } from './context/DataContext';
+
 import './css/App.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Market from './routes/market'
 import Inventory from './routes/inventory'
-import React from 'react';
 import Login from './routes/login'
 import Planet from './routes/planet'
 import urlApi from './urlApi';
@@ -48,9 +51,9 @@ const App = () => {
         connectOrRegister()
     }, []);
 
-   /* window.ethereum.on('chainChanged', async (chainId) => {
-        switchChain()
-    }*/
+    /* window.ethereum.on('chainChanged', async (chainId) => {
+         switchChain()
+     }*/
 
     async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
@@ -61,7 +64,6 @@ const App = () => {
     const net = web3.utils.toHex(97)
 
     async function connectOrRegister() {
-
         setLoading(true);
         if (typeof window.ethereum !== 'undefined') {
             const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
@@ -97,7 +99,7 @@ const App = () => {
         }
     }
 
-    async function switchEthereumChain(){
+    async function switchEthereumChain() {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: net }],
@@ -158,73 +160,52 @@ const App = () => {
     }
 
     return (
-        <Router>
-            <ToastContainer theme="dark" className="z-index-max" />
-            <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
+        <DataProvider>
+            
+            <Router>
+                <ToastContainer theme="dark" className="z-index-max" />
+                <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
 
-            <div className="container-fluid p-0">
-                <div className="row gx-0">
-                    <div className="col-12">
-                        <Switch>
-                            <Route path="/inventory">
-                                <Inventory ships={ships} glx={glx} upEnergy={upEnergy} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/planet">
-                                <Planet ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/shop">
-                                <Shop connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/invaders">
-                                <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/refinery">
-                                <Refinery ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/factory">
-                                <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/market">
-                                <Market user={user} connectOrRegister={connectOrRegister} bnb={bnb} loading={loading} stateLoading={stateLoading} Toast={Toast} />
-                            </Route>
-                            <Route path="/login">
-                                <Login user={user} connectOrRegister={connectOrRegister} />
-                            </Route>
-                            <Route path="/" exact>
-                                <Login user={user} connectOrRegister={connectOrRegister} />
-                            </Route>
-                        </Switch>
+                <div className="container-fluid p-0">
+                    <div className="row gx-0">
+                        <div className="col-12">
+                            <Switch>
+                                <Route path="/inventory">
+                                    <Inventory/>
+                                </Route>
+                                <Route path="/planet">
+                                    <Planet/>
+                                </Route>
+                                <Route path="/shop">
+                                    <Shop/>
+                                </Route>
+                                <Route path="/invaders">
+                                    <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                </Route>
+                                <Route path="/refinery">
+                                    <Refinery ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                </Route>
+                                <Route path="/factory">
+                                    <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                </Route>
+                                <Route path="/market">
+                                    <Market user={user} connectOrRegister={connectOrRegister} bnb={bnb} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                </Route>
+                                <Route path="/login">
+                                    <Login user={user} connectOrRegister={connectOrRegister} />
+                                </Route>
+                                <Route path="/" exact>
+                                    <Login user={user} connectOrRegister={connectOrRegister} />
+                                </Route>
+                            </Switch>
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </Router>
 
-
-            {/* <div className="bg-img-planet">
-
-                <Navbar connect={connect} wallet={wallet} />
-                <div className="w3-sidebar side">
-                    <Sidebar mas={mas} menos={menos} gemBalance={gemBalance} bnbBalance={bnbBalance} glxBalance={glxBalance} />
-                </div>
-                <div className="w3-container">
-                    <Switch>
-                        <Route path="/market">
-                            <Market buy={buy} />
-                         </Route>
-                        <Route path="/inventory">
-                            <Inventory />
-                        </Route>
-                        <Route path="/expeditions">
-                            <Expeditions />
-                        </Route>
-                        <Route path="/" exact>
-                            <Market />
-                        </Route>
-                    </Switch>
-                </div>
-            </div> */}
-        </Router>
+        </DataProvider>
     )
 }
 
