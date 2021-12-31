@@ -226,13 +226,19 @@ export const DataProvider = ({ children }) => {
     }
 
     function mineryLevel(xp) {
-        if (xp < 100) {
+        if (xp < 58) 
             return 1
-        } else if (xp >= 100 && xp < 200) {
+        if (xp >= 58 && xp < 420 )
             return 2
-        }
+        if (xp >= 420 && xp < 1080 ) 
+            return 3
+        if( xp >= 1080 && xp < 2012)
+            return 4
+        if(xp >= 2012 && xp < 2920)
+            return 5
+        if(xp >= 2920)
+            return 6      
     }
-    //xxx
 
     async function prepareMaterial(station, material, cant) {
         if (cant < 5) {

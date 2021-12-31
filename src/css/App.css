@@ -460,13 +460,13 @@ div{
     background-color: rgba(42, 44, 46, 0.226);
 }
 .w-button-close-ship{
-    background-color: rgba(0, 0, 0, 0.452);
+    background-color: rgba(71, 70, 70, 0.699);
     border-radius: 10px 0px 10px 0px;
 }
 .btn-close-ships{
     border-radius: 10px 0px 10px 0px;
     color: rgb(212, 211, 211);
-    background-color: rgb(100, 100, 100);
+    background-color: rgb(121, 13, 13);
 }
 .center-ships{
     overflow-y: auto;
@@ -773,4 +773,17 @@ hr{
 }
 .border-radius{
     border-radius: 8px;
+}
+.blockPlanet{
+    border:1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center; 
+}
+
+.unlocklvl{
+    background-color: blanchedalmond;
+    border-radius: 20px;
+    display: block;
+    color: rgb(44, 40, 48);
 }
