@@ -57,8 +57,6 @@ const SelectShip = () => {
                     },5000)
                 })
 
-
-
                 //// console.log(mine.status);
                 //Toast(1, "You have mined " + mine.data.mined + " " + mine.data.material);
             } else {
@@ -104,9 +102,7 @@ const SelectShip = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div className="energy">
-
                                                     <div className="border-energy">
                                                         {item.energy > 0 ? <div className="in-energy">  </div> : <></>}
                                                         {item.energy > 1 ? <div className="in-energy">  </div> : <></>}

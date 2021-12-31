@@ -218,26 +218,75 @@ div{
     width: 300px;
 }
 .modal-w{
-    background-color: rgba(0, 0, 0, 0.349);
     border: 0px;
 }
 .btn-close{
     background-image: url(../img/assets/close-btn.svg);
 }
 .modal-content{
-
-    background-color:rgba(31, 31, 31, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.281);
+    border-radius: 20px ;
+    background-color:rgba(24, 25, 26,.97);
 }
 .bg-modal{
     background-color: rgba(20, 20, 20, 0.8);
+}
+.logo-bnb{
+    margin-top: -7px;
+}
+.swap{
+    border-radius: 15px;
+    background-color: rgba(89, 101, 122, 0.712);
+    padding: 5px;
+}
+.swapBtn{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 14px;
+    border: 0px;
+    background-color: rgb(93, 133, 120);
+    color: white;
+    padding: 10px;
+}
+.swapBtn-dis{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 14px;
+    border: 0px;
+    background-color: rgba(146, 146, 146, 0.466);
+    color: rgba(255, 255, 255, 0.363);
+    padding: 10px;
+}
+.flechita{
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(89, 101, 122, 0.712);
+    text-align: center;
+}
+.inputSwap {
+    background-color: transparent;
+    outline: none;
+    border: 0px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+    text-align: end;
+    border-radius: 10px;
+    
+}
+.text-gray{
+    color: gray;
 }
 .logo-modal{
     height: 40px;
 }
 .hr-modal{
-    background-color: rgba(0, 0, 0, 0.685);
-    border-bottom:1px solid rgba(163, 163, 163, 0.397);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom:1px solid rgba(163, 163, 163, 0.137);
 }
 .input-modal{
     color: rgb(209, 209, 209);
@@ -460,7 +509,7 @@ div{
     background-color: rgba(42, 44, 46, 0.226);
 }
 .w-button-close-ship{
-    background-color: rgba(71, 70, 70, 0.699);
+    background-color: rgba(105, 105, 105, 0.699);
     border-radius: 10px 0px 10px 0px;
 }
 .btn-close-ships{

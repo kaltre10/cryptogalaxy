@@ -119,39 +119,9 @@ function TopNav() {
             <Offcanvas.Body className="bg-dark">
               <Nav className="justify-content-end flex-grow-1">
                 <LinksN/>
-                <div className="sidebar-balance pb-3">
-                  <div className="d-flex justify-content-between">
-                    <div className="">
-                      <img alt="" className="logo-sidebar" src={bnbLogo} /> {bnb}
-                    </div>
-                    <div className="">
-                      <img alt="" className="logo-sidebar" src={logo} /> 0
-                    </div>
-                    <div className="">
-                      <img alt="" className="logo-sidebar" src={gem} /> {user.wallet !== 0 ? <>
-                        {user.gm}
-                      </> : <></>
-                      }
-                    </div>
-                  </div>
-                </div>
+                
 
-                <div className="w-gems mt-4">
-                  <h4 className="text-white text-center">Exchange </h4>
-
-                  <div onClick={() => { setShow(true) }} className="gems-exchange d-flex justify-content-between">
-
-                    <div className="d-inline-block">
-                      <img alt="" className="img-gem" src={bnbLogo} />
-                    </div>
-                    <div className="d-inline-block">
-                      <img alt="" className="img-gem" src={arrow} />
-                    </div>
-                    <div className="d-inline-block">
-                      <img alt="" className="img-gem" src={gem} />
-                    </div>
-                  </div>
-                </div>
+              
 
               </Nav>
             </Offcanvas.Body>
@@ -159,65 +129,7 @@ function TopNav() {
         </Container>
       </Navbar>
 
-      <Modal className="bg-modal" show={show} onHide={handleClose}>
-        <Modal.Header className="modal-w text-white hr-modal" closeButton>
-          <Modal.Title>
-            <div className="d-flex justify-content-between">
-              <div>
-                <div className="d-inline-block">
-                  <img alt="" className="img-gem" src={bnbLogo} />
-                </div>
-                <div className="d-inline-block mx-3">
-                  <img alt="" className="img-gem" src={arrow} />
-                </div>
-                <div className="d-inline-block">
-                  <img alt="" className="img-gem" src={gem} />
-                </div>
-              </div>
-            </div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-
-          <div className="py-4 d-flex justify-content-center">
-            <div className="p-4 w-buy-gm m-2">
-              <div className="text-center">
-                <img height="50px" src={gem} alt="" />
-              </div>
-              <div className="mb-2">
-                1000 GM - 0.01 BNB
-              </div>
-              {loading ? <>
-                <button className="btn btn-secondary px-4" >
-                  <div class="spinner-border" role="status"></div>
-                </button>
-              </> : <>
-                <button onClick={() => buyGm(1)} className="btn btn-success px-4" >
-                  Buy
-                </button>
-              </>}
-            </div>
-
-            <div className="p-4 w-buy-gm m-2">
-              <div className="text-center">
-                <img height="50px" src={gem} alt="" />
-              </div>
-              <div className="mb-2">
-                3000 gm - 0.028 BNB
-              </div>
-              {loading ? <>
-                <button className="btn btn-secondary px-4" >
-                  <div class="spinner-border" role="status"></div>
-                </button>
-              </> : <>
-                <button onClick={() => buyGm(2)} className="btn btn-success px-4" >
-                  Buy
-                </button>
-              </>}
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+     
 
     </>
   )

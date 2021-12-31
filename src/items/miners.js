@@ -18,11 +18,11 @@ const miners = [
         "recipe": [
             {
                 "item": "Ironbar",
-                "cant": 140,
+                "cant": 30,
             },
             {
                 "item": "Silverbar",
-                "cant": 10
+                "cant": 3
             },
             {
                 "item": "Oil",
@@ -49,14 +49,14 @@ const miners = [
         "recipe": [
             {
                 "item": "Silverbar",
-                "cant": 80,
+                "cant": 15,
+            },{
+                "item": "Goldbar",
+                "cant": 7
             },
             {
                 "item": "Oil",
-                "cant": 3,
-            },{
-                "item": "Icebar",
-                "cant": 5
+                "cant": 2,
             }
         ]
     },
@@ -79,14 +79,14 @@ const miners = [
         "recipe": [
             {
                 "item": "Goldbar",
-                "cant": 60,
+                "cant": 10,
             },
             {
-                "item": "Oil",
-                "cant": 9,
+                "item": "Cutdiamond",
+                "cant": 4,
             },{
-                "item": "Icebar",
-                "cant": 10
+                "item": "Oil",
+                "cant": 4
             }
         ]
     },
@@ -110,18 +110,14 @@ const miners = [
             {
                 "item": "Cutdiamond",
                 "cant": 20,
-            },
-            {
-                "item": "Goldbar",
-                "cant": 25,
-            },
-            {
-                "item": "Oil",
-                "cant": 12,
             },{
                 "item": "Icebar",
                 "cant": 20
-            }
+            },
+            {
+                "item": "Oil",
+                "cant": 8,
+            },
         ]
     }
 

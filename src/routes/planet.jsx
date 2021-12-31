@@ -377,7 +377,7 @@ const Planet = () => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            <button onClick={() => { unlockPlanet(2) }} className="btn bg-success form-control mt-2 text-white ">
+                                                            <button onClick={() => { unlockPlanet(3) }} className="btn bg-success form-control mt-2 text-white ">
                                                                 Unlock 6000
                                                                 <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                             </button>
@@ -443,7 +443,7 @@ const Planet = () => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            <button onClick={() => { unlockPlanet(1) }} className="btn bg-success form-control mt-2 text-white ">
+                                                            <button onClick={() => { unlockPlanet(4) }} className="btn bg-success form-control mt-2 text-white ">
                                                                 Unlock 9000
                                                                 <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                             </button>
@@ -511,7 +511,7 @@ const Planet = () => {
                                                             </button>
                                                         </div> :
                                                         <div>
-                                                            <button onClick={() => { unlockPlanet(1) }} className="btn bg-success form-control mt-2 text-white ">
+                                                            <button onClick={() => { unlockPlanet(5) }} className="btn bg-success form-control mt-2 text-white ">
                                                                 Unlock 12000
                                                                 <img className=" mx-1 img-gm-button" src={gm} alt="" />
                                                             </button>
