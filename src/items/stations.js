@@ -14,7 +14,26 @@ const stations = [
         "damage": 100,
         "type":"Refinery",
         "subType":"T1",
-        "charge":0
+        "charge":0,
+        "salesRate":"0.008",
+        "recipe": [
+            {
+                "item": "Ironbar",
+                "cant": 90
+            },
+            {
+                "item": "Silverbar",
+                "cant": 60,
+            },
+            {
+                "item": "Goldbar",
+                "cant": 30,
+            },
+            {
+                "item": "Oil",
+                "cant": 3,
+            },
+        ]
     },
     {
         "name": "Factory",
@@ -26,12 +45,31 @@ const stations = [
         "owner": "Game",
         "onSell": true,
         "sellPrice": "0.1",
-        "energy": 20,
+        "energy": 2,
         "shield": 100,
         "damage": 100,
         "type":"Factory",
-        "subType":"T2",
-        "charge":0
+        "subType":"T1",
+        "charge":0,
+        "salesRate":"0.008",
+        "recipe": [
+            {
+                "item": "Ironbar",
+                "cant": 90
+            },
+            {
+                "item": "Cutdiamond",
+                "cant": 30,
+            },
+            {
+                "item": "Icebar",
+                "cant": 15,
+            },
+            {
+                "item": "Oil",
+                "cant": 3,
+            },
+        ]
     }
 
 ]

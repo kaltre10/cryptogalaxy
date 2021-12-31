@@ -15,7 +15,7 @@ const SelectShip = () => {
         let newMiners = []
         if (ships.length > 0) {
             ships.map((ship) => {
-                if (ship.type === "Miner") {
+                if (ship.type === "Miner" && !ship.onSell) {
                     newMiners.push(ship)
                 }
             })

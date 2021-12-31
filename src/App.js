@@ -20,6 +20,7 @@ import Invaders from './routes/invaders';
 import glxAbi from './token/glxAbi';
 import Refinery from './routes/refinery';
 import Factory from './routes/factory';
+import Gmexchange from './routes/gmexchange';
 
 //const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
@@ -178,6 +179,9 @@ const App = () => {
                                 </Route>
                                 <Route path="/shop">
                                     <Shop/>
+                                </Route>
+                                <Route path="/gmexchange">
+                                    <Gmexchange/>
                                 </Route>
                                 <Route path="/invaders">
                                     <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />

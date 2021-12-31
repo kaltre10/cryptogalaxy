@@ -15,6 +15,7 @@ const miners = [
         "type": "Miner",
         "subType": "T1",
         "charge": 0,
+        "salesRate":"0.002",
         "recipe": [
             {
                 "item": "Ironbar",
@@ -46,6 +47,7 @@ const miners = [
         "type": "Miner",
         "subType": "T2",
         "charge": 0,
+        "salesRate":"0.004",
         "recipe": [
             {
                 "item": "Silverbar",
@@ -69,13 +71,14 @@ const miners = [
         "date": "",
         "owner": "Game",
         "onSell": true,
-        "sellPrice": "0.04",
+        "sellPrice": "0.06",
         "energy": 2,
         "shield": 100,
         "damage": 100,
         "type": "Miner",
         "subType": "T3",
         "charge": 0,
+        "salesRate":"0.006",
         "recipe": [
             {
                 "item": "Goldbar",
@@ -106,6 +109,7 @@ const miners = [
         "type": "Miner",
         "subType": "T4",
         "charge": 0,
+        "salesRate":"0.008",
         "recipe": [
             {
                 "item": "Cutdiamond",

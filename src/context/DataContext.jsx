@@ -4,18 +4,31 @@ import axios from 'axios';
 import { Toast } from './service'
 import { web3, eth, mycontract, contractOwner } from './web3Service'
 import minersShop from "../items/miners";
-import iron_bar from '../img/meterials/refined/iron_bar.webp'
-import silver_bar from '../img/meterials/refined/silver_bar.webp'
-import gold_bar from '../img/meterials/refined/gold_bar.webp'
-import cut_diamond from '../img/meterials/refined/cut_diamond.webp'
-import ice_bar from '../img/meterials/refined/ice_bar.webp'
+
 import oil from '../img/meterials/refined/oil.webp'
+
+
+import iron_bar from '../img/meterials/refined/iron_bar.webp';
+import silver_bar from '../img/meterials/refined/silver_bar.webp';
+import gold_bar from '../img/meterials/refined/gold_bar.webp';
+import cut_diamond from '../img/meterials/refined/cut_diamond.webp';
+import ice_bar from '../img/meterials/refined/ice_bar.webp';
+import oil_ from '../img/meterials/refined/oil.webp';
+
+import minersBuild from '../items/miners'
+import fightersBuild from '../items/fighters'
+import stationsBuild from '../items/stations'
+
+
 
 export const DataContext = createContext()
 
 export const DataProvider = ({ children }) => {
 
     const [sellObj, setSellObj] = useState(minersShop)
+    const [miners, setMiners] = useState([])
+    const [selectships, setSelectship] = useState(false);
+    const [planet, setPlanet] = useState({});
 
     const [user, setUser] = useState({});
     const [ships, setShips] = useState([]);
@@ -23,17 +36,165 @@ export const DataProvider = ({ children }) => {
     const [bnb, setBNB] = useState(0);
     const [glx, setGlx] = useState(0);
     const [refinerys, setRefinerys] = useState([])
-    const [factorys,setFactorys] = useState([])
+    const [factorys, setFactorys] = useState([])
+    const [buildShips, setBuidShips] = useState([])
+    const [resultShip, setResultShip] = useState({})
+    const [materialsNeeded, setmaterialsNeeded] = useState([])
+    const [build, setBuild] = useState(false)
 
     useEffect(() => {
         connectOrRegister()
         getFactorys()
+        setBuidShips(minersBuild)
     }, []);
 
-    const getFactorys = async ()=>{
+
+
+    const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"/* 
+const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/' */
+
+    const changeRecipe = async (recipe) => {
+        const obj = []
+
+        const { ironbar, silverbar, goldbar, cutdiamond, icebar, oil } = user.refined
+        setBuild(true)
+
+        recipe.map((recipe) => {
+            let border = "1px solid green"
+            let color = "green"
+
+            if (recipe.item == "Ironbar") {
+                if (ironbar < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: ironbar, img: iron_bar, style: { border, color } })
+            }
+
+            if (recipe.item == "Silverbar") {
+                if (silverbar < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: silverbar, img: silver_bar, style: { border, color } })
+            }
+
+            if (recipe.item == "Goldbar") {
+                if (goldbar < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: goldbar, img: gold_bar, style: { border, color } })
+            }
+
+            if (recipe.item == "Icebar") {
+                if (icebar < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: icebar, img: ice_bar, style: { border, color } })
+            }
+
+            if (recipe.item == "Cutdiamond") {
+                if (cutdiamond < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: cutdiamond, img: cut_diamond, style: { border, color } })
+            }
+
+            if (recipe.item == "Oil") {
+                if (oil < recipe.cant) {
+                    border = "1px solid gray"
+                    color = "gray"
+                    setBuild(false)
+                }
+                obj.push({ ...recipe, have: oil, img: oil_, style: { border, color } })
+            }
+
+        })
+
+        setmaterialsNeeded(obj)
+    }
+
+    const changeBuilding = (e) => {
+        setmaterialsNeeded([])
+        const target = e.target.value
+        if (target == "miners")
+            setBuidShips(minersBuild)
+
+        if (target == "fighters")
+            setBuidShips(fightersBuild)
+
+        if (target === "stations")
+            setBuidShips(stationsBuild)
+    }
+
+    const buildShip = async (ship,_id,station) => {
+        stateLoading(true)
+
+        const { salesRate } = ship
+
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const wallet = await accounts[0]
-        const fac = await axios.get(urlApi+"/api/v1/getFactorys/"+wallet)
+        const headers = { headers: { "Content-Type": "application/json" } }
+
+        const energx = await axios.put(urlApi+"/api/v1/getEnergy",{_id})
+        console.log(energx)
+         const {shipEnergy} = await energx.data
+        if(shipEnergy >= 5){
+
+        await window.ethereum
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: wallet,
+                        to: contractOuner,
+                        value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
+                        gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                        gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
+                    },
+                ],
+            })
+            .then(async (txHash) => {
+                axios.put(urlApi + "/api/v1/buildShip", {
+                    ship, wallet,_id, txHash
+                }, headers)
+                    .then((res) => {
+                        Toast(1, res.data.msg)
+                        setmaterialsNeeded([])
+                    }).catch((error) => {
+                        Toast(0, error.message)
+                    })
+            })
+            .catch((err) => {
+                console.log(err.message)
+            }).finally(async () => {
+                await connectOrRegister()
+                stateLoading(false)
+            })
+
+        }else{
+            stateLoading(false)
+            Toast(0,"No energy")
+        }
+
+    }
+
+
+
+
+
+    const getFactorys = async () => {
+        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+        const wallet = await accounts[0]
+        const fac = await axios.get(urlApi + "/api/v1/getFactorys/" + wallet)
         setFactorys(fac.data)
     }
 
@@ -190,9 +351,7 @@ export const DataProvider = ({ children }) => {
     }
 
     //xxx
-    const [miners, setMiners] = useState([])
-    const [selectships, setSelectship] = useState(false);
-    const [planet, setPlanet] = useState({});
+
 
     async function unlockPlanet(planet) {
         var amount
@@ -226,18 +385,18 @@ export const DataProvider = ({ children }) => {
     }
 
     function mineryLevel(xp) {
-        if (xp < 58) 
+        if (xp < 58)
             return 1
-        if (xp >= 58 && xp < 420 )
+        if (xp >= 58 && xp < 420)
             return 2
-        if (xp >= 420 && xp < 1080 ) 
+        if (xp >= 420 && xp < 1080)
             return 3
-        if( xp >= 1080 && xp < 2012)
+        if (xp >= 1080 && xp < 2012)
             return 4
-        if(xp >= 2012 && xp < 2920)
+        if (xp >= 2012 && xp < 2920)
             return 5
-        if(xp >= 2920)
-            return 6      
+        if (xp >= 2920)
+            return 6
     }
 
     async function prepareMaterial(station, material, cant) {
@@ -383,7 +542,14 @@ export const DataProvider = ({ children }) => {
         changeMaterialForImg,
         refine,
         energyTozero,
-        factorys
+        factorys,
+        buildShips, setBuidShips,
+        resultShip, setResultShip,
+        materialsNeeded, setmaterialsNeeded,
+        build, setBuild,
+        changeRecipe,
+        changeBuilding,
+        buildShip,
 
     }
 

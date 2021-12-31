@@ -49,7 +49,7 @@ const Refinery = () => {
                             {refinerys.map((item) => {
                                 return (
                                     <div key={item._id}>
-                                        {item.type === "Refinery" ? <>
+                                        {item.type === "Refinery" && !item.onSell? <>
                                             <div className="row bg-refinery mb-4">
                                                 {loading ?
                                                     <div className="d-flex justify-content-center align-items-center load-ref">

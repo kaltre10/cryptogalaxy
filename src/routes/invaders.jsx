@@ -100,7 +100,7 @@ const Invaders = () => {
                                             return (
                                                 <>
                                                     {
-                                                        item.type === "Fighter" ? <>
+                                                        item.type === "Fighter" && !item.onSell? <>
                                                             <div key={item.id} className="col-12 col-sm-4">
                                                                 <div className="nft">
                                                                     <div className="imgx">

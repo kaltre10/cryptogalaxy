@@ -1,6 +1,6 @@
 const fighters = [
     {
-        "name": "Persival2",
+        "name": "Persival",
         "id": 4,
         "img": "https://cryptogalaxy.online/ships/fighters/persival.webp",
         "mp": 2,
@@ -15,7 +15,22 @@ const fighters = [
         "type":"Fighter",
         "subType":"T1",
         "charge":0,
-        "attack":95
+        "attack":95,
+        "salesRate":"0.004",
+        "recipe": [
+            {
+                "item": "Ironbar",
+                "cant": 130,
+            },
+            {
+                "item": "Silverbar",
+                "cant": 20
+            },
+            {
+                "item": "Oil",
+                "cant": 3,
+            },
+        ]
     },
     {
         "name": "JackSaw",
@@ -33,7 +48,22 @@ const fighters = [
         "type":"Fighter",
         "subType":"T2",
         "charge":0,
-        "attack":280
+        "attack":280,
+        "salesRate":"0.006",
+        "recipe": [
+            {
+                "item": "Silverbar",
+                "cant": 90
+            },
+            {
+                "item": "Goldbar",
+                "cant": 12,
+            },
+            {
+                "item": "Oil",
+                "cant": 6,
+            },
+        ]
     },
     {
         "name": "Pelican",
@@ -51,7 +81,22 @@ const fighters = [
         "type":"Fighter",
         "subType":"T3",
         "charge":0,
-        "attack":780
+        "attack":780,
+        "salesRate":"0.008",
+        "recipe": [
+            {
+                "item": "Goldbar",
+                "cant": 80
+            },
+            {
+                "item": "Cutdiamond",
+                "cant": 15,
+            },
+            {
+                "item": "Oil",
+                "cant": 9,
+            },
+        ]
     },
     {
         "name": "Hell",
@@ -69,7 +114,22 @@ const fighters = [
         "type":"Fighter",
         "subType":"T4",
         "charge":0,
-        "attack":1920
+        "attack":1920,
+        "salesRate":"0.012",
+        "recipe": [
+            {
+                "item": "Cutdiamond",
+                "cant": 70
+            },
+            {
+                "item": "Icebar",
+                "cant": 18,
+            },
+            {
+                "item": "Oil",
+                "cant": 12,
+            },
+        ]
     },
     
 

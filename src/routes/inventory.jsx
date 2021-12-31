@@ -32,7 +32,7 @@ function Inventory() {
     const [selling, setSelling] = useState(false);
     const [ship, setShip] = useState({})
     const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
-    const salesRate = "0.009"
+    const salesRate = "0.0009"
 
     const reset = () => {
         setSellPrice(0)
