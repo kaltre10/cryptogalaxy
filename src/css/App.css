@@ -836,3 +836,16 @@ hr{
     display: block;
     color: rgb(44, 40, 48);
 }
+.bg-exchange{
+}
+.rad-8{
+    border-radius: 8px;
+
+}
+.bg-dark-trans{
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.bg-trans-light{
+    background-color: rgba(0, 0, 0, 0.2);
+    
+}

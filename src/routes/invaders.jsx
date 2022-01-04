@@ -41,7 +41,6 @@ const Invaders = () => {
             }).catch(err => {
                 alert(err.message)
                 stateLoading(false)
-
             })
 
             /*

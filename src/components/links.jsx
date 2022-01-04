@@ -138,7 +138,7 @@ const LinksN = () => {
                         <img className="logo-sidebar" src={logo} alt="" /> {glx}
                     </div>
                     <div className="">
-                        <img className="logo-sidebar" src={gem} alt="" /> {user.gm}
+                        <img className="logo-sidebar" src={gem} alt="" /> {Math.floor(user.gm)}
                     </div>
                 </div>
                 <div className="w-gems mt-4">

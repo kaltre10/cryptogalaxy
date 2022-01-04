@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
+import { DataContext } from "../context/DataContext";
 import metamask from "../img/assets/metamask.svg"
 import { Link } from 'react-router-dom';
 import logo from "../img/logoglx.svg";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const Login = (props) => {
+const Login = () => {
 
-    function filterWallet(w) {
-        let str1 = w.substr(0, 4);
-        const l = w.length
-        const str2 = w.substr(l - 4, 4);
-        const result = str1 + "..." + str2;
-        return result;
+    const { user, loading, connectOrRegister } = useContext(DataContext)
+
+    /*  function filterWallet(w) {
+         let str1 = w.substr(0, 4);
+         const l = w.length
+         const str2 = w.substr(l - 4, 4);
+         const result = str1 + "..." + str2;
+         return result;
+     } */
+
+    const [wallet, setWallet] = useState(null)
+
+    useEffect(() => {
+        rellenar()
+    }, [wallet])
+
+    const rellenar = async () => {
+        const wall = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+        setWallet(wall[0])
     }
 
     return (
@@ -21,25 +37,29 @@ const Login = (props) => {
                         <img src={logo} height="70px" alt="" />
                         <h1 className="text-white p-0 text-center m-0">Welcome Miner</h1>
                     </div>
-                    {props.user.wallet !== undefined ? <>
-                        Wallet: {filterWallet(props.user.wallet)}
-                        <Link to="/inventory" className="btn btn-success form-control"> Enter Dapp </Link>
-                    </> : <>
-                        {props.loading ? <>
-                            <button className="btn btn-secondary">
-                                Loaing...
-                            </button>
-                        </> : <>
-                        <button onClick={props.connectOrRegister} className="btn btn-primary">
-                            Connect whith Metamask
-                            <img className="mx-2" height="25px" src={metamask} alt="" />
-                        </button>
-                        </>
 
-                        }
-                        <br />
-                        No Connected
-                    </>}
+                    {wallet !== null ?
+                        <>
+                            Wallet: {/* filterWallet(wallet) */}
+                            {wallet}
+                            <Link to="/inventory" className="btn btn-success form-control"> Enter Dapp </Link>
+                        </> :
+                        <>
+                            {loading ?
+                                <>
+                                    <button className="btn btn-secondary">
+                                        Loaing...
+                                    </button>
+                                </> : <>
+                                    <button onClick={connectOrRegister} className="btn btn-primary">
+                                        Connect whith Metamask
+                                        <img className="mx-2" height="25px" src={metamask} alt="" />
+                                    </button>
+                                </>
+                            }
+                            <br />
+                            No Connected
+                        </>}
                 </div>
             </div>}
         </>

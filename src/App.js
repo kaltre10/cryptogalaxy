@@ -192,14 +192,14 @@ const App = () => {
                                 <Route path="/factory">
                                     <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                                 </Route>
-                                <Route path="/market">
+                                <Route path="/market" exact>
                                     <Market user={user} connectOrRegister={connectOrRegister} bnb={bnb} loading={loading} stateLoading={stateLoading} Toast={Toast} />
                                 </Route>
-                                <Route path="/login">
-                                    <Login user={user} connectOrRegister={connectOrRegister} />
+                                <Route path="/login" exact>
+                                    <Login />
                                 </Route>
                                 <Route path="/" exact>
-                                    <Login user={user} connectOrRegister={connectOrRegister} />
+                                    <Login />
                                 </Route>
                             </Switch>
 
