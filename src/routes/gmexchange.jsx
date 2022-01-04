@@ -135,6 +135,7 @@ const Gmexchange = () => {
                 connectOrRegister()
                 getGmOnSell("")
             })
+            
     }
 
     const directBuy = async (item) => {
