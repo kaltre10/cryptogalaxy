@@ -86,9 +86,9 @@ function TopNav() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expanded={exp}>
+      <Navbar className='bg-topNav' variant="dark" expanded={exp}>
         <Container fluid>
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="#" className='font'>
             <img src={logo} height="25px" alt="" className="mx-2" />
             CryptoGalaxy Online
           </Navbar.Brand>

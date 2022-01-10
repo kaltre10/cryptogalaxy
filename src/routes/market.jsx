@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Web3 from 'web3'
+import { DataContext } from '../context/DataContext';
 
 import Sidebar from '../components/sidebar';
 import urlApi from '../urlApi'
@@ -10,14 +11,15 @@ const web3 = new Web3(testnetProvider)
 
 /*const glxContract = new web3.eth.Contract(glxAbi, contractOuner) */
 
-const Market = (props) => {
+const Market = () => {
+    const { stateLoading, loading, Toast, connectOrRegister, user } = useContext(DataContext)
 
     const [ships, setShips] = useState([])
-
+    
     useEffect(() => {
         getAllShips("Miner")
     }, [])
-
+    
     const getAllShips = async (type) => {
         const objShips = await axios.get(urlApi + "/api/v1/getSellingShips/" + type)
         console.log(objShips.data)
@@ -30,7 +32,7 @@ const Market = (props) => {
         const wallet = ac[0]
         const own = ship.wallet
         const price = ship.sellPrice.toString()
-        props.stateLoading(true)
+        stateLoading(true)
         window.ethereum
             .request({
                 method: 'eth_sendTransaction',
@@ -47,18 +49,18 @@ const Market = (props) => {
             .then(async (txHash) => {
 
                 const objBuyShip = await axios.put(urlApi + "/api/v1/buyShipMarket", {
-                    ship, wallet,txHash
+                    ship, wallet, txHash
                 })
-                props.Toast(1,"Success Buy!")
+                Toast(1, "Success Buy!")
                 console.log(objBuyShip.data)
-                
+
             })
             .catch((error) => {
-                props.Toast(0, "Error: " + error.message)
-            }).finally(()=>{
-                props.connectOrRegister()
+                Toast(0, "Error: " + error.message)
+            }).finally(() => {
+                connectOrRegister()
                 getAllShips("Miner")
-                props.stateLoading(false)
+                stateLoading(false)
             })
 
         //alert("Buy:"+ship.name+" wallet:"+ship.wallet+" id:"+ship._id)
@@ -68,7 +70,7 @@ const Market = (props) => {
             <div className="container-fluid m-0 p-0 bg-stars">
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
-                        < Sidebar connectOrRegister={props.connectOrRegister} user={props.user} bnb={props.bnb} loading={props.loading} stateLoading={props.stateLoading} />
+                        <Sidebar />
                     </div>
                     <div className="col-12 col-md-9 p-0 w-market-container">
                         <div className="bg-market-bar text-white text-center">
@@ -126,10 +128,10 @@ const Market = (props) => {
 
                                                                     </div>
                                                                     <div className=''>
-                                                                        {props.loading ? <>
-                                                                        <button className='btn btn-secondary'> <div className='spinner-border' role="status"></div> </button>
-                                                                        </>:<>
-                                                                        <button onClick={() => buyShipOnMarket(ship)} className='btn btn-success'> Buy </button>
+                                                                        {loading ? <>
+                                                                            <button className='btn btn-secondary'> <div className='spinner-border' role="status"></div> </button>
+                                                                        </> : <>
+                                                                            <button onClick={() => buyShipOnMarket(ship)} className='btn btn-success'> Buy </button>
                                                                         </>}
                                                                     </div>
 

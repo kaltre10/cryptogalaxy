@@ -1,12 +1,25 @@
-
 :root{
     --azul-oscuro-trans: rgb(15, 15, 15);
     --wrap-modal-black:rgba(0, 0, 0, 0.95);
 }
 
+@font-face {
+    font-family: betel;
+    src: url(./fonts/Betelguesse.ttf);
+}
+.font{
+    font-family: betel;
+}
+h1,h2,h3,h4,h5{
+    font-family: betel;
+}
 
 body{
     background-color: rgb(40, 42, 46);
+}
+
+.bg-topNav{
+    background: linear-gradient(to bottom, rgb(20, 20, 20) 0%, rgb(29, 29, 29) 100%);
 }
 
 div{
@@ -19,8 +32,8 @@ div{
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
-    
 }
+
 .bg-stars{
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 75%, #000 100%), url(../img/assets/star-sky.webp);
     background-position: center;
@@ -29,13 +42,14 @@ div{
     background-size: cover;
     height: 100vh;
 }
+
 .bg-ref{
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 75%, #000 100%), url(../img/assets/bgrefinery.webp);
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 93vh;
+    height: 100vh;
 }
 
 
@@ -98,7 +112,7 @@ div{
     padding: 5px;
     border-top-left-radius: 8px;
     transition-duration:0.3s;
-    min-height: 220px;
+    height: 240px;
     clip-path:  polygon(0% 0%, 92% 0%, 100% 10%,  100% 100%, 0 100%);
     position: relative;
 }
@@ -314,7 +328,7 @@ div{
 }
 @media (min-width:769px) {
     .sidebar{
-        height: 93vh;
+        height: 100vh;
     }
 }
 
@@ -347,7 +361,7 @@ div{
 .w-market-container{
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 93vh;
+    height: 100vh;
 }
 .bg-acorderon{
     background-color: rgba(0, 0, 255, 0) !important;
@@ -716,7 +730,7 @@ div{
     height: 100vh;
     position: fixed;
     top: 0px;
-    z-index: 1000;
+    z-index: 1;
 }
 .in-content-sell{
     padding: 10px 20px 20px 20px; 
@@ -849,3 +863,59 @@ hr{
     background-color: rgba(0, 0, 0, 0.2);
     
 }
+.w-market2{
+    height: 100vh;
+    overflow-y: scroll;
+}
+.in-menu-marjet{
+    background-color: rgba(37, 31, 54, 0.671);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+
+}
+.back-button{
+    height: 40px;
+    width: 100%;
+    color: cornsilk;
+    background: linear-gradient(to right, rgba(20, 20, 20, 0.5) 0%, rgba(45, 45, 45, 0.5) 100%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 20px;
+    transition: 0.5s;
+}
+.back-button:hover{
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgb(37, 37, 37);
+    transform: translateY(2px);
+}
+.Toastify__toast-body{
+    z-index: 1000000 !important;
+}
+.img-mat{
+    border-radius: 8px;
+    height:50px;
+    padding: 5px;
+}
+.image{
+    max-width: 100%;
+    max-height: 100%;
+}
+.border-sell{
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: blanchedalmond;
+}
+.bg-red-mat{
+    border-radius: 3px;
+    background-color: rgba(165, 42, 42, 0.432);
+}
+.border-top-trans{
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.id-item{
+    font-size: 9px;
+    margin-top: 5px;
+    color: rgba(255, 255, 255, 0.2);
+}
+.center-bt{width: 80px;}

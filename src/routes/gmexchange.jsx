@@ -11,11 +11,15 @@ import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
 
+const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+
+const web3 = new Web3(testnetProvider)
+
 const Gmexchange = () => {
 
-    const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
+    /* const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
     const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-    const web3 = new Web3(provider)
+    const web3 = new Web3(provider) */
 
     const { Toast, sendTransaction, connectOrRegister, user, loading, stateLoading } = useContext(DataContext)
 
@@ -23,6 +27,8 @@ const Gmexchange = () => {
     const [gm, setGm] = useState(0)
 
     const [gmOnSell, setgmOnSell] = useState([])
+
+    const [bnbTestnet,setBnbTestnet] = useState(0)
 
     const getGmOnSell = async (x) => {
         stateLoading(true)
@@ -37,8 +43,8 @@ const Gmexchange = () => {
 
     useEffect(() => {
         getGmOnSell("")
+        
     }, [])
-
 
     const flor = num => Math.floor(num * 100000) / 100000
 
@@ -135,7 +141,7 @@ const Gmexchange = () => {
                 connectOrRegister()
                 getGmOnSell("")
             })
-            
+
     }
 
     const directBuy = async (item) => {
@@ -164,19 +170,42 @@ const Gmexchange = () => {
                     ]
                 })
                 .then(async (txHash) => {
-                    axios.put(urlApi + "/api/v1/aproveGm", {
-                        txHash, item,buyer:from
-                    })
-                        .then((res) => {
-                            Toast(1, res.data.msg)
-                            console.log(res.data.txHash)
-                        }).catch((error) => {
-                            console.log(error)
-                            Toast(0, error.message)
-                        }).finally(_=>{
-                            connectOrRegister()
-                            getGmOnSell("")
-                        })
+
+                    console.log(txHash)
+                    let tx = await web3.eth.getTransaction(txHash)
+                    let num = 0
+                    const max = 30
+                    while (tx.blockHash == null) {
+
+                        setTimeout(null,1000)
+
+                        num++
+                        console.log("Intento " + num)
+                        tx = await web3.eth.getTransaction(txHash)
+                        console.log(tx.blockHash)
+                        if (tx.blockHash !== null) {
+                            await axios.put(urlApi + "/api/v1/aproveGm", {
+                                txHash, item, buyer: from
+                            })
+                                .then((res) => {
+                                    //Toast(1, res.data)
+                                    console.log(res.data)
+                                }).catch((error) => {
+                                    console.log(error)
+                                    Toast(0, error.message)
+                                })/* .finally(_ => {
+                                    connectOrRegister()
+                                    getGmOnSell("")
+                                }) */
+                        }
+                        if (num >= max) {
+                            tx.blockHash = 1
+                        }
+                    }
+
+                    if (tx.blockHash === 1) {
+                        Toast(0, "Transaction failed")
+                    }
                 })
                 .catch((err) => {
                     console.log(err.message)
@@ -196,6 +225,8 @@ const Gmexchange = () => {
         <>
             <div className="container-fluid m-0 p-0 bg-stars">
                 <div className="row gx-0">
+                    
+
                     <div className="col-12 col-md-3 ">
                         < Sidebar />
                     </div>

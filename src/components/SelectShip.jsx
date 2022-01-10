@@ -117,7 +117,7 @@ const SelectShip = () => {
                                                         <p className="text-white m-0 p-0"> mp : {item.mp}</p>
                                                     </div>
                                                     <div className="col-6 pt-1">
-                                                        {loading ? <button className="btn btn-secondary"> Mining... </button> :
+                                                        {loading ? <button className="btn btn-secondary form-control"> Mining... </button> :
                                                             <button onClick={() => { toMine(item, planet) }} className="btn bg-danger form-control text-white">Mine - {item.mp} GM</button>
                                                         }
 

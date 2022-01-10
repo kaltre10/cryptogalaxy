@@ -4,17 +4,13 @@ import axios from 'axios';
 import { Toast } from './service'
 import { web3, eth, mycontract, contractOwner } from './web3Service'
 import minersShop from "../items/miners";
-
 import oil from '../img/meterials/refined/oil.webp'
-
-
 import iron_bar from '../img/meterials/refined/iron_bar.webp';
 import silver_bar from '../img/meterials/refined/silver_bar.webp';
 import gold_bar from '../img/meterials/refined/gold_bar.webp';
 import cut_diamond from '../img/meterials/refined/cut_diamond.webp';
 import ice_bar from '../img/meterials/refined/ice_bar.webp';
 import oil_ from '../img/meterials/refined/oil.webp';
-
 import minersBuild from '../items/miners'
 import fightersBuild from '../items/fighters'
 import stationsBuild from '../items/stations'
@@ -24,12 +20,16 @@ import stationsBuild from '../items/stations'
 export const DataContext = createContext()
 
 export const DataProvider = ({ children }) => {
+    
+    
+    
+    //test 97 smart 56
+    const net = web3.utils.toHex(97)
 
     const [sellObj, setSellObj] = useState(minersShop)
     const [miners, setMiners] = useState([])
     const [selectships, setSelectship] = useState(false);
     const [planet, setPlanet] = useState({});
-
     const [user, setUser] = useState({});
     const [ships, setShips] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -50,8 +50,7 @@ export const DataProvider = ({ children }) => {
 
 
 
-    const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"/* 
-const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/' */
+    const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
 
     const changeRecipe = async (recipe) => {
         const obj = []
@@ -187,10 +186,6 @@ const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/' */
 
     }
 
-
-
-
-
     const getFactorys = async () => {
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         const wallet = await accounts[0]
@@ -260,13 +255,12 @@ const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/' */
          switchChain()
      }*/
 
-    async function getBNB(w) {
-        web3.eth.getBalance(w).then((r) => {
-            setBNB(web3.utils.fromWei(r, 'ether'))
+    async function getBNB(wallet) {
+        web3.eth.getBalance(wallet).then((balance) => {
+            setBNB(web3.utils.fromWei(balance, 'ether'))
         })
     }
-    //test 97 smart 56
-    const net = web3.utils.toHex(97)
+   
 
 
     const sendTransaction = async(tx)=> {
@@ -309,8 +303,8 @@ const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/' */
                 eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
                     const wallet = res[0].toLowerCase();
                     await getShips(wallet);
-                    await getBNB(wallet);
-                    await getGlx(wallet);
+                    await getBNB(res[0]);
+                    await getGlx(res[0]);
                     const axiosHeader = { headers: { "Content-Type": "application/json" } }
                     axios.post(urlApi + "/api/v1/x/", { wallet }, axiosHeader).then((res) => {
                         setUser(res.data);

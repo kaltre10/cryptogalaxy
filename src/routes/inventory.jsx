@@ -20,17 +20,23 @@ import gold from '../img/meterials/crud/gold.webp';
 import diamond from '../img/meterials/crud/diamond.webp';
 import ice from '../img/meterials/crud/ice.webp';
 import petroleum from '../img/meterials/crud/petroleum.webp';
+import envioVentaAlBackend from '../services/ventaMaterials'
 
 const testnetProvider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(testnetProvider)
 
 function Inventory() {
-    
-    const { ships,connectOrRegister,bnb,user,loading,stateLoading,Toast } = useContext(DataContext)
+
+    const { ships, connectOrRegister, bnb, user, loading, stateLoading, Toast } = useContext(DataContext)
 
     const [sellPrice, setSellPrice] = useState(0);
     const [selling, setSelling] = useState(false);
     const [ship, setShip] = useState({})
+    const [isSellinMaterial, setisSellinMaterial] = useState(false)
+    const [mat, setMat] = useState("")
+    const [ammount, setAmmount] = useState(0)
+    const [gemPrice, setGemPrice] = useState(0)
+
     const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
     const salesRate = "0.0009"
 
@@ -116,6 +122,30 @@ function Inventory() {
 
     }
 
+    const sellMaterial = async (material) => {
+        setMat(material)
+        console.log(material)
+    }
+
+    const aproveSellMaterial = async (material) => {
+
+        const res = await envioVentaAlBackend(material, ammount, user.wallet, gemPrice, Toast)
+        connectOrRegister()
+        if (res) {
+            setisSellinMaterial(false)
+        }
+        stateLoading(false)
+    }
+
+    const changeGemPrice = (e) => {
+        setGemPrice(e.target.value)
+    }
+    const changeAmmount = (e) => {
+        setAmmount(e.target.value)
+    }
+
+
+
     return (
         <>
             {selling ? <>
@@ -157,6 +187,62 @@ function Inventory() {
                     </div>
                 </div>
             </> : <></>
+            }
+            {isSellinMaterial ? <>
+                <div className='sellModal'>
+                    <div className='in-content-sell'>
+                        <div className='d-flex justify-content-between'>
+                            <div className=''>
+                                <div className='fee'>Selling</div>
+                                <h4>
+                                    {mat}
+                                </h4>
+                            </div>
+                            <div>
+                                <button onClick={() => { setisSellinMaterial(false); setGemPrice(0); setAmmount(0) }} className='close-button' >
+                                    x
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className='mt-2 d-flex justify-content-between'>
+                            <div>
+                                Amount
+                            </div>
+                            <div>
+                                {mat}
+                            </div>
+                        </div>
+                        <div className='mb-3'>
+                            <input onChange={changeAmmount} type="number" className='form-control' />
+                        </div>
+                        <div className='d-flex justify-content-between'>
+                            <div>
+                                Sell Price
+                            </div>
+                            <div>
+                                GM
+                            </div>
+                        </div>
+                        <div>
+                            <input onChange={changeGemPrice} type="number" className='form-control' />
+                        </div>
+                        <div className='my-2'>
+                            {ammount} {mat} → {gemPrice} GM
+                        </div>
+                        <div className='fee text-warning'>Sales rate 0.0002 BNB </div>
+                        <hr />
+                        <div className='mt-3'>
+                            {loading?<>
+                                <button className='disabled btn btn-secondary form-control'> <div className="spinner-border"></div> </button>
+                            </>:<>
+                            <button onClick={() => { aproveSellMaterial(mat);stateLoading(true)  }} className='btn btn-success form-control'> Aprove </button>
+                            </>}
+                        </div>
+                    </div>
+                </div>
+            </> : <></>
+
             }
 
             <div className="container-fluid m-0 p-0 bg-stars">
@@ -267,6 +353,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.materials.iron}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Iron") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -283,6 +370,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.materials.silver}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Silver") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -300,6 +388,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.materials.gold}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Gold") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>
@@ -317,6 +406,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.materials.diamond}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Diamond") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -333,6 +423,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.materials.ice}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Ice") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -344,11 +435,11 @@ function Inventory() {
                                                     </div>
                                                     <div>
                                                         <img alt="" height="50px" className="" src={petroleum} />
-
                                                     </div>
                                                     <div className="text-white">
                                                         {user.materials.petroleum}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Petroleum") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -375,6 +466,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.ironbar}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Ironbar") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -391,6 +483,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.silverbar}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Silverbar") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -407,6 +500,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.goldbar}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Goldbar") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -422,6 +516,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.cutdiamond}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Cutdiamond") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -438,6 +533,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.icebar}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Icebar") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}
@@ -454,6 +550,7 @@ function Inventory() {
                                                     <div className="text-white">
                                                         {user.refined.oil}
                                                     </div>
+                                                    <button onClick={() => { setisSellinMaterial(true); sellMaterial("Oil") }} className='form-control btn btn-primary' >Sell</button>
                                                 </div>
                                             </div>
                                         </> : <></>}

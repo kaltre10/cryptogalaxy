@@ -31,8 +31,8 @@ const Login = () => {
 
     return (
         <>
-            {<div className="text-center mt-5 d-flex justify-content-center">
-                <div className="w-login">
+            {<div className="text-center pt-5 d-flex justify-content-center bg-stars">
+                <div className="w-loginx">
                     <div className="mb-4">
                         <img src={logo} height="70px" alt="" />
                         <h1 className="text-white p-0 text-center m-0">Welcome Miner</h1>
@@ -40,9 +40,11 @@ const Login = () => {
 
                     {wallet !== null ?
                         <>
+                        <div>
                             Wallet: {/* filterWallet(wallet) */}
                             {wallet}
-                            <Link to="/inventory" className="btn btn-success form-control"> Enter Dapp </Link>
+                        </div>
+                            <Link to="/inventory" className="btn btn-success mt-4"> Enter Dapp </Link>
                         </> :
                         <>
                             {loading ?

@@ -21,6 +21,7 @@ import glxAbi from './token/glxAbi';
 import Refinery from './routes/refinery';
 import Factory from './routes/factory';
 import Gmexchange from './routes/gmexchange';
+import NewM from './routes/newm';
 
 //const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
@@ -165,7 +166,7 @@ const App = () => {
             
             <Router>
                 <ToastContainer theme="dark" className="z-index-max" />
-                <TopNav bnb={bnb} Toast={Toast} stateLoading={stateLoading} user={user} connectOrRegister={connectOrRegister} loading={loading} />
+                <TopNav />
 
                 <div className="container-fluid p-0">
                     <div className="row gx-0">
@@ -184,18 +185,21 @@ const App = () => {
                                     <Gmexchange/>
                                 </Route>
                                 <Route path="/invaders">
-                                    <Invaders ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                    <Invaders />
                                 </Route>
                                 <Route path="/refinery">
-                                    <Refinery ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                    <Refinery/>
                                 </Route>
                                 <Route path="/factory">
-                                    <Factory ships={ships} connectOrRegister={connectOrRegister} bnb={bnb} user={user} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                    <Factory  />
                                 </Route>
-                                <Route path="/market" exact>
-                                    <Market user={user} connectOrRegister={connectOrRegister} bnb={bnb} loading={loading} stateLoading={stateLoading} Toast={Toast} />
+                                <Route path="/newm">
+                                    <NewM/>
                                 </Route>
-                                <Route path="/login" exact>
+                                <Route path="/market" >
+                                    <Market/>
+                                </Route>
+                                <Route path="/login" >
                                     <Login />
                                 </Route>
                                 <Route path="/" exact>
