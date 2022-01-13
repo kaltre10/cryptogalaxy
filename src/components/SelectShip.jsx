@@ -83,7 +83,7 @@ const SelectShip = () => {
                                 Mining {planet.mine}, Planet {planet.name},
                                 Lvl {planet.lvl}
 
-                                <button onClick={upEnergy}> UpEnergy </button>
+                               {/*  <button onClick={upEnergy}> UpEnergy </button> */}
                             </div>
                             <button onClick={() => setSelectship(false)} className="btn-close-ships" > X </button>
                         </div>
