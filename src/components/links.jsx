@@ -16,7 +16,7 @@ const web3 = new Web3(provider)
 
 const LinksN = () => {
 
-    const { Toast, glx, connectOrRegister, bnb, user, loading, stateLoading } = useContext(DataContext)
+    const {  glx, connectOrRegister, bnb, user, loading, stateLoading } = useContext(DataContext)
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)

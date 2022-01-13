@@ -1,34 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { DataProvider } from './context/DataContext';
-import { DataContext } from './context/DataContext';
-
 import './css/App.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Market from './routes/market'
 import Inventory from './routes/inventory'
 import Login from './routes/login'
 import Planet from './routes/planet'
-import urlApi from './urlApi';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import TopNav from './components/topNav';
-import Web3 from 'web3'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Shop from './routes/shop';
 import Invaders from './routes/invaders';
-import glxAbi from './token/glxAbi';
 import Refinery from './routes/refinery';
 import Factory from './routes/factory';
 import Gmexchange from './routes/gmexchange';
 import NewM from './routes/newm';
 
 //const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
-const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
+/* const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
 const mainnetProvider = 'https://bsc-dataseed.binance.org/'
 const web3 = new Web3(mainnetProvider)
 const eth = window.ethereum;
-const mycontract = new web3.eth.Contract(glxAbi, mainnetContractAbiGlx)
+const mycontract = new web3.eth.Contract(glxAbi, mainnetContractAbiGlx) */
 
 //abis glx & nft
 /* import abi from './token/glxAbi'
@@ -43,29 +36,29 @@ const nftCatMiner = '0x06B532c3Fc2ff1E61103Aa4075658b2D151c51cb' */
 
 const App = () => {
 
-    const [user, setUser] = useState({});
+/*     const [user, setUser] = useState({});
     const [ships, setShips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bnb, setBNB] = useState(0);
-    const [glx, setGlx] = useState(0);
+    const [glx, setGlx] = useState(0); */
 
-    useEffect(() => {
+  /*   useEffect(() => {
         connectOrRegister()
-    }, []);
+    }, []); */
 
     /* window.ethereum.on('chainChanged', async (chainId) => {
          switchChain()
      }*/
 
-    async function getBNB(w) {
+    /* async function getBNB(w) {
         web3.eth.getBalance(w).then((r) => {
             setBNB(web3.utils.fromWei(r, 'ether'))
         })
-    }
+    } */
     //test 97 smart 56
-    const net = web3.utils.toHex(97)
+    /* const net = web3.utils.toHex(97) */
 
-    async function connectOrRegister() {
+   /*  async function connectOrRegister() {
         setLoading(true);
         if (typeof window.ethereum !== 'undefined') {
             const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
@@ -99,16 +92,16 @@ const App = () => {
         } else {
             alert("Need Metamask extension!")
         }
-    }
+    } */
 
-    async function switchEthereumChain() {
+ /*    async function switchEthereumChain() {
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: net }],
         })
         connectOrRegister()
-    }
-
+    } */
+/* 
     async function getShips(wallet) {
         const axiosHeader = { headers: { "Content-Type": "application/json" } }
 
@@ -130,12 +123,9 @@ const App = () => {
 
     function stateLoading(imp) {
         setLoading(imp);
-    }
-    if (typeof window.ethereum !== 'undefined') {
-        window.ethereum.on('accountsChanged', () => {
-            window.location.href = './login';
-        });
-    }
+    } */
+
+   
 
     /*async function detectChainId() {
            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
@@ -148,18 +138,18 @@ const App = () => {
            }
     }*/
 
-    const Toast = (type, msg) => {
+    /* const Toast = (type, msg) => {
         if (type === 0)
             toast.error(msg);
         if (type === 1)
             toast.success(msg);
-    }
+    } */
 
-    async function getGlx(ownerAddress) {
+    /* async function getGlx(ownerAddress) {
         mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
             setGlx(web3.utils.fromWei(r, 'ether'))
         })
-    }
+    } */
 
     return (
         <DataProvider>

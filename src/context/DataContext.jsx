@@ -20,11 +20,15 @@ import stationsBuild from '../items/stations'
 export const DataContext = createContext()
 
 export const DataProvider = ({ children }) => {
-    
-    
+
+    if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.on('accountsChanged', () => {
+            window.location.href = './login';
+        });
+    }
     
     //test 97 smart 56
-    const net = web3.utils.toHex(97)
+    const net = web3.utils.toHex(56)
 
     const [sellObj, setSellObj] = useState(minersShop)
     const [miners, setMiners] = useState([])
@@ -295,12 +299,21 @@ export const DataProvider = ({ children }) => {
     }
 
     async function connectOrRegister() {
+        
         setLoading(true);
         if (typeof window.ethereum !== 'undefined') {
             const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
-            if (chainIdhex === net) {
+           
+            if (chainIdhex == net) {
 
                 eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
+                    await getGlx(res[0]).then((res)=>{
+                        console.log("cantidad de glx: "+res)
+                    }).catch((err)=>{
+                        alert(err.message)
+                    })
+
+
                     const wallet = res[0].toLowerCase();
                     await getShips(wallet);
                     await getBNB(res[0]);
@@ -371,7 +384,9 @@ export const DataProvider = ({ children }) => {
 
     async function getGlx(ownerAddress) {
         mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
-            setGlx(web3.utils.fromWei(r, 'ether'))
+            const saldo =web3.utils.fromWei(r, 'ether') 
+            setGlx(saldo)
+            return saldo
         })
     }
 

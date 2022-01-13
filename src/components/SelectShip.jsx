@@ -14,11 +14,16 @@ const SelectShip = () => {
     const getMiners = async () => {
         let newMiners = []
         if (ships.length > 0) {
-            ships.map((ship) => {
+            ships.forEach(ship => {
                 if (ship.type === "Miner" && !ship.onSell) {
                     newMiners.push(ship)
                 }
-            })
+            });
+            /* ships.map((ship) => {
+                if (ship.type === "Miner" && !ship.onSell) {
+                    newMiners.push(ship)
+                }
+            }) */
             setMiners(newMiners)
         }
     }
