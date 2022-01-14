@@ -28,7 +28,7 @@ export const DataProvider = ({ children }) => {
     }
     
     //test 97 smart 56
-    const net = web3.utils.toHex(56)
+    
 
     const [sellObj, setSellObj] = useState(minersShop)
     const [miners, setMiners] = useState([])
@@ -211,6 +211,10 @@ export const DataProvider = ({ children }) => {
     }
 
     async function buyShip(objSell) {
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+    if(net === chainIdhex){
+
+    
 
         stateLoading(true)
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
@@ -243,6 +247,11 @@ export const DataProvider = ({ children }) => {
                 console.log(error.message)
                 Toast(0, error.message)
             })
+
+        }else{
+            Toast(0,"Incorrect Network")
+            switchEthereumChain()
+        }
     }
 
     async function buyShipDbUpdate(txHash, objSell) {
@@ -254,10 +263,6 @@ export const DataProvider = ({ children }) => {
         console.log(buyShip.data)
         connectOrRegister()
     }
-
-    /* window.ethereum.on('chainChanged', async (chainId) => {
-         switchChain()
-     }*/
 
     async function getBNB(wallet) {
         web3.eth.getBalance(wallet).then((balance) => {
@@ -298,12 +303,18 @@ export const DataProvider = ({ children }) => {
 
     }
 
+    window.ethereum.on('chainChanged', async (chainId) => {
+        switchEthereumChain()
+    })
+    
+
+    const net = web3.utils.toHex(56)
     async function connectOrRegister() {
         
         setLoading(true);
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
         if (typeof window.ethereum !== 'undefined') {
-            const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
-           
+            
             if (chainIdhex == net) {
 
                 eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
@@ -590,7 +601,9 @@ export const DataProvider = ({ children }) => {
         changeRecipe,
         changeBuilding,
         buildShip,
-        sendTransaction
+        sendTransaction,
+        switchEthereumChain,
+        net
 
     }
 

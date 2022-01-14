@@ -12,7 +12,7 @@ const web3 = new Web3(testnetProvider)
 /*const glxContract = new web3.eth.Contract(glxAbi, contractOuner) */
 
 const Market = () => {
-    const { stateLoading, loading, Toast, connectOrRegister, user } = useContext(DataContext)
+    const { stateLoading, loading, Toast, connectOrRegister, user,net } = useContext(DataContext)
 
     const [ships, setShips] = useState([])
     
@@ -28,6 +28,8 @@ const Market = () => {
 
     const buyShipOnMarket = async (ship) => {
 
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+        if(net === chainIdhex){
         const ac = await window.ethereum.request({ "method": "eth_requestAccounts" })
         const wallet = ac[0]
         const own = ship.wallet
@@ -63,7 +65,9 @@ const Market = () => {
                 stateLoading(false)
             })
 
-        //alert("Buy:"+ship.name+" wallet:"+ship.wallet+" id:"+ship._id)
+        }else{
+            Toast(0,"Incorrect Network, Need BSC")
+        }
     }
     return (
         <>
