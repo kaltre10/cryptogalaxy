@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from 'react'
 import urlApi from '../urlApi'
 import axios from 'axios';
 import { Toast } from './service'
-import { web3, eth, mycontract, contractOwner } from './web3Service'
+import { web3, eth, mycontract, contractOwner, contractSales } from './web3Service'
 import minersShop from "../items/miners";
 import oil from '../img/meterials/refined/oil.webp'
 import iron_bar from '../img/meterials/refined/iron_bar.webp';
@@ -138,7 +138,7 @@ export const DataProvider = ({ children }) => {
             setBuidShips(stationsBuild)
     }
 
-    const buildShip = async (ship, _id, station) => {
+    const buildShip = async (ship, _id) => {
 
         const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
         if (net === chainIdhex) {
@@ -158,7 +158,7 @@ export const DataProvider = ({ children }) => {
                         params: [
                             {
                                 from: wallet,
-                                to: contractOuner,
+                                to: contractSales,
                                 value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
                                 gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
                                 gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
@@ -619,7 +619,8 @@ export const DataProvider = ({ children }) => {
         switchEthereumChain,
         net,
         giftShipDbUpdate,
-        mlvl
+        mlvl,
+        contractSales
 
     }
 

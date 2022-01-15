@@ -27,7 +27,7 @@ const web3 = new Web3(testnetProvider)
 
 function Inventory() {
 
-    const { ships, connectOrRegister, user, loading, stateLoading, Toast, net } = useContext(DataContext)
+    const { ships, connectOrRegister, user, loading, stateLoading, Toast, net,contractSales } = useContext(DataContext)
 
     const [sellPrice, setSellPrice] = useState(0);
     const [selling, setSelling] = useState(false);
@@ -37,7 +37,6 @@ function Inventory() {
     const [ammount, setAmmount] = useState(0)
     const [gemPrice, setGemPrice] = useState(0)
 
-    const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
     const salesRate = "0.0009"
 
     const reset = () => {
@@ -85,7 +84,7 @@ function Inventory() {
                         params: [
                             {
                                 from: account,
-                                to: contractOuner,
+                                to: contractSales,
                                 value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
                                 gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
                                 gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
@@ -233,7 +232,7 @@ function Inventory() {
                         <div className='my-2'>
                             {ammount} {mat} → {gemPrice} GM
                         </div>
-                        <div className='fee text-warning'>Sales rate 0.0002 BNB </div>
+                        <div className='fee text-warning'>Sales rate 10 Gm </div>
                         <hr />
                         <div className='mt-3'>
                             {loading ? <>
@@ -294,9 +293,9 @@ function Inventory() {
                                                                 <div className="mp-img">
                                                                     mp : {item.mp}
                                                                 </div>
-                                                                <div className="id-img">
+                                                                {/* <div className="id-img">
                                                                     {item._id}
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="type-img d-flex">
                                                                     <div className="w-text-img">
                                                                         {item.type} {item.subType}

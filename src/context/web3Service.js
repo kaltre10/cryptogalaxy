@@ -8,3 +8,4 @@ export const web3 = new Web3(mainnetProvider)
 export const eth = window.ethereum
 export const mycontract = new web3.eth.Contract(glxAbi, mainnetContractAbiGlx)
 export const contractOwner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
+export const contractSales = "0x0b18947426e74500dc0e96312A02E410d961a91E"
