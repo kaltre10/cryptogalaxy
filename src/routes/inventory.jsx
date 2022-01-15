@@ -27,7 +27,7 @@ const web3 = new Web3(testnetProvider)
 
 function Inventory() {
 
-    const { ships, connectOrRegister, bnb, user, loading, stateLoading, Toast } = useContext(DataContext)
+    const { ships, connectOrRegister, user, loading, stateLoading, Toast, net } = useContext(DataContext)
 
     const [sellPrice, setSellPrice] = useState(0);
     const [selling, setSelling] = useState(false);
@@ -70,56 +70,59 @@ function Inventory() {
     }
 
     const sell = async (objSell) => {
+        //validar chain
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+        if (chainIdhex == net) {
+            if (sellPrice <= 0) {
+                alert("Incorrect price, not sellin in 0 bnb")
+            } else {
+                stateLoading(true)
+                const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+                const account = accounts[0]
+                await window.ethereum
+                    .request({
+                        method: 'eth_sendTransaction',
+                        params: [
+                            {
+                                from: account,
+                                to: contractOuner,
+                                value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
+                                gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                                gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
+                            },
+                        ],
+                    })
+                    .then(async (txHash) => {
 
-        if (sellPrice <= 0) {
-            alert("Incorrect price, not sellin in 0bnb")
+                        const wallet = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+                        const headers = { headers: { "Content-Type": "application/json" } }
+                        const res = await axios.put(urlApi + "/api/v1/sellShip", {
+                            ship,
+                            wallet,
+                            txHash,
+                            sellPrice
+                        }, headers)
+                        if (res.data.error) {
+                            Toast(0, res.data.message);
+                        } else {
+                            Toast(1, res.data.message)
+                        }
+
+                    })
+                    .catch((error) => {
+                        //getErrorToast(true, error.message)
+                        console.log(error.message)
+                        Toast(0, error.message)
+                    }).finally(() => {
+                        connectOrRegister()
+                        stateLoading(false)
+                        reset()
+                    })
+                console.log(objSell)
+            }
         } else {
-            stateLoading(true)
-            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-            const account = accounts[0]
-            await window.ethereum
-                .request({
-                    method: 'eth_sendTransaction',
-                    params: [
-                        {
-                            from: account,
-                            to: contractOuner,
-                            value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
-                            gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-                            gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
-                        },
-                    ],
-                })
-                .then(async (txHash) => {
-
-                    const wallet = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-                    const headers = { headers: { "Content-Type": "application/json" } }
-                    const res = await axios.put(urlApi + "/api/v1/sellShip", {
-                        ship,
-                        wallet,
-                        txHash,
-                        sellPrice
-                    }, headers)
-                    if (res.data.error) {
-                        Toast(0, res.data.message);
-                    } else {
-                        Toast(1, res.data.message)
-                    }
-
-                })
-                .catch((error) => {
-                    //getErrorToast(true, error.message)
-                    console.log(error.message)
-                    Toast(0, error.message)
-                }).finally(() => {
-                    connectOrRegister()
-                    stateLoading(false)
-                    reset()
-                })
-            console.log(objSell)
+            Toast(0, "incorect Network")
         }
-
-
     }
 
     const sellMaterial = async (material) => {
@@ -149,7 +152,7 @@ function Inventory() {
     return (
         <>
             {selling ? <>
-                <div className='sellModal' >
+                <div className='sellModal'>
                     <div className='in-content-sell'>
                         <div className='d-flex justify-content-between'>
                             <div className='mb-3'>
@@ -158,7 +161,7 @@ function Inventory() {
                                 <div className='fee'> ID: {ship._id} </div>
                             </div>
                             <div>
-                                <button onClick={() => { reset() }} className='close-button' >
+                                <button onClick={() => { reset() }} className='close-button'>
                                     x
                                 </button>
                             </div>
@@ -233,10 +236,10 @@ function Inventory() {
                         <div className='fee text-warning'>Sales rate 0.0002 BNB </div>
                         <hr />
                         <div className='mt-3'>
-                            {loading?<>
+                            {loading ? <>
                                 <button className='disabled btn btn-secondary form-control'> <div className="spinner-border"></div> </button>
-                            </>:<>
-                            <button onClick={() => { aproveSellMaterial(mat);stateLoading(true)  }} className='btn btn-success form-control'> Aprove </button>
+                            </> : <>
+                                <button onClick={() => { aproveSellMaterial(mat); stateLoading(true) }} className='btn btn-success form-control'> Aprove </button>
                             </>}
                         </div>
                     </div>
@@ -319,6 +322,7 @@ function Inventory() {
                                                                     {item.onSell ? <>
                                                                         <button onClick={() => { recover(item) }} className='btn btn-warning form-control'> Remove </button>
                                                                     </> : <>
+
                                                                         <button onClick={() => { sellShip(item); setSelling(true) }} className='form-control btn btn-primary'> Sell </button>
                                                                     </>}
                                                                 </div>

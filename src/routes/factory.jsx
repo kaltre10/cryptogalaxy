@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from "react";
+import React, { useContext } from "react";
 import Sidebar from "../components/sidebar";
 import { DataContext } from "../context/DataContext";
 import energy from '../img/assets/energy.svg'
@@ -14,15 +14,9 @@ const Factory = () => {
         build, 
         changeRecipe,
         changeBuilding,
-        buildShip,
-        ships,
-        connectOrRegister
+        buildShip
 
     } = useContext(DataContext)
-
-    /* useEffect(()=>{
-        connectOrRegister()
-    },[]) */
 
     return (
         <>
@@ -56,7 +50,7 @@ const Factory = () => {
                                                                 ID: {item._id}
                                                             </div>
                                                             <div className="row gx-4 p-3">
-                                                                <div className="col-2 text-center">
+                                                                <div className="col-md-2 col-12 text-center">
                                                                     {item.type} {item.subType}
                                                                     <img src={item.img} alt="" className="img-fluid img-factory" />
                                                                     <div>
@@ -64,7 +58,7 @@ const Factory = () => {
                                                                         {item.energy}
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-7">
+                                                                <div className="col-md-7 col-12">
                                                                     <div className="p-2 bg-dark">
                                                                         <div className="d-block">What do you want to build?
                                                                             <select onChange={changeBuilding} name="type" id="" className="form-control select-factory">
@@ -78,7 +72,7 @@ const Factory = () => {
 
                                                                         {buildShips.map((item) => {
                                                                             return (
-                                                                                <div key={item._id} onClick={() => { setResultShip(item); changeRecipe(item.recipe) }} className="col-3 gx-2">
+                                                                                <div key={item._id} onClick={() => { setResultShip(item); changeRecipe(item.recipe) }} className="col-md-3 col-6 gx-2">
                                                                                     <div className="bg-const bg-constx p-1">
                                                                                         <div className="text-center w-it-build">
                                                                                             <div>
@@ -103,7 +97,7 @@ const Factory = () => {
                                                                                 <div className="row gx-0">
                                                                                     {materialsNeeded.map((item) => {
                                                                                         return (
-                                                                                            <div className="col-3">
+                                                                                            <div key={item.id} className="col-3">
                                                                                                 <div style={item.style} className="p-1 border-radius text-center m-1">
                                                                                                     <div> <img height="40px" src={item.img} alt="" /> </div>
                                                                                                     <div className="he-1" style={item.style}>
@@ -119,7 +113,7 @@ const Factory = () => {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="col-3 bg-dark pt-3">
+                                                                <div className="col-md-3 col-12 my-3 bg-dark pt-3">
                                                                     {resultShip.img !== undefined ?
                                                                         <div className="materials-to-build p-2">
                                                                             <div className="text-center">

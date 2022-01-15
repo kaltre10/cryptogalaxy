@@ -9,6 +9,7 @@ import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
 import { DataContext } from '../context/DataContext';
+import { Toast } from 'react-bootstrap';
 
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
@@ -16,7 +17,7 @@ const web3 = new Web3(provider)
 
 const LinksN = () => {
 
-    const {  glx, connectOrRegister, bnb, user, loading, stateLoading } = useContext(DataContext)
+    const { glx, connectOrRegister, bnb, user, loading, stateLoading, net } = useContext(DataContext)
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -28,43 +29,46 @@ const LinksN = () => {
     const [minimun, setMinimun] = useState(false)
 
     async function buyGm() {
-        stateLoading(true)
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        await window.ethereum
-            .request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: accounts[0],
-                        to: contractOuner,
-                        value: web3.utils.toHex(web3.utils.toWei(bnbBalance, 'ether')),
-                        gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-                        gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
-                    },
-                ],
-            })
-            .then(async (txHash) => {
-                /* console.log("Este el el Hash de la transaccion: " + txHash)
-                getInfoToasText("Transaction hash: " + txHash)
-                console.log("Cantidad de Gemas: " + amount) /*/
-                const amount = bnbBalance * 100000
-                const hash = txHash
-                const account = accounts[0]
-                const wallet = account.toLowerCase()
-                const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
 
-                console.log("Buy gm: " + getGm.data);
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+        if (net === chainIdhex) {
+            stateLoading(true)
+            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+            await window.ethereum
+                .request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: accounts[0],
+                            to: contractOuner,
+                            value: web3.utils.toHex(web3.utils.toWei(bnbBalance, 'ether')),
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                            gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
+                        },
+                    ],
+                })
+                .then(async (txHash) => {
+                    const amount = bnbBalance * 100000
+                    const hash = txHash
+                    const account = accounts[0]
+                    const wallet = account.toLowerCase()
+                    const getGm = await axios.put(urlApi + "/api/v1/buygm", { wallet, amount, hash })
 
-                console.log("Transaction hash:" + hash);
-                setShow(false)
-                stateLoading(false);
-                connectOrRegister()
+                    console.log("Buy gm: " + getGm.data);
 
-            })
-            .catch((error) => {
-                stateLoading(false);
-                console.log("Ocurrio el siguiente error: " + error.message)
-            })
+                    console.log("Transaction hash:" + hash);
+                    setShow(false)
+                    stateLoading(false);
+                    connectOrRegister()
+
+                })
+                .catch((error) => {
+                    stateLoading(false);
+                    console.log("Ocurrio el siguiente error: " + error.message)
+                })
+        } else {
+            alert(0, "Incorrect Network!")
+        }
     }
 
     const roundBnb = (bnb) => {
@@ -100,7 +104,7 @@ const LinksN = () => {
 
                 <li>
                     <Link to="/newm" className="nav-button">
-                        • General Market
+                        • Materials Market
                     </Link>
                 </li>
                 <li>
@@ -140,7 +144,7 @@ const LinksN = () => {
                         <img className="logo-sidebar" src={bnbLogo} alt="" /> {roundBnb(bnb)}
                     </div>
                     <div className="">
-                        <img className="logo-sidebar" src={logo} alt="" /> {glx}
+                        <img className="logo-sidebar" src={logo} alt="" /> {Math.floor(glx)}
                     </div>
                     <div className="">
                         <img className="logo-sidebar" src={gem} alt="" /> {Math.floor(user.gm)}

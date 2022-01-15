@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { DataContext } from "../context/DataContext";
 import Sidebar from "../components/sidebar";
-import axios from "axios";
 import Ares from '../img/planets/Ares.webp';
 import Argon from '../img/planets/Argon.webp';
 import Elion from '../img/planets/Elion.webp';
@@ -20,14 +19,34 @@ import RecTimer from "../components/recTimer";
 import { useEffect } from "react";
 
 const Planet = () => {
-    const { upEnergy, user, loading, setSelectship, mineryLevel, setPlanet, unlockPlanet } = useContext(DataContext)
-    const [mineryXp, setMineryXp] = useState(0)
-    useEffect(() => {
-        if (!loading) {
-            setMineryXp(user.xp.minery)
-        }
-    }, [loading])
+    const { user, loading, setSelectship, mineryLevel, setPlanet, unlockPlanet, mlvl } = useContext(DataContext)
+    const [xpStyle, setxpStyle] = useState({})
 
+    useEffect(() => {
+        getStyle()
+    }, [user.xp])
+
+    const getStyle = () => {
+        if (user.xp !== undefined) {
+            const xp = user.xp.minery
+            let percent
+            if (xp < mlvl[0])
+                percent = xp / mlvl[0] * 100
+            if (xp >= mlvl[0] && xp <= mlvl[1])
+                percent = xp / mlvl[1] * 100
+            if (xp >= mlvl[1] && xp < mlvl[2])
+                percent = xp / mlvl[2] * 100
+            if (xp >= mlvl[2] && xp < mlvl[3])
+                percent = xp / mlvl[3] * 100
+            if (xp >= mlvl[3] && xp < mlvl[4])
+                percent = xp / mlvl[4] * 100
+            if (xp >= mlvl[4])
+                percent = xp / mlvl[5] * 100
+            setxpStyle({
+                width: percent + "%"
+            })
+        }
+    }
 
     return (
         <>
@@ -48,10 +67,7 @@ const Planet = () => {
                                 </div>
                             </div>
                         </> : <>
-
-
                             <div className="row">
-
                                 <div className="col-12 p-1 bg-dark text-white mb-3 bg-materials-planet">
                                     <div className="row">
                                         <div className="col-12">
@@ -61,9 +77,13 @@ const Planet = () => {
                                                         {mineryLevel(user.xp.minery)}
                                                     </> : <></>
                                                     }</h4>
-
-                                                    <div> Minery xp : {user.xp.minery} </div>
-
+                                                    <div className="p-1 bg-darkxp">
+                                                        <div style={xpStyle} className="mineryxp px-1">
+                                                        </div>
+                                                        <div className="xpText">
+                                                            XP {user.xp.minery}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div>
                                                     <RecTimer />
@@ -76,7 +96,6 @@ const Planet = () => {
                                                 {user.materials.iron}
                                             </> : <></>
                                             }
-
                                         </div>
                                         <div className="col-4 col-md-2 text-center">
                                             Silver<br />
@@ -131,6 +150,7 @@ const Planet = () => {
                                                     <div >
                                                         <h2 className="text-white m-0 p-0">Terrat</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 1</p>
+                                                        <p className="m-0 p-0 price"> Xp need 0</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.8</b></p>
 
                                                     </div>
@@ -203,7 +223,7 @@ const Planet = () => {
                                                     <div >
                                                         <h2 className="text-white m-0 p-0">Argon</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 2</p>
-                                                        <p className="m-0 price p-0 mb-1"> Silver Planet</p>
+                                                        <p className="m-0 p-0 price"> Xp need 58</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.4</b></p>
 
                                                     </div>
@@ -249,8 +269,6 @@ const Planet = () => {
                                                             <div className="spinner-border"></div>
                                                         </div>
                                                     }
-
-
                                                 </div>
                                                 {/* fin */}
 
@@ -271,12 +289,11 @@ const Planet = () => {
                                             <div className="inplanet">
 
                                                 <div className="d-flex justify-content-between">
-                                                    <div >
+                                                    <div>
                                                         <h2 className="text-white m-0 p-0">Elion</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 3</p>
-                                                        <p className="m-0 price p-0 mb-1"> Gold planet</p>
+                                                        <p className="m-0 p-0 price"> Xp need 420</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.2</b></p>
-
                                                     </div>
                                                     <div>
                                                         <div className="mineral">
@@ -335,14 +352,12 @@ const Planet = () => {
                                         </div>
                                         <div className="col-8 col-md-7 p-3 ">
                                             <div className="inplanet">
-
                                                 <div className="d-flex justify-content-between">
-                                                    <div >
+                                                    <div>
                                                         <h2 className="text-white m-0 p-0">Fiz</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 4</p>
-                                                        <p className="m-0 price p-0 mb-1"> Diamond planet</p>
+                                                        <p className="m-0 p-0 price"> Xp need 1080</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.1</b></p>
-
                                                     </div>
                                                     <div>
                                                         <div className="mineral">
@@ -406,7 +421,7 @@ const Planet = () => {
                                                     <div >
                                                         <h2 className="text-white m-0 p-0">Seea</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 5</p>
-                                                        <p className="m-0 price p-0 mb-1"> Ice planet</p>
+                                                        <p className="m-0 p-0 price"> Xp need 2012</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.06</b></p>
 
                                                     </div>
@@ -474,7 +489,7 @@ const Planet = () => {
                                                     <div >
                                                         <h2 className="text-white m-0 p-0">Ares</h2>
                                                         <p className="m-0 p-0 text-white"> LVL 6</p>
-                                                        <p className="m-0 price p-0 mb-1"> Petroleum planet</p>
+                                                        <p className="m-0 p-0 price"> Xp need 2920</p>
                                                         <p className="m-0 price p-0 mb-1"> Dificulty: <b>0.03</b></p>
 
                                                     </div>

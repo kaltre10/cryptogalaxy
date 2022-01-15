@@ -203,7 +203,7 @@ const Newm = () => {
                                                             </div>
                                                         </div>
                                                         <div className="id-item">
-                                                            {item._id}
+                                                            {item.wallet}
                                                         </div>
                                                         <div className="d-flex justify-content-center align-items-center p-2">
                                                             <div className="img-mat my-3">

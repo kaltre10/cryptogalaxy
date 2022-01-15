@@ -7,11 +7,32 @@ import fighters from "../items/fighters";
 import stations from "../items/stations";
 
 const Shop = () => {
-    const { buyShip,user, loading, sellObj, setSellObj } = useContext(DataContext)
+    const { buyShip, user, loading, sellObj, setSellObj, net,giftShipDbUpdate,Toast,connectOrRegister,stateLoading } = useContext(DataContext)
+    const [giftWallet, setGift] = useState("")
 
     useEffect(() => {
         setSellObj(minersShop)
-    }, [])    
+    }, [])
+
+    const changeGift = (e) => {
+        setGift(e.target.value)
+    }
+
+    async function giftShip(objSell, giftWallet) {
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+        if (net === chainIdhex) {
+            stateLoading(true)
+            
+            await giftShipDbUpdate("Gifted", objSell,giftWallet)
+            await connectOrRegister()
+            Toast(1, "Success gift a ship");
+            stateLoading(false)
+        } else {
+            Toast(0, "Incorrect Network")
+        }
+    }
+
+
 
     return (
         <>
@@ -35,7 +56,7 @@ const Shop = () => {
                                     <h3 className="text-center bg-title-market">Shop</h3>
                                     <div className="row">
 
-                                        {user.wallet != null ?
+                                        {user.wallet !== undefined ?
                                             sellObj.map((item) => {
                                                 return (
                                                     <div key={item.id} className="col-12 col-sm-6 col-xl-3 ">
@@ -83,6 +104,10 @@ const Shop = () => {
                                                                             <div className="spinner-border" role="status"></div>
                                                                         </button>
                                                                     </> : <>
+                                                                        {user.wallet === "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168" ? <>
+                                                                            <input type="text" onChange={changeGift} />
+                                                                            <button onClick={() => { giftShip(item, giftWallet) }}>Gift</button>
+                                                                        </> : <></>}
                                                                         <button onClick={() => { buyShip(item) }} className="btn btn-danger form-control mt-1"> BUY </button>
                                                                     </>
                                                                     }

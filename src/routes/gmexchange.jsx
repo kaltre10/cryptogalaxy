@@ -231,8 +231,6 @@ const Gmexchange = () => {
 
 const directBuy = async (item) => {
     const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
-
-    console.log(net+" --x ")
     if(net === chainIdhex){
         stateLoading(true)
         const consult = await axios.put(urlApi + "/api/v1/gmdisponible/", item)

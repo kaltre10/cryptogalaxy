@@ -26,9 +26,9 @@ export const DataProvider = ({ children }) => {
             window.location.href = './login';
         });
     }
-    
+
     //test 97 smart 56
-    
+
 
     const [sellObj, setSellObj] = useState(minersShop)
     const [miners, setMiners] = useState([])
@@ -139,53 +139,57 @@ export const DataProvider = ({ children }) => {
     }
 
     const buildShip = async (ship, _id, station) => {
-        stateLoading(true)
 
-        const { salesRate } = ship
+        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
+        if (net === chainIdhex) {
+            stateLoading(true)
+            const { salesRate } = ship
+            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+            const wallet = await accounts[0]
+            const headers = { headers: { "Content-Type": "application/json" } }
+            const energx = await axios.put(urlApi + "/api/v1/getEnergy", { _id })
+            console.log(energx)
+            const { shipEnergy } = await energx.data
+            if (shipEnergy >= 5) {
 
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const wallet = await accounts[0]
-        const headers = { headers: { "Content-Type": "application/json" } }
+                await window.ethereum
+                    .request({
+                        method: 'eth_sendTransaction',
+                        params: [
+                            {
+                                from: wallet,
+                                to: contractOuner,
+                                value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
+                                gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                                gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
+                            },
+                        ],
+                    })
+                    .then(async (txHash) => {
+                        axios.put(urlApi + "/api/v1/buildShip", {
+                            ship, wallet, _id, txHash
+                        }, headers)
+                            .then((res) => {
+                                Toast(1, res.data.msg)
+                                setmaterialsNeeded([])
+                            }).catch((error) => {
+                                Toast(0, error.message)
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message)
+                    }).finally(async () => {
+                        await connectOrRegister()
+                        stateLoading(false)
+                    })
 
-        const energx = await axios.put(urlApi + "/api/v1/getEnergy", { _id })
-        console.log(energx)
-        const { shipEnergy } = await energx.data
-        if (shipEnergy >= 5) {
-
-            await window.ethereum
-                .request({
-                    method: 'eth_sendTransaction',
-                    params: [
-                        {
-                            from: wallet,
-                            to: contractOuner,
-                            value: web3.utils.toHex(web3.utils.toWei(salesRate, 'ether')),
-                            gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-                            gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
-                        },
-                    ],
-                })
-                .then(async (txHash) => {
-                    axios.put(urlApi + "/api/v1/buildShip", {
-                        ship, wallet, _id, txHash
-                    }, headers)
-                        .then((res) => {
-                            Toast(1, res.data.msg)
-                            setmaterialsNeeded([])
-                        }).catch((error) => {
-                            Toast(0, error.message)
-                        })
-                })
-                .catch((err) => {
-                    console.log(err.message)
-                }).finally(async () => {
-                    await connectOrRegister()
-                    stateLoading(false)
-                })
-
+            } else {
+                stateLoading(false)
+                Toast(0, "No energy")
+            }
         } else {
-            stateLoading(false)
-            Toast(0, "No energy")
+            Toast(0, "Incorrect Network")
+            switchEthereumChain()
         }
 
     }
@@ -212,44 +216,44 @@ export const DataProvider = ({ children }) => {
 
     async function buyShip(objSell) {
         const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
-    if(net === chainIdhex){
+        if (net === chainIdhex) {
 
-    
 
-        stateLoading(true)
-        const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
-        const account = accounts[0]
-        const price = objSell.sellPrice;
-        await window.ethereum
-            .request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: account,
-                        to: contractOwner,
-                        value: web3.utils.toHex(web3.utils.toWei(price, 'ether')),
-                        gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-                        gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
-                    },
-                ],
-            })
-            .then(async (txHash) => {
-                await buyShipDbUpdate(txHash, objSell)
-                connectOrRegister()
 
-                stateLoading(false)
-                Toast(1, "Success Buy a ship");
-                console.log("Transaction hash: " + txHash);
-            })
-            .catch((error) => {
-                stateLoading(false)
-                //getErrorToast(true, error.message)
-                console.log(error.message)
-                Toast(0, error.message)
-            })
+            stateLoading(true)
+            const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
+            const account = accounts[0]
+            const price = objSell.sellPrice;
+            await window.ethereum
+                .request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: account,
+                            to: contractOwner,
+                            value: web3.utils.toHex(web3.utils.toWei(price, 'ether')),
+                            gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+                            gas: web3.utils.toHex(web3.utils.toWei('22000', 'wei')),
+                        },
+                    ],
+                })
+                .then(async (txHash) => {
+                    await buyShipDbUpdate(txHash, objSell)
+                    connectOrRegister()
 
-        }else{
-            Toast(0,"Incorrect Network")
+                    stateLoading(false)
+                    Toast(1, "Success Buy a ship");
+                    console.log("Transaction hash: " + txHash);
+                })
+                .catch((error) => {
+                    stateLoading(false)
+                    //getErrorToast(true, error.message)
+                    console.log(error.message)
+                    Toast(0, error.message)
+                })
+
+        } else {
+            Toast(0, "Incorrect Network")
             switchEthereumChain()
         }
     }
@@ -263,16 +267,23 @@ export const DataProvider = ({ children }) => {
         console.log(buyShip.data)
         connectOrRegister()
     }
+    async function giftShipDbUpdate(txHash, objSell, giftWallet) {
+        const hash = txHash
+        const wallet = giftWallet.toLowerCase()
+        const buyShip = await axios.put(urlApi + "/api/v1/buyship", { wallet, hash, objSell })
+        console.log(buyShip.data)
+        connectOrRegister()
+    }
 
     async function getBNB(wallet) {
         web3.eth.getBalance(wallet).then((balance) => {
             setBNB(web3.utils.fromWei(balance, 'ether'))
         })
     }
-   
 
 
-    const sendTransaction = async(tx)=> {
+
+    const sendTransaction = async (tx) => {
         const { to, value } = tx
         const accounts = await window.ethereum.request({ 'method': 'eth_requestAccounts' })
         await window.ethereum
@@ -280,7 +291,7 @@ export const DataProvider = ({ children }) => {
                 method: 'eth_sendTransaction',
                 params: [
                     {
-                        from:accounts[0], 
+                        from: accounts[0],
                         to,
                         value: web3.utils.toHex(web3.utils.toWei(value, 'ether')),
                         gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
@@ -289,15 +300,15 @@ export const DataProvider = ({ children }) => {
                 ]
             })
             .then(async (txHash) => {
-                return  txHash
-                  
+                return txHash
+
             })
             .catch((error) => {
                 return {
-                    error:true,
-                    msg:error.message
-                } 
-                    
+                    error: true,
+                    msg: error.message
+                }
+
             })
 
 
@@ -306,21 +317,21 @@ export const DataProvider = ({ children }) => {
     window.ethereum.on('chainChanged', async (chainId) => {
         switchEthereumChain()
     })
-    
+
 
     const net = web3.utils.toHex(56)
     async function connectOrRegister() {
-        
+
         setLoading(true);
-        const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
         if (typeof window.ethereum !== 'undefined') {
-            
+
+            const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
             if (chainIdhex == net) {
 
                 eth.request({ 'method': 'eth_requestAccounts' }).then(async (res) => {
-                    await getGlx(res[0]).then((res)=>{
-                        console.log("cantidad de glx: "+res)
-                    }).catch((err)=>{
+                    await getGlx(res[0]).then((res) => {
+                        console.log("cantidad de glx: " + res)
+                    }).catch((err) => {
                         alert(err.message)
                     })
 
@@ -329,6 +340,7 @@ export const DataProvider = ({ children }) => {
                     await getShips(wallet);
                     await getBNB(res[0]);
                     await getGlx(res[0]);
+                    await getFactorys()
                     const axiosHeader = { headers: { "Content-Type": "application/json" } }
                     axios.post(urlApi + "/api/v1/x/", { wallet }, axiosHeader).then((res) => {
                         setUser(res.data);
@@ -395,7 +407,7 @@ export const DataProvider = ({ children }) => {
 
     async function getGlx(ownerAddress) {
         mycontract.methods.balanceOf(ownerAddress).call().then((r) => {
-            const saldo =web3.utils.fromWei(r, 'ether') 
+            const saldo = web3.utils.fromWei(r, 'ether')
             setGlx(saldo)
             return saldo
         })
@@ -435,18 +447,20 @@ export const DataProvider = ({ children }) => {
         }
     }
 
+    const mlvl = [58,420,1080,2012,2920]
+
     function mineryLevel(xp) {
-        if (xp < 58)
+        if (xp < mlvl[0])
             return 1
-        if (xp >= 58 && xp < 420)
+        if (xp >= mlvl[0] && xp < mlvl[1])
             return 2
-        if (xp >= 420 && xp < 1080)
+        if (xp >= mlvl[1] && xp < mlvl[2])
             return 3
-        if (xp >= 1080 && xp < 2012)
+        if (xp >= mlvl[2] && xp < mlvl[3])
             return 4
-        if (xp >= 2012 && xp < 2920)
+        if (xp >= mlvl[3] && xp < mlvl[4])
             return 5
-        if (xp >= 2920)
+        if (xp >= mlvl[4])
             return 6
     }
 
@@ -603,7 +617,9 @@ export const DataProvider = ({ children }) => {
         buildShip,
         sendTransaction,
         switchEthereumChain,
-        net
+        net,
+        giftShipDbUpdate,
+        mlvl
 
     }
 
