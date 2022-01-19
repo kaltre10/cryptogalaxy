@@ -57,6 +57,9 @@ export const DataProvider = ({ children }) => {
     const contractOuner = "0x7daf5a75c7b3f6d8c5c2b53117850a5d09006168"
 
     const changeRecipe = async (recipe) => {
+
+        //const userGeneral = await axios.get("/api/v1/getData/"+wallet)
+        console.log(user.refined)
         const obj = []
 
         const { ironbar, silverbar, goldbar, cutdiamond, icebar, oil } = user.refined
@@ -342,8 +345,9 @@ export const DataProvider = ({ children }) => {
                     await getGlx(res[0]);
                     await getFactorys()
                     const axiosHeader = { headers: { "Content-Type": "application/json" } }
-                    axios.post(urlApi + "/api/v1/x/", { wallet }, axiosHeader).then((res) => {
+                    axios.post(urlApi + "/api/v1/x/", { wallet }, axiosHeader).then(async (res) => {
                         setUser(res.data);
+                        setmaterialsNeeded([])
                         setLoading(false);
                         var recharge = res.data.recharge
                         var rectime = recharge - Date.now()
@@ -447,7 +451,7 @@ export const DataProvider = ({ children }) => {
         }
     }
 
-    const mlvl = [58,420,1080,2012,2920]
+    const mlvl = [58, 420, 1080, 2012, 2920]
 
     function mineryLevel(xp) {
         if (xp < mlvl[0])
@@ -533,10 +537,15 @@ export const DataProvider = ({ children }) => {
         if (material === "petroleum")
             return oil
     }
+
     async function refine(station) {
 
-        if (station.energy > 0) {
 
+        if (station.energy > 0) {
+           /*  const wallet = user.wallet
+            const userX = await axios.get("/api/v1/user/"+wallet)
+            setUser(userX.data)
+            console.log(userX.data) */
             if (station.material === undefined) {
                 Toast(0, "Select Material ")
             } else {
@@ -546,24 +555,23 @@ export const DataProvider = ({ children }) => {
                     station,
                     wallet: user.wallet
                 }, Headers)
-                    .then(res => {
+                    .then(async (res) => {
                         console.log(res.data)
                         if (!res.data.error) {
                             Toast(1, res.data.msg)
                         } else {
-                            alert("Error!: " + res.data.msg)
+                            Toast(0,"Error!: " + res.data.msg)
                         }
+                        await connectOrRegister()
                     })
                     .catch(err => alert(err))
-                    .finally(() => {
-                        connectOrRegister()
+                    .finally(_ => {
                         stateLoading(false)
                     })
             }
         } else {
             Toast(0, "No Energy!")
         }
-
     }
 
     const energyTozero = (energy) => {

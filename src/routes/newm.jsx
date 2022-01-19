@@ -7,7 +7,6 @@ import gmLogo from '../img/gems.svg'
 
 const Newm = () => {
 
-    //const [selling, setSelling] = useState("materials")
     const { stateLoading, loading, Toast, connectOrRegister, user } = useContext(DataContext)
     const [materials, setMaterials] = useState([])
     const [selectType, setSelectType] = useState("materials")
@@ -21,10 +20,19 @@ const Newm = () => {
         stateLoading(true)
         const filtred = []
         const obj = await axios.get(urlApi + '/api/v1/getMaterialsOnSell')
+        console.log(obj.data)
         obj.data.map((item) => {
             if (item.material === type) {
                 filtred.push(item)
             }
+        })
+
+        filtred.sort((a,b)=>{
+            const price1 = a.ammount/a.price
+            const price2 = b.ammount/b.price  
+            if(price1 < price2){return 1}
+            if(price1 > price2){return -1}
+            return 0
         })
 
         setMaterials(filtred)
@@ -91,6 +99,14 @@ const Newm = () => {
         getSellers(selectType, selectSubType)
         stateLoading(false)
 
+    }
+
+    function filter(w) {
+        let str1 = w.substr(0, 4);
+        const l = w.length
+        const str2 = w.substr(l - 4, 4);
+        const result = str1 + "..." + str2;
+        return result;
     }
 
     return (
@@ -203,8 +219,9 @@ const Newm = () => {
                                                             </div>
                                                         </div>
                                                         <div className="id-item">
-                                                            {item.wallet}
+                                                            {filter(item.wallet)}
                                                         </div>
+
                                                         <div className="d-flex justify-content-center align-items-center p-2">
                                                             <div className="img-mat my-3">
                                                                 <img className="image" src={item.img} alt="" />
@@ -212,8 +229,12 @@ const Newm = () => {
                                                         </div>
                                                         <div className="d-flex justify-content-between border-top-trans pt-2">
                                                             <div>
-
-                                                                {item.price}GM
+                                                                {item.price} GM
+                                                                <div className="id-item">
+                                                                    {Math.round((item.price/item.ammount)*1000)/1000} GM per Item
+                                                                </div>
+                                                            </div>
+                                                            <div>
                                                             </div>
                                                             <div>
                                                                 {loading ? <>
