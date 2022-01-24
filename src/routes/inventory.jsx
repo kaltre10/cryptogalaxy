@@ -27,7 +27,7 @@ const web3 = new Web3(testnetProvider)
 
 function Inventory() {
 
-    const { ships, connectOrRegister, user, loading, stateLoading, Toast, net,contractSales } = useContext(DataContext)
+    const { ships, connectOrRegister, user, loading, stateLoading, Toast, net, contractSales } = useContext(DataContext)
 
     const [sellPrice, setSellPrice] = useState(0);
     const [selling, setSelling] = useState(false);
@@ -152,6 +152,7 @@ function Inventory() {
         <>
             {selling ? <>
                 <div className='sellModal'>
+
                     <div className='in-content-sell'>
                         <div className='d-flex justify-content-between'>
                             <div className='mb-3'>
@@ -253,11 +254,9 @@ function Inventory() {
                     <div className="col-3 bg-danger d-none d-md-block">
                         < Sidebar />
                     </div>
-
                     <div className="col-12 col-md-9">
                         <div className="w-market-container p-3">
-
-
+                            
                             <div className=''>
                                 <RecTimer />
                             </div>

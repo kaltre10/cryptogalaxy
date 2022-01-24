@@ -156,7 +156,7 @@ const Newm = () => {
                                     <option value="Ironbar">Ironbar</option>
                                     <option value="Silverbar">Silverbar</option>
                                     <option value="Goldbar">Goldbar</option>
-                                    <option value="Cutiamond">Cutdiamond</option>
+                                    <option value="Cutdiamond">Cutdiamond</option>
                                     <option value="Icebar">Icebar</option>
                                     <option value="Oil">Oil</option>
                                 </select>

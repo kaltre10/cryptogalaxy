@@ -11,13 +11,14 @@ import Web3 from 'web3'
 import axios from 'axios';
 import urlApi from '../urlApi';
 import LinksN from './links';
+import logoEuro from '../img/assets/logoEurocrypt.webp'
 const contractOuner = "0x7daF5a75C7B3f6d8c5c2b53117850a5d09006168"
 const provider = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 const web3 = new Web3(provider)
 
 function TopNav() {
 
-  const { connectOrRegister,bnb,user,loading,stateLoading } = useContext(DataContext)
+  const { connectOrRegister, bnb, user, loading, stateLoading } = useContext(DataContext)
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -92,11 +93,11 @@ function TopNav() {
             <img src={logo} height="25px" alt="" className="mx-2" />
             CryptoGalaxy Online
           </Navbar.Brand>
-
-          <div className='d-none d-sm-none d-md-block'>
-
+          <div className='d-sm-none d-md-block'>
+            <div>
             {user.wallet}
-
+              <img src={logoEuro} height="32px" className='mx-2' alt="" />
+            </div>
           </div>
           {user.wallet !== undefined ? <>
             <Navbar.Toggle onClick={() => setExp(!exp)} aria-controls="offcanvasNavbar" className="d-block d-md-none" />
@@ -118,10 +119,10 @@ function TopNav() {
             </Offcanvas.Header>
             <Offcanvas.Body className="bg-dark">
               <Nav className="justify-content-end flex-grow-1">
-                <LinksN/>
-                
+                <LinksN />
 
-              
+
+
 
               </Nav>
             </Offcanvas.Body>
@@ -129,7 +130,7 @@ function TopNav() {
         </Container>
       </Navbar>
 
-     
+
 
     </>
   )

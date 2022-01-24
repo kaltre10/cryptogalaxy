@@ -103,6 +103,11 @@ const LinksN = () => {
             <ul className="nav nav-pills flex-column mb-auto">
 
                 <li>
+                    <Link to="/dashboard" className="nav-button">
+                        • Dashboard
+                    </Link>
+                </li>
+                <li>
                     <Link to="/newm" className="nav-button">
                         • Materials Market
                     </Link>

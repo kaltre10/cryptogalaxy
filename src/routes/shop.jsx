@@ -7,7 +7,7 @@ import fighters from "../items/fighters";
 import stations from "../items/stations";
 
 const Shop = () => {
-    const { buyShip, user, loading, sellObj, setSellObj, net,giftShipDbUpdate,Toast,connectOrRegister,stateLoading } = useContext(DataContext)
+    const { buyShip, user, loading, sellObj, setSellObj, net, giftShipDbUpdate, Toast, connectOrRegister, stateLoading } = useContext(DataContext)
     const [giftWallet, setGift] = useState("")
 
     useEffect(() => {
@@ -22,8 +22,8 @@ const Shop = () => {
         const chainIdhex = await window.ethereum.request({ method: 'eth_chainId' })
         if (net === chainIdhex) {
             stateLoading(true)
-            
-            await giftShipDbUpdate("Gifted", objSell,giftWallet)
+
+            await giftShipDbUpdate("Gifted", objSell, giftWallet)
             await connectOrRegister()
             Toast(1, "Success gift a ship");
             stateLoading(false)
@@ -36,9 +36,7 @@ const Shop = () => {
 
     return (
         <>
-
             <div className="container-fluid m-0 p-0 bg-stars">
-
                 <div className="row gx-0">
                     <div className="col-12 col-md-3 ">
                         < Sidebar />
@@ -67,17 +65,14 @@ const Shop = () => {
 
                                                                     mp : {item.mp}
                                                                 </div>
-                                                                <div className="id-img bg-dark p-1">
-                                                                    <h4 className="text-warning p-0 m-0">
-                                                                        BNB {item.sellPrice}
-                                                                    </h4>
-                                                                </div>
+
                                                                 <div className="type-img d-flex">
                                                                     <div className="w-text-img">
                                                                         {item.type} {item.subType}
                                                                     </div>
                                                                 </div>
                                                             </div>
+
 
                                                             <div className="energy">
                                                                 <div className="border-energy">
@@ -90,11 +85,18 @@ const Shop = () => {
                                                             {/*  {item.charge != null ? <> s:
                                                                     {Math.round((item.charge - Date.now()) / 1000)}
                                                                     <div className="p-1 bg-danger">
-                                                                        {Date.now() + (60000)}
+                                                                    {Date.now() + (60000)}
                                                                     </div>
                                                                 </> : <></>} */}
                                                             <div className="row pt-1 gx-0">
+                                                                <div className="text-center mb-2 bg-dark p-1">
+                                                                    <h5 className="text-warning p-0 m-0">
+                                                                        BNB {item.sellPrice}
+                                                                    </h5>
+
+                                                                </div>
                                                                 <div className="col-6">
+
                                                                     <h4 className="name-nft m-0 p-0">{item.name}</h4>
                                                                     <p className="text-white m-0 p-0"> ATK {item.attack} </p>
                                                                 </div>

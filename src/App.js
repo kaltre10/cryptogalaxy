@@ -15,6 +15,7 @@ import Refinery from './routes/refinery';
 import Factory from './routes/factory';
 import Gmexchange from './routes/gmexchange';
 import NewM from './routes/newm';
+import Dashboard from './routes/dashboard';
 
 //const testnetProvider = "https://data-seed-prebsc-1-s1.binance.org:8545/"
 /* const mainnetContractAbiGlx = "0x78f959923Ed10Af70729fa020C16Bd66AEE10083"
@@ -162,8 +163,11 @@ const App = () => {
                     <div className="row gx-0">
                         <div className="col-12">
                             <Switch>
-                                <Route path="/inventory">
+                            <Route path="/inventory">
                                     <Inventory/>
+                                </Route>
+                                <Route path="/dashboard">
+                                    <Dashboard/>
                                 </Route>
                                 <Route path="/planet">
                                     <Planet/>
