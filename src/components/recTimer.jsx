@@ -10,7 +10,7 @@ const RecTimer = () => {
     const [time, setTime] = useState(3600);
 
     useEffect(() => {
-        if (user.wallet != null) {
+        if (user.wallet !== undefined && user.wallet !== "") {
             const asig = Math.round((user.recharge - Date.now()) / 1000)
             setTime(asig)
             rechargeTime()

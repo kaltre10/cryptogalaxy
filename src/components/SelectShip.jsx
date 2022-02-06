@@ -33,7 +33,7 @@ const SelectShip = () => {
             stateLoading(true)
             const balance = user.gm
             const wallet = user.wallet.toLowerCase()
-            if (balance >= ship.mp) {
+            if (ship.mp <= 5 || balance >= ship.mp  ) {
                 const axiosHeader = { headers: { "Content-Type": "application/json" } }
                 const axiosParams = { wallet, planet, ship }
                 const axiosUrl = urlApi + "/api/v1/mine";
@@ -70,6 +70,14 @@ const SelectShip = () => {
             }
         } else {
             Toast(0, "No energy")
+        }
+    }
+
+    const gmCost = (gm)=>{
+        if(gm <= 5){
+            return 0
+        }else{
+            return gm
         }
     }
 
@@ -123,7 +131,7 @@ const SelectShip = () => {
                                                     </div>
                                                     <div className="col-6 pt-1">
                                                         {loading ? <button className="btn btn-secondary form-control"> Mining... </button> :
-                                                            <button onClick={() => { toMine(item, planet) }} className="btn bg-danger form-control text-white">Mine - {item.mp} GM</button>
+                                                            <button onClick={() => { toMine(item, planet) }} className="btn bg-danger form-control text-white">Mine - {gmCost(item.mp)} GM</button>
                                                         }
 
                                                     </div>

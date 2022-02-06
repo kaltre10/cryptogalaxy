@@ -257,9 +257,9 @@ function Inventory() {
                     <div className="col-12 col-md-9">
                         <div className="w-market-container p-3">
                             
-                            <div className=''>
+                            {<div className=''>
                                 <RecTimer />
-                            </div>
+                            </div>}
                             <div className="w-inventory-item p-2">
                                 <div className="row">
                                     <div className="col-12">
@@ -269,7 +269,7 @@ function Inventory() {
                                     {loading ? <div className='w-100 text-center'>
                                         <div className="spinner-border" role="status"></div>
                                     </div> : <>
-                                        {user.wallet !== undefined ?
+                                        {user.wallet !== undefined && user.wallet !== "" ?
                                             ships.map((item) => {
                                                 return (
                                                     <div key={item._id} className="col-12 col-sm-6 col-xl-3 ">
@@ -340,7 +340,7 @@ function Inventory() {
                             <div className="w-inventory-item p-3">
                                 <h3 className="text-center bg-title-market"> Materials </h3>
 
-                                {user.wallet !== undefined ? <>
+                                {user.wallet !== undefined && user.wallet !== "" ? <>
                                     <div className="row">
                                         {user.materials.iron > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
@@ -453,7 +453,7 @@ function Inventory() {
                             <div className="w-inventory-item p-3">
                                 <h3 className="text-center bg-title-market"> Refined Materials </h3>
 
-                                {user.wallet !== undefined ? <>
+                                {user.wallet !== undefined && user.wallet !== "" ? <>
                                     <div className="row">
                                         {user.refined.ironbar > 0 ? <>
                                             <div className="px-2 col-6 col-md-2  my-2">
@@ -573,7 +573,7 @@ function Inventory() {
                                 <div className="row">
                                     <div className="col-12">
                                         <h3 className='text-center bg-title-market'>Account XP</h3>
-                                        {user.wallet !== undefined ? <>
+                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                             Minery: {user.xp.minery}
                                         </> : <></>}
                                     </div>

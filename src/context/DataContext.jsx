@@ -34,7 +34,7 @@ export const DataProvider = ({ children }) => {
     const [miners, setMiners] = useState([])
     const [selectships, setSelectship] = useState(false);
     const [planet, setPlanet] = useState({});
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({wallet:""});
     const [ships, setShips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bnb, setBNB] = useState(0);
@@ -538,6 +538,14 @@ export const DataProvider = ({ children }) => {
             return oil
     }
 
+    function filterWallet(w) {
+        let str1 = w.substr(0, 4);
+        const l = w.length
+        const str2 = w.substr(l - 4, 4);
+        const result = str1 + "..." + str2;
+        return result;
+    }
+
     async function refine(station) {
 
 
@@ -628,7 +636,8 @@ export const DataProvider = ({ children }) => {
         net,
         giftShipDbUpdate,
         mlvl,
-        contractSales
+        contractSales,
+        filterWallet
 
     }
 

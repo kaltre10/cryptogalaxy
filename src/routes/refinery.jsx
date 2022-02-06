@@ -45,7 +45,7 @@ const Refinery = () => {
                             </div>
                         </div>
 
-                        {user.wallet != undefined ? <>
+                        {user.wallet !== undefined && user.wallet !== "" ? <>
                             {refinerys.map((item) => {
                                 return (
                                     <div key={item._id}>
@@ -96,7 +96,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={iron} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.iron
                                                                             }
@@ -108,7 +108,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={silver} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.silver
                                                                             }
@@ -120,7 +120,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={gold} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.gold
                                                                             }
@@ -132,7 +132,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={diamond} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.diamond
                                                                             }
@@ -144,7 +144,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={ice} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.ice
                                                                             }
@@ -156,7 +156,7 @@ const Refinery = () => {
                                                                         <img className="img-fluid" src={petroleum} alt="" />
                                                                     </button>
                                                                     <div className="text-center">
-                                                                        {user.wallet != null ? <>
+                                                                        {user.wallet !== undefined && user.wallet !== "" ? <>
                                                                             {
                                                                                 user.materials.petroleum
                                                                             }

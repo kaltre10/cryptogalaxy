@@ -128,7 +128,6 @@ const Newm = () => {
                                 <div className="col-6">
                                     <button className="btn btn-primary w-100 disabled">Sell</button>
                                 </div>
-
                             </div>
                         </div>
                         <div className="in-menu-marjet p-2">

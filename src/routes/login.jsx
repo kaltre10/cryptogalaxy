@@ -50,7 +50,7 @@ const Login = () => {
                             {loading ?
                                 <>
                                     <button className="btn btn-secondary">
-                                        Loaing...
+                                        Open Metamask
                                     </button>
                                 </> : <>
                                     <button onClick={connectOrRegister} className="btn btn-primary">

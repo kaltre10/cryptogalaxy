@@ -35,7 +35,7 @@ const envioVentaAlBackend = async (material, ammount, wallet, gemPrice, Toast) =
     if (material === "Goldbar")
         img = Gold_bar
     if (material === "Cutdiamond")
-        img = Diamond
+        img = Cut_diamond
     if (material === "Icebar")
         img = Ice_bar
     if (material === "Oil")

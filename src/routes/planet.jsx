@@ -161,47 +161,17 @@ const Planet = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {/* inicio */}
-                                                {!loading ? <>
-
-                                                    {mineryLevel(user.xp.minery) >= 1 ? <>
-                                                        {user.planets[0] !== 0 ?
-                                                            <div>
-                                                                <button onClick={() => {
-                                                                    setSelectship(true);
-                                                                    setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8 })
-                                                                }}
-                                                                    className="btn bg-danger form-control text-white mt-2">
-                                                                    Mine
-                                                                </button>
-                                                            </div>
-                                                            :
-                                                            <div>
-                                                                <button onClick={() => { unlockPlanet(0) }} className="btn bg-success form-control mt-2 text-white ">
-                                                                    Unlock 600
-                                                                    <img className=" mx-1 img-gm-button" src={gm} alt="" />
-                                                                </button>
-                                                            </div>
-                                                        }
-                                                    </> : <>
-                                                        <div className="blockPlanet p-3 mt-4">
-                                                            <h1>Locked</h1>
-                                                            <hr />
-                                                            <div className="unlocklvl mt-3">
-                                                                Unlocks at level 1
-                                                            </div>
-                                                        </div>
-                                                    </>}
-                                                </> :
-                                                    <div className="text-center">
-                                                        <div className="spinner-border"></div>
-                                                    </div>
-                                                }
-
-                                                {/* fin */}
+                                                <div>
+                                                    <button onClick={() => {
+                                                        setSelectship(true);
+                                                        setPlanet({ name: "Terrat", mine: "Iron", id: 0, lvl: 1, dif: 0.8 })
+                                                    }}
+                                                        className="btn bg-danger form-control text-white mt-2">
+                                                        Mine
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                                 {/* Terrar 1*/}

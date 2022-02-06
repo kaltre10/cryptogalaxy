@@ -18,7 +18,7 @@ const web3 = new Web3(provider)
 
 function TopNav() {
 
-  const { connectOrRegister, bnb, user, loading, stateLoading } = useContext(DataContext)
+  const { connectOrRegister, bnb, user, loading, stateLoading, filterWallet } = useContext(DataContext)
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -95,7 +95,7 @@ function TopNav() {
           </Navbar.Brand>
           <div className='d-sm-none d-md-block'>
             <div>
-            {user.wallet}
+            { filterWallet(user.wallet)}
               <img src={logoEuro} height="32px" className='mx-2' alt="" />
             </div>
           </div>

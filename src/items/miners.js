@@ -1,6 +1,6 @@
 const miners = [
     {
-        "name": "Vulcan",
+        "name": "Timo",
         "id": 0,
         "img": "https://cryptogalaxy.online/ships/miners/vulcan.webp",
         "mp": 4,
