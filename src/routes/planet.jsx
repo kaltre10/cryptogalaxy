@@ -472,7 +472,7 @@ const Planet = () => {
                                                 </div>
                                                 {!loading ? <>
                                                     {mineryLevel(user.xp.minery) >= 6 ? <>
-                                                        {user.planets[1] !== 0 ?
+                                                        {user.planets[5] !== 0 ?
                                                             <div>
                                                                 <button onClick={() => {
                                                                     setSelectship(true);
